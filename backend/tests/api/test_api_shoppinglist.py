@@ -54,7 +54,7 @@ def test_delete_default_shopping_list_blocked(
 
 
 def test_delete_shopping_list_removes_items(
-    user_client_with_household, household_id, shoppinglist_id_with_item
+    user_client_with_household, household_id, shoppinglist_id, shoppinglist_id_with_item
 ):
     response = user_client_with_household.post(
         f"/api/household/{household_id}/shoppinglist", json={"name": "Second list"}
