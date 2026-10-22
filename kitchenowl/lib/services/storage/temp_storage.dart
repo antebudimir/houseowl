@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:kitchenowl/models/category.dart';
 import 'package:kitchenowl/models/household.dart';
+import 'package:kitchenowl/models/person.dart';
 import 'package:kitchenowl/models/recipe.dart';
 import 'package:kitchenowl/models/shoppinglist.dart';
 import 'package:kitchenowl/models/tag.dart';
@@ -48,6 +49,12 @@ class TempStorage {
     return File('$path/${household.id}-recipes.json');
   }
 
+  Future<File> _localPersonsFile(Household household) async {
+    final path = await _localPath;
+
+    return File('$path/${household.id}-persons.json');
+  }
+
   Future<File> _localCategoryFile(Household household) async {
     final path = await _localPath;
 
@@ -67,6 +74,7 @@ class TempStorage {
               await Future.wait([
                 clearShoppingLists(household),
                 clearRecipes(household),
+                clearPersons(household),
                 clearCategories(household),
                 clearTags(household),
               ]);
@@ -173,6 +181,39 @@ class TempStorage {
     if (!foundation.kIsWeb) {
       try {
         final file = await _localRecipesFile(household);
+        if (await file.exists()) await file.delete();
+      } catch (_) {}
+    }
+  }
+
+  Future<List<Person>?> readPersons(Household household) async {
+    if (!foundation.kIsWeb) {
+      try {
+        final file = await _localPersonsFile(household);
+        final String content = await file.readAsString();
+
+        return List<Person>.from(
+          json.decode(content).map((e) => Person.fromJson(e)),
+        );
+      } catch (_) {}
+    }
+
+    return null;
+  }
+
+  Future<void> writePersons(Household household, List<Person> persons) async {
+    if (!foundation.kIsWeb) {
+      final file = await _localPersonsFile(household);
+      await file.writeAsString(
+        json.encode(persons.map((e) => e.toJsonWithId()).toList()),
+      );
+    }
+  }
+
+  Future<void> clearPersons(Household household) async {
+    if (!foundation.kIsWeb) {
+      try {
+        final file = await _localPersonsFile(household);
         if (await file.exists()) await file.delete();
       } catch (_) {}
     }

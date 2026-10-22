@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kitchenowl/app.dart';
 import 'package:kitchenowl/cubits/auth_cubit.dart';
 import 'package:kitchenowl/cubits/household_cubit.dart';
+import 'package:kitchenowl/enums/update_enum.dart';
 import 'package:kitchenowl/kitchenowl.dart';
 import 'package:kitchenowl/models/household.dart';
+import 'package:kitchenowl/pages/household_page/person_add_update_page.dart';
 import 'package:kitchenowl/widgets/expense_create_fab.dart';
 import 'package:kitchenowl/widgets/recipe_create_fab.dart';
 import 'package:kitchenowl/widgets/shoppinglist_confirm_remove_fab.dart';
@@ -14,6 +16,8 @@ enum ViewsEnum {
   recipes,
   planner,
   balances,
+  persons,
+  birthdays,
   more;
 
   String toLocalizedString(BuildContext context) {
@@ -24,6 +28,8 @@ enum ViewsEnum {
       loc.recipes,
       loc.mealPlanner,
       loc.balances,
+      loc.persons,
+      loc.birthdays,
       loc.more,
     ][index];
   }
@@ -36,6 +42,8 @@ enum ViewsEnum {
       loc.recipes,
       loc.planner,
       loc.balances,
+      loc.persons,
+      loc.birthdays,
       loc.more,
     ][index];
   }
@@ -61,6 +69,8 @@ enum ViewsEnum {
       Icons.receipt_outlined,
       Icons.calendar_today_outlined,
       Icons.account_balance_outlined,
+      Icons.people_outlined,
+      Icons.cake_outlined,
       App.isOffline ? Icons.cloud_off_rounded : Icons.house_rounded,
     ][index];
   }
@@ -71,6 +81,8 @@ enum ViewsEnum {
       Icons.receipt_rounded,
       Icons.calendar_today_rounded,
       Icons.account_balance_rounded,
+      Icons.people_rounded,
+      Icons.cake_rounded,
       App.isOffline ? Icons.cloud_off_rounded : Icons.house_rounded,
     ][index];
   }
@@ -81,6 +93,8 @@ enum ViewsEnum {
       false,
       true,
       true,
+      false,
+      false,
       false,
     ][index];
   }
@@ -98,6 +112,20 @@ enum ViewsEnum {
                 .state
                 .isOffline
             ? const ExpenseCreateFab()
+            : null;
+      case ViewsEnum.persons:
+        return !BlocProvider.of<AuthCubit>(context, listen: true)
+                .state
+                .isOffline
+            ? FloatingActionButton(
+                tooltip: AppLocalizations.of(context)!.personAdd,
+                onPressed: () => Navigator.of(context).push<UpdateEnum>(
+                  MaterialPageRoute(
+                    builder: (ctx) => const PersonAddUpdatePage(),
+                  ),
+                ),
+                child: const Icon(Icons.add_rounded),
+              )
             : null;
       case ViewsEnum.items:
         return App.settings.shoppingListTapToRemove
@@ -137,6 +165,10 @@ enum ViewsEnum {
         return ViewsEnum.planner;
       case 'balances':
         return ViewsEnum.balances;
+      case 'persons':
+        return ViewsEnum.persons;
+      case 'birthdays':
+        return ViewsEnum.birthdays;
       case 'profile':
       case 'more':
         return ViewsEnum.more;

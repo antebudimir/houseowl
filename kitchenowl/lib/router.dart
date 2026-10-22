@@ -342,6 +342,22 @@ final router = GoRouter(
               ),
             ),
             GoRoute(
+              path: "persons",
+              pageBuilder: (context, state) => FadeThroughTransitionPage(
+                key: state.pageKey,
+                name: state.name,
+                child: const PersonsPage(),
+              ),
+            ),
+            GoRoute(
+              path: "birthdays",
+              pageBuilder: (context, state) => FadeThroughTransitionPage(
+                key: state.pageKey,
+                name: state.name,
+                child: const BirthdaysPage(),
+              ),
+            ),
+            GoRoute(
               path: "balances",
               pageBuilder: (context, state) => FadeThroughTransitionPage(
                 key: state.pageKey,

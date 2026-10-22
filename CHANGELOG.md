@@ -14,6 +14,19 @@ features, that's the same commit.
 
 ### Added
 
+- Household people directory: a new "People" view lists household persons
+  (name, role, birthday, phone, email, notes) with add, edit, and delete
+  (delete asks for confirmation), local-first offline support, and real-time
+  updates via the `person:update` Socket.IO event
+- Dedicated "Birthdays" view sorted by next occurrence; birthdays stored
+  without a year (backend sentinel 1990-01-01) are shown without a year
+- Person local cache (`<household-id>-persons.json`) mirroring the other
+  offline caches, plus offline-queue transactions for add/update/delete
+- Backend household `Person` model and `/api/household/<id>/person` +
+  `/api/person/<id>` endpoints (commit `8eacc2e8`)
+
+### Changed
+
 - Inline shopping-list management from the main-view header: add, rename, and
   delete lists via the add field and a long-press action sheet (rename is
   available for every list; delete only for non-default lists)

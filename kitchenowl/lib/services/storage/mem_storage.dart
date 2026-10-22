@@ -1,5 +1,6 @@
 import 'package:kitchenowl/models/category.dart';
 import 'package:kitchenowl/models/household.dart';
+import 'package:kitchenowl/models/person.dart';
 import 'package:kitchenowl/models/recipe.dart';
 import 'package:kitchenowl/models/shoppinglist.dart';
 import 'package:kitchenowl/models/tag.dart';
@@ -27,6 +28,7 @@ class MemStorage {
               await Future.wait([
                 clearShoppingLists(household),
                 clearRecipes(household),
+                clearPersons(household),
                 clearCategories(household),
                 clearTags(household),
               ]);
@@ -99,6 +101,26 @@ class MemStorage {
 
   Future<void> clearRecipes(Household household) async {
     _recipes = {};
+  }
+
+  Map<int, List<Person>?> _persons = {};
+
+  Future<List<Person>?> readPersons(Household household) async {
+    if (persistentStorage != null && _persons[household.id] == null) {
+      _persons[household.id] =
+          await persistentStorage!.readPersons(household);
+    }
+    if (_persons[household.id] == null) return null;
+    return List.of(_persons[household.id]!);
+  }
+
+  Future<void> writePersons(Household household, List<Person> persons) async {
+    persistentStorage?.writePersons(household, persons);
+    _persons[household.id] = persons;
+  }
+
+  Future<void> clearPersons(Household household) async {
+    _persons = {};
   }
 
   Map<int, List<Category>?> _categories = {};

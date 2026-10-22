@@ -790,6 +790,24 @@
   "underConstruction": "Under construction",
   "undo": "Undo",
   "unlink": "Unlink",
+  "birthday": "Birthday",
+  "birthdays": "Birthdays",
+  "emptyBirthdayList": "No birthdays yet.\nAdd a birthday to a person to see it here.",
+  "emptyPersonList": "No people yet.\nUse the plus button to add someone.",
+  "notes": "Notes",
+  "personAdd": "Add person",
+  "personDelete": "Delete person",
+  "personDeleteConfirmation": "Are you sure you want to remove {person}?",
+  "@personDeleteConfirmation": {
+    "placeholders": {
+      "person": {}
+    }
+  },
+  "personEdit": "Edit person",
+  "persons": "People",
+  "phone": "Phone",
+  "role": "Role",
+  "yearUnknown": "year unknown",
   "unreachableMessage": "Hmmmm… couldn't reach server",
   "unsavedChangesBody": "Are you sure you want to go back?",
   "unsavedChangesTitle": "You have unsaved changes",

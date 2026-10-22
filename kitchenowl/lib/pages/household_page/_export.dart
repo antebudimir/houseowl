@@ -1,4 +1,8 @@
 export 'more.dart';
+export 'person_add_update_page.dart';
+export 'persons_page.dart';
+export 'birthdays_page.dart';
+export 'person_page.dart';
 export 'recipe_list.dart';
 export 'shoppinglist.dart';
 export 'planner.dart';

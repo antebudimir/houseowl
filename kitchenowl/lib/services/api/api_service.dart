@@ -15,6 +15,7 @@ export 'item.dart';
 export 'shoppinglist.dart';
 export 'recipe.dart';
 export 'planner.dart';
+export 'person.dart';
 export 'import_export.dart';
 export 'expense.dart';
 export 'tag.dart';
