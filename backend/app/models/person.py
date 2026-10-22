@@ -47,7 +47,9 @@ class Person(Model, DbModelAuthorizeMixin):
     def obj_to_full_dict(self) -> dict[str, Any]:
         res = super().obj_to_dict()
         if self.birthday:
-            # the shared JSON provider only handles datetime, not bare date
+            # Shared JSON provider only handles datetime, not bare date
+            # (date.replace() has no tzinfo). Convert date -> epoch ms here at
+            # the model boundary instead of touching the shared provider.
             res["birthday"] = int(
                 datetime(
                     self.birthday.year,
