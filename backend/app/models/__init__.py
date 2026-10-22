@@ -8,6 +8,7 @@ from .recipe import RecipeTags, RecipeItems, Recipe
 from .planner import Planner
 from .tag import Tag
 from .person import Person
+from .note import Note, NoteTags
 from .shoppinglist import ShoppinglistItems, Shoppinglist
 from .recipe_history import RecipeHistory
 from .expense_category import ExpenseCategory

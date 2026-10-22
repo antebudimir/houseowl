@@ -10,6 +10,7 @@ from .settings import *
 from .expense import *
 from .tag import *
 from .person import *
+from .note import *
 from .upload import *
 from .household import *
 from .category import *

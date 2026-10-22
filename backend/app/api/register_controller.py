@@ -30,6 +30,9 @@ api.household.register_blueprint(api.tagHousehold, url_prefix="/<int:household_i
 api.household.register_blueprint(
     api.personHousehold, url_prefix="/<int:household_id>/person"
 )
+api.household.register_blueprint(
+    api.noteHousehold, url_prefix="/<int:household_id>/note"
+)
 
 apiv1.register_blueprint(
     api.health, url_prefix="/health/8M4F88S8ooi4sMbLBfkkV7ctWwgibW6V"
@@ -45,6 +48,7 @@ apiv1.register_blueprint(api.settings, url_prefix="/settings")
 apiv1.register_blueprint(api.shoppinglist, url_prefix="/shoppinglist")
 apiv1.register_blueprint(api.tag, url_prefix="/tag")
 apiv1.register_blueprint(api.person, url_prefix="/person")
+apiv1.register_blueprint(api.note, url_prefix="/note")
 apiv1.register_blueprint(api.user, url_prefix="/user")
 apiv1.register_blueprint(api.upload, url_prefix="/upload")
 apiv1.register_blueprint(api.analytics, url_prefix="/analytics")

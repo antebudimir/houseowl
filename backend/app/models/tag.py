@@ -36,6 +36,14 @@ class Tag(Model, DbModelAuthorizeMixin):
             cascade="all, delete-orphan",
         ),
     )
+    notes: Mapped[List["NoteTags"]] = cast(
+        Mapped[List["NoteTags"]],
+        db.relationship(
+            "NoteTags",
+            back_populates="tag",
+            cascade="all, delete-orphan",
+        ),
+    )
 
     def obj_to_full_dict(self) -> dict[str, Any]:
         res = super().obj_to_dict()
@@ -45,7 +53,7 @@ class Tag(Model, DbModelAuthorizeMixin):
         if self.household_id != other.household_id:
             return
 
-        from app.models import RecipeTags
+        from app.models import RecipeTags, NoteTags
 
         for rectag in RecipeTags.query.filter(
             RecipeTags.tag_id == other.id,
@@ -58,6 +66,18 @@ class Tag(Model, DbModelAuthorizeMixin):
         ).all():
             rectag.tag_id = self.id
             db.session.add(rectag)
+
+        for notetag in NoteTags.query.filter(
+            NoteTags.tag_id == other.id,
+            NoteTags.note_id.notin_(
+                db.session.query(NoteTags.note_id)
+                .filter(NoteTags.tag_id == self.id)
+                .subquery()
+                .select()
+            ),
+        ).all():
+            notetag.tag_id = self.id
+            db.session.add(notetag)
 
         try:
             db.session.commit()
