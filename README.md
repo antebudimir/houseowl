@@ -69,6 +69,21 @@ Please keep in mind that this project is still in development.
 
 For a full list check out the [website](https://kitchenowl.org). For a list of planned features, take a look at the [Roadmap](https://github.com/users/TomBursch/projects/1)!
 
+## 🍴 About this fork
+
+This is a hard fork of [KitchenOwl](https://github.com/TomBursch/kitchenowl),
+evolving it from a grocery list and recipe manager toward a broader household
+coordination app. Planned additions include tasks, a shared calendar,
+contacts, document storage, and planned purchases.
+
+Landed so far:
+
+- Manage shopping lists directly from the main-view header: add, rename, and
+  delete lists inline (long-press a list for its actions)
+- Shopping-list renames sync to all household members in real time
+
+See [CHANGELOG.md](CHANGELOG.md) for the full history of fork changes.
+
 ## 📱 Screenshots
 
 <table>
