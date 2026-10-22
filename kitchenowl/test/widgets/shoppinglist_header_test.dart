@@ -161,6 +161,33 @@ void main() {
     expect(deleted.map((e) => e.id), [2]);
   });
 
+  testWidgets("failed delete shows an error snackbar", (tester) async {
+    await tester.pumpWidget(
+      mui.MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        locale: const Locale('en'),
+        home: mui.Scaffold(
+          body: ShoppinglistHeader(
+            shoppinglists: [defaultList, otherList],
+            selectedShoppinglistId: 1,
+            onSelect: (_) {},
+            onAdd: (_) async {},
+            onDelete: (_) async => false,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.longPress(find.text("Other"));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Delete"));
+    await tester.pumpAndSettle();
+
+    expect(find.text("An error occurred"), findsOneWidget);
+  });
+
   testWidgets("single list header still renders chips and add affordance",
       (tester) async {
     await _pumpHeader(

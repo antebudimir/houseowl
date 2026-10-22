@@ -105,7 +105,13 @@ class _ShoppinglistHeaderState extends State<ShoppinglistHeader> {
         ),
       ),
     );
-    if (confirmed) await widget.onDelete(shoppinglist);
+    if (confirmed && !await widget.onDelete(shoppinglist)) {
+      if (!mounted) return;
+      showSnackbar(
+        context: context,
+        content: Text(AppLocalizations.of(context)!.error),
+      );
+    }
   }
 
   @override
