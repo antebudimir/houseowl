@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:kitchenowl/models/category.dart';
 import 'package:kitchenowl/models/household.dart';
+import 'package:kitchenowl/models/note.dart';
 import 'package:kitchenowl/models/person.dart';
 import 'package:kitchenowl/models/recipe.dart';
 import 'package:kitchenowl/models/shoppinglist.dart';
@@ -75,6 +76,7 @@ class TempStorage {
                 clearShoppingLists(household),
                 clearRecipes(household),
                 clearPersons(household),
+                clearNotes(household),
                 clearCategories(household),
                 clearTags(household),
               ]);
@@ -214,6 +216,45 @@ class TempStorage {
     if (!foundation.kIsWeb) {
       try {
         final file = await _localPersonsFile(household);
+        if (await file.exists()) await file.delete();
+      } catch (_) {}
+    }
+  }
+
+  Future<File> _localNotesFile(Household household) async {
+    final path = await _localPath;
+
+    return File('$path/${household.id}-notes.json');
+  }
+
+  Future<List<Note>?> readNotes(Household household) async {
+    if (!foundation.kIsWeb) {
+      try {
+        final file = await _localNotesFile(household);
+        final String content = await file.readAsString();
+
+        return List<Note>.from(
+          json.decode(content).map((e) => Note.fromJson(e)),
+        );
+      } catch (_) {}
+    }
+
+    return null;
+  }
+
+  Future<void> writeNotes(Household household, List<Note> notes) async {
+    if (!foundation.kIsWeb) {
+      final file = await _localNotesFile(household);
+      await file.writeAsString(
+        json.encode(notes.map((e) => e.toJsonWithId()).toList()),
+      );
+    }
+  }
+
+  Future<void> clearNotes(Household household) async {
+    if (!foundation.kIsWeb) {
+      try {
+        final file = await _localNotesFile(household);
         if (await file.exists()) await file.delete();
       } catch (_) {}
     }

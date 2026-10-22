@@ -429,76 +429,13 @@ class _AddUpdateRecipePageState extends State<AddUpdateRecipePage> {
                                     previous.selectedTags,
                                     current.selectedTags,
                                   ),
-                              builder: (context, state) {
-                                List<Widget> children = state.tags
-                                    .map<Widget>((e) => FilterChip(
-                                          label: Text(
-                                            e.name,
-                                            style: TextStyle(
-                                              color:
-                                                  state.selectedTags.contains(e)
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .onPrimary
-                                                      : null,
-                                            ),
-                                          ),
-                                          selected:
-                                              state.selectedTags.contains(e),
-                                          onSelected: (selected) =>
-                                              cubit.selectTag(e, selected),
-                                          selectedColor: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                        ))
-                                    .toList();
-                                Widget widget = Tooltip(
-                                  message: AppLocalizations.of(context)!.addTag,
-                                  child: InkWell(
-                                    borderRadius: BorderRadius.circular(50),
-                                    onTap: () async {
-                                      final res = await showDialog<String>(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return TextDialog(
-                                            title: AppLocalizations.of(context)!
-                                                .addTag,
-                                            doneText:
-                                                AppLocalizations.of(context)!
-                                                    .add,
-                                            hintText:
-                                                AppLocalizations.of(context)!
-                                                    .name,
-                                            isInputValid: (s) => s.isNotEmpty,
-                                          );
-                                        },
-                                      );
-                                      if (res != null) {
-                                        cubit.addTag(res);
-                                      }
-                                    },
-                                    child: const Icon(Icons.add),
-                                  ),
-                                );
-
-                                if (children.isEmpty) {
-                                  children = [
-                                    Text(AppLocalizations.of(context)!.noTags),
-                                  ];
-                                }
-
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16),
-                                  child: Wrap(
-                                    runSpacing: 8,
-                                    spacing: 5,
-                                    crossAxisAlignment:
-                                        WrapCrossAlignment.center,
-                                    children: children + [widget],
-                                  ),
-                                );
-                              },
+                              builder: (context, state) =>
+                                  KitchenOwlTagSelector(
+                                tags: state.tags,
+                                selectedTags: state.selectedTags,
+                                onSelect: cubit.selectTag,
+                                onAdd: cubit.addTag,
+                              ),
                             ),
                             BlocListener<AddUpdateRecipeCubit,
                                 AddUpdateRecipeState>(

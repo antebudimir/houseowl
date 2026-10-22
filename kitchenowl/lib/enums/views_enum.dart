@@ -6,6 +6,7 @@ import 'package:kitchenowl/cubits/household_cubit.dart';
 import 'package:kitchenowl/enums/update_enum.dart';
 import 'package:kitchenowl/kitchenowl.dart';
 import 'package:kitchenowl/models/household.dart';
+import 'package:kitchenowl/pages/household_page/note_add_update_page.dart';
 import 'package:kitchenowl/pages/household_page/person_add_update_page.dart';
 import 'package:kitchenowl/widgets/expense_create_fab.dart';
 import 'package:kitchenowl/widgets/recipe_create_fab.dart';
@@ -18,6 +19,7 @@ enum ViewsEnum {
   balances,
   persons,
   birthdays,
+  notes,
   more;
 
   String toLocalizedString(BuildContext context) {
@@ -30,6 +32,7 @@ enum ViewsEnum {
       loc.balances,
       loc.persons,
       loc.birthdays,
+      loc.notes,
       loc.more,
     ][index];
   }
@@ -44,6 +47,7 @@ enum ViewsEnum {
       loc.balances,
       loc.persons,
       loc.birthdays,
+      loc.notes,
       loc.more,
     ][index];
   }
@@ -71,6 +75,7 @@ enum ViewsEnum {
       Icons.account_balance_outlined,
       Icons.people_outlined,
       Icons.cake_outlined,
+      Icons.sticky_note_2_outlined,
       App.isOffline ? Icons.cloud_off_rounded : Icons.house_rounded,
     ][index];
   }
@@ -83,6 +88,7 @@ enum ViewsEnum {
       Icons.account_balance_rounded,
       Icons.people_rounded,
       Icons.cake_rounded,
+      Icons.sticky_note_2_rounded,
       App.isOffline ? Icons.cloud_off_rounded : Icons.house_rounded,
     ][index];
   }
@@ -95,7 +101,7 @@ enum ViewsEnum {
       true,
       false,
       false,
-      false,
+      true,
     ][index];
   }
 
@@ -127,6 +133,20 @@ enum ViewsEnum {
                 child: const Icon(Icons.add_rounded),
               )
             : null;
+      case ViewsEnum.notes:
+        return FloatingActionButton(
+          tooltip: AppLocalizations.of(context)!.noteAdd,
+          onPressed: () => Navigator.of(context).push<UpdateEnum>(
+            MaterialPageRoute(
+              builder: (ctx) => NoteAddUpdatePage(
+                household: BlocProvider.of<HouseholdCubit>(context)
+                    .state
+                    .household,
+              ),
+            ),
+          ),
+          child: const Icon(Icons.add_rounded),
+        );
       case ViewsEnum.items:
         return App.settings.shoppingListTapToRemove
             ? null
@@ -169,6 +189,8 @@ enum ViewsEnum {
         return ViewsEnum.persons;
       case 'birthdays':
         return ViewsEnum.birthdays;
+      case 'notes':
+        return ViewsEnum.notes;
       case 'profile':
       case 'more':
         return ViewsEnum.more;

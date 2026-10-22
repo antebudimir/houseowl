@@ -358,6 +358,14 @@ final router = GoRouter(
               ),
             ),
             GoRoute(
+              path: "notes",
+              pageBuilder: (context, state) => FadeThroughTransitionPage(
+                key: state.pageKey,
+                name: state.name,
+                child: const NotesPage(),
+              ),
+            ),
+            GoRoute(
               path: "balances",
               pageBuilder: (context, state) => FadeThroughTransitionPage(
                 key: state.pageKey,

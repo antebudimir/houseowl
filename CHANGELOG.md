@@ -14,6 +14,20 @@ features, that's the same commit.
 
 ### Added
 
+- Household notes: a new "Notes" view lists notes with a debounced
+  server-backed search (SQL `ILIKE` over title and body), full markdown body
+  rendering on the note page, and add/edit pages with tag selection reusing
+  the shared tag selector extracted from the recipe editor
+- `Note` model with JSON roundtrip (tags travel as names on write and as tag
+  objects on read), note local cache (`<household-id>-notes.json`) mirroring
+  the other offline caches, and offline-queue transactions for
+  add/update/delete; note search falls back to a local title/body filter when
+  offline
+- Real-time updates via the `note:update` Socket.IO event
+- Backend `Note` + `NoteTags` models (reusing the household-scoped `Tag`
+  vocabulary, so one tag can label both recipes and notes),
+  `/api/household/<id>/note` + `/api/note/<id>` endpoints, and migration
+  `b7e2f4a91c03` (commit `e3ac8a60`)
 - Household people directory: a new "People" view lists household persons
   (name, role, birthday, phone, email, notes) with add, edit, and delete
   (delete asks for confirmation), local-first offline support, and real-time

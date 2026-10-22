@@ -83,7 +83,7 @@ class MorePage extends StatelessWidget {
               List<ViewsEnum> pages =
                   (state.household.viewOrdering ?? ViewsEnum.values)
                       .where((e) => e.isViewActive(state.household))
-                      .skip(6)
+                      .skip(7)
                       .toList();
               if (pages.isEmpty) return const SizedBox();
               return Column(
