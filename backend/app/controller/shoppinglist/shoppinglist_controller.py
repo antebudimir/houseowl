@@ -80,6 +80,7 @@ def getShoppinglists(args, household_id):
         [
             shoppinglist.obj_to_dict()
             | {
+                "default": shoppinglist.isDefault(),
                 "recentItems": recentItems[shoppinglist.id],
                 "items": [e.obj_to_item_dict() for e in items[shoppinglist.id]],
             }
