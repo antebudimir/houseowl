@@ -25,6 +25,19 @@ features, that's the same commit.
 - Backend household `Person` model and `/api/household/<id>/person` +
   `/api/person/<id>` endpoints (commit `8eacc2e8`)
 
+### Known limitations
+
+- On narrow screens the bottom navigation bar shows at most 5 entries
+  (upstream `take(5)` behavior), so the new "People" and "Birthdays" views are
+  **only reachable via the drawer / More view** on phones. Accepted for v1;
+  revisit whether Birthdays should claim a bottom-nav slot over a less-used
+  entry.
+- Meal-plan `cooking_date` is truncated to a local-time date before storage
+  (`backend/app/controller/planner_controller.py`), so in non-UTC timezones
+  the stored date can shift by a day. Real upstream TZ bug; to be fixed with
+  a UTC-normalizing one-liner **before Phase 4 (Events)**, which is calendar-
+  adjacent.
+
 ### Changed
 
 - Inline shopping-list management from the main-view header: add, rename, and
