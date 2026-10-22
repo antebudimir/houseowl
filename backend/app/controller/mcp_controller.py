@@ -28,40 +28,6 @@ from app.models import (
 
 mcp = Blueprint("mcp", __name__)
 
-RECIPE_ADDITIONAL_FIELDS = (
-    "description",
-    "photo",
-    "photo_hash",
-    "time",
-    "cook_time",
-    "prep_time",
-    "yields",
-    "source",
-    "visibility",
-    "created_at",
-    "updated_at",
-    "planned",
-    "planned_days",
-    "planned_cooking_dates",
-    "items",
-    "tags",
-)
-RECIPE_DISCOVERY_ARGUMENTS = {
-    "offset": {"type": "integer", "minimum": 0, "default": 0},
-    "limit": {
-        "type": "integer",
-        "minimum": 1,
-        "maximum": 100,
-        "default": 50,
-    },
-    "additional_fields": {
-        "type": "array",
-        "items": {"type": "string", "enum": list(RECIPE_ADDITIONAL_FIELDS)},
-        "uniqueItems": True,
-        "default": [],
-    },
-}
-
 
 def _as_tool_result(payload: Any):
     text = json.dumps(payload, ensure_ascii=False, default=str)
