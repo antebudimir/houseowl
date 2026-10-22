@@ -149,6 +149,11 @@ class HouseholdSettingsShoppinglistPage extends StatelessWidget {
                                           onPressed: () => Navigator.of(context)
                                               .pop(_ShoppinglistAction.rename),
                                         ),
+                                        // TODO: use shoppinglist.isDefault
+                                        // once the flag is surfaced here too
+                                        // (index 0 only agrees because the
+                                        // default list is the lowest id); the
+                                        // header already reads the flag.
                                         if (i != 0)
                                           ActionChip(
                                             avatar: const Icon(

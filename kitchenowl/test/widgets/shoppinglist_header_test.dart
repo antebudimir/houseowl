@@ -12,6 +12,8 @@ Future<void> _pumpHeader(
   int? selectedShoppinglistId,
   required ValueChanged<String> onAdd,
   required ValueChanged<ShoppingList> onDelete,
+  ValueChanged<ShoppingList>? onRenamed,
+  bool renameSucceeds = true,
 }) async {
   await tester.pumpWidget(
     mui.MaterialApp(
@@ -27,6 +29,10 @@ Future<void> _pumpHeader(
           onDelete: (shoppinglist) async {
             onDelete(shoppinglist);
             return true;
+          },
+          onRename: (shoppinglist) async {
+            onRenamed?.call(shoppinglist);
+            return renameSucceeds;
           },
         ),
       ),
@@ -108,12 +114,20 @@ void main() {
 
     await tester.longPress(find.text("Default"));
     await tester.pumpAndSettle();
-    expect(find.byType(mui.AlertDialog), findsNothing);
+    expect(find.text("Rename"), findsOneWidget);
+    expect(find.text("Delete"), findsNothing);
+    await tester.tap(find.text("Rename"));
+    await tester.pumpAndSettle();
+    // Close the rename dialog without changing anything.
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
 
     await tester.longPress(find.text("Other"));
     await tester.pumpAndSettle();
+    expect(find.text("Rename"), findsOneWidget);
+    await tester.tap(find.text("Delete"));
+    await tester.pumpAndSettle();
     expect(find.byType(mui.AlertDialog), findsOneWidget);
-
     await tester.tap(find.text("Delete"));
     await tester.pumpAndSettle();
     expect(deleted.map((e) => e.id), [2]);
@@ -130,6 +144,8 @@ void main() {
     );
 
     await tester.longPress(find.text("Other"));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Delete"));
     await tester.pumpAndSettle();
     await tester.tap(find.text("Cancel"));
     await tester.pumpAndSettle();
@@ -151,14 +167,110 @@ void main() {
 
     await tester.longPress(find.text("First"));
     await tester.pumpAndSettle();
-    expect(find.byType(mui.AlertDialog), findsNothing);
+    expect(find.text("Delete"), findsNothing);
+    await tester.tap(find.text("Rename"));
+    await tester.pumpAndSettle();
+    await tester.tapAt(const Offset(10, 10));
+    await tester.pumpAndSettle();
 
     await tester.longPress(find.text("Second"));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Delete"));
     await tester.pumpAndSettle();
     expect(find.byType(mui.AlertDialog), findsOneWidget);
     await tester.tap(find.text("Delete"));
     await tester.pumpAndSettle();
     expect(deleted.map((e) => e.id), [2]);
+  });
+
+  testWidgets("rename updates the list via onRename", (tester) async {
+    final renamed = <ShoppingList>[];
+    await _pumpHeader(
+      tester,
+      shoppinglists: [defaultList, otherList],
+      selectedShoppinglistId: 1,
+      onAdd: (_) {},
+      onDelete: (_) {},
+      onRenamed: renamed.add,
+    );
+
+    // The default list is renamable too.
+    await tester.longPress(find.text("Default"));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Rename"));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(mui.TextField), "Renamed");
+    await tester.pump(); // let onChanged re-enable the done button
+    await tester.tap(find.text("Rename"));
+    await tester.pumpAndSettle();
+
+    expect(renamed.map((e) => e.name), ["Renamed"]);
+    expect(find.text("An error occurred"), findsNothing);
+  });
+
+  testWidgets("renaming to the same name is a no-op", (tester) async {
+    final renamed = <ShoppingList>[];
+    await _pumpHeader(
+      tester,
+      shoppinglists: [defaultList],
+      onAdd: (_) {},
+      onDelete: (_) {},
+      onRenamed: renamed.add,
+    );
+
+    await tester.longPress(find.text("Default"));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Rename"));
+    await tester.pumpAndSettle();
+    // Dialog prefilled with the unchanged name; Done is disabled.
+    await tester.enterText(find.byType(mui.TextField), "Default");
+    await tester.tap(find.text("Rename"));
+    await tester.pumpAndSettle();
+
+    expect(renamed, isEmpty);
+  });
+
+  testWidgets("empty rename is rejected", (tester) async {
+    final renamed = <ShoppingList>[];
+    await _pumpHeader(
+      tester,
+      shoppinglists: [otherList],
+      onAdd: (_) {},
+      onDelete: (_) {},
+      onRenamed: renamed.add,
+    );
+
+    await tester.longPress(find.text("Other"));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Rename"));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(mui.TextField), "   ");
+    await tester.tap(find.text("Rename"));
+    await tester.pumpAndSettle();
+
+    expect(renamed, isEmpty);
+  });
+
+  testWidgets("failed rename shows an error snackbar", (tester) async {
+    await _pumpHeader(
+      tester,
+      shoppinglists: [otherList],
+      onAdd: (_) {},
+      onDelete: (_) {},
+      renameSucceeds: false,
+    );
+
+    await tester.longPress(find.text("Other"));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Rename"));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(mui.TextField), "Renamed");
+    await tester.pump(); // let onChanged re-enable the done button
+    await tester.tap(find.text("Rename"));
+    await tester.pumpAndSettle();
+
+    expect(find.text("An error occurred"), findsOneWidget);
   });
 
   testWidgets("failed delete shows an error snackbar", (tester) async {
@@ -174,6 +286,7 @@ void main() {
             onSelect: (_) {},
             onAdd: (_) async {},
             onDelete: (_) async => false,
+            onRename: (_) async => true,
           ),
         ),
       ),
@@ -181,6 +294,8 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.longPress(find.text("Other"));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Delete"));
     await tester.pumpAndSettle();
     await tester.tap(find.text("Delete"));
     await tester.pumpAndSettle();
@@ -195,6 +310,7 @@ void main() {
       shoppinglists: [defaultList],
       onAdd: (_) {},
       onDelete: (_) {},
+      onRenamed: (_) {},
     );
 
     expect(find.text("Default"), findsOneWidget);

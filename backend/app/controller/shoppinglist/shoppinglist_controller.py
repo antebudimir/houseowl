@@ -102,6 +102,11 @@ def updateShoppinglist(args, id):
         shoppinglist.name = args["name"]
 
     shoppinglist.save()
+    socketio.emit(
+        "shoppinglist:update",
+        {"shoppinglist": shoppinglist.obj_to_dict()},
+        to="household/" + str(shoppinglist.household_id),
+    )
     return jsonify(shoppinglist.obj_to_dict())
 
 

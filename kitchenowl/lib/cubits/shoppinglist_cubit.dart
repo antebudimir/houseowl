@@ -39,6 +39,7 @@ class ShoppinglistCubit extends Cubit<ShoppinglistCubitState> {
     refresh();
     ApiService.getInstance().onShoppinglistAdd(onShoppinglistAdd);
     ApiService.getInstance().onShoppinglistDelete(onShoppinglistDelete);
+    ApiService.getInstance().onShoppinglistUpdate(onShoppinglistUpdate);
     ApiService.getInstance().onShoppinglistItemAdd(onShoppinglistItemAdd);
     ApiService.getInstance().onShoppinglistItemRemove(onShoppinglistItemRemove);
 
@@ -72,6 +73,7 @@ class ShoppinglistCubit extends Cubit<ShoppinglistCubitState> {
     ApiService.getInstance().removeListener(_onConnectionChange);
     ApiService.getInstance().offShoppinglistAdd(onShoppinglistAdd);
     ApiService.getInstance().offShoppinglistDelete(onShoppinglistDelete);
+    ApiService.getInstance().offShoppinglistUpdate(onShoppinglistUpdate);
     ApiService.getInstance().offShoppinglistItemAdd(onShoppinglistItemAdd);
     ApiService.getInstance()
         .offShoppinglistItemRemove(onShoppinglistItemRemove);
@@ -83,6 +85,10 @@ class ShoppinglistCubit extends Cubit<ShoppinglistCubitState> {
   }
 
   void onShoppinglistDelete(dynamic data) {
+    refresh();
+  }
+
+  void onShoppinglistUpdate(dynamic data) {
     refresh();
   }
 
@@ -129,6 +135,13 @@ class ShoppinglistCubit extends Cubit<ShoppinglistCubitState> {
   Future<bool> deleteShoppingList(ShoppingList shoppinglist) async {
     final success =
         await ApiService.getInstance().deleteShoppingList(shoppinglist);
+    if (success) await refresh();
+    return success;
+  }
+
+  Future<bool> updateShoppingList(ShoppingList shoppinglist) async {
+    final success =
+        await ApiService.getInstance().updateShoppingList(shoppinglist);
     if (success) await refresh();
     return success;
   }

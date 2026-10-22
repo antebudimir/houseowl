@@ -86,6 +86,7 @@ class _ShoppinglistPageState extends State<ShoppinglistPage> {
                     onSelect: cubit.setShoppingList,
                     onAdd: cubit.addShoppingList,
                     onDelete: cubit.deleteShoppingList,
+                    onRename: cubit.updateShoppingList,
                   ),
                   right: Padding(
                     padding: const EdgeInsets.only(right: 16, bottom: 6),
