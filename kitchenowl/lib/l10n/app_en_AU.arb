@@ -495,7 +495,7 @@
   "helpTranslate": "Help translate",
   "household": "Household",
   "householdDelete": "Delete household",
-  "householdDeleteConfirmation": "Are you sure you want to delete {household}? This will delete any items, recipes, and expenses associated with that household.",
+  "householdDeleteConfirmation": "Are you sure you want to delete {household}? This will delete any items associated with that household.",
   "householdEmpty": "No households, start by creating one!",
   "householdLeave": "Leave household",
   "householdLeaveConfirmation": "Are you sure you want to leave {household}?",
