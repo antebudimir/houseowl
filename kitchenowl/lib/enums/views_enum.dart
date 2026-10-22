@@ -8,12 +8,12 @@ import 'package:kitchenowl/kitchenowl.dart';
 import 'package:kitchenowl/models/household.dart';
 import 'package:kitchenowl/pages/household_page/note_add_update_page.dart';
 import 'package:kitchenowl/pages/household_page/person_add_update_page.dart';
-import 'package:kitchenowl/widgets/expense_create_fab.dart';
+import 'package:kitchenowl/pages/household_page/planned_buy_add_update_page.dart';
 import 'package:kitchenowl/widgets/shoppinglist_confirm_remove_fab.dart';
 
 enum ViewsEnum {
   items,
-  balances,
+  planned,
   persons,
   birthdays,
   notes,
@@ -24,7 +24,7 @@ enum ViewsEnum {
 
     return [
       loc.shoppingList,
-      loc.balances,
+      loc.planned,
       loc.persons,
       loc.birthdays,
       loc.notes,
@@ -37,7 +37,7 @@ enum ViewsEnum {
 
     return [
       loc.list,
-      loc.balances,
+      loc.planned,
       loc.persons,
       loc.birthdays,
       loc.notes,
@@ -63,7 +63,7 @@ enum ViewsEnum {
   IconData toIcon(BuildContext context) {
     return [
       Icons.shopping_bag_outlined,
-      Icons.account_balance_outlined,
+      Icons.add_shopping_cart_outlined,
       Icons.people_outlined,
       Icons.cake_outlined,
       Icons.sticky_note_2_outlined,
@@ -74,7 +74,7 @@ enum ViewsEnum {
   IconData toSelectedIcon(BuildContext context) {
     return [
       Icons.shopping_bag_rounded,
-      Icons.account_balance_rounded,
+      Icons.add_shopping_cart_rounded,
       Icons.people_rounded,
       Icons.cake_rounded,
       Icons.sticky_note_2_rounded,
@@ -94,11 +94,23 @@ enum ViewsEnum {
 
   Widget? floatingActionButton(BuildContext context) {
     switch (this) {
-      case ViewsEnum.balances:
+      case ViewsEnum.planned:
         return !BlocProvider.of<AuthCubit>(context, listen: true)
                 .state
                 .isOffline
-            ? const ExpenseCreateFab()
+            ? FloatingActionButton(
+                tooltip: AppLocalizations.of(context)!.plannedBuyAdd,
+                onPressed: () => Navigator.of(context).push<UpdateEnum>(
+                  MaterialPageRoute(
+                    builder: (ctx) => PlannedBuyAddUpdatePage(
+                      household: BlocProvider.of<HouseholdCubit>(context)
+                          .state
+                          .household,
+                    ),
+                  ),
+                ),
+                child: const Icon(Icons.add_rounded),
+              )
             : null;
       case ViewsEnum.persons:
         return !BlocProvider.of<AuthCubit>(context, listen: true)
@@ -138,10 +150,6 @@ enum ViewsEnum {
   }
 
   bool isViewActive(Household household) {
-    if (this == ViewsEnum.balances) {
-      return household.featureExpenses ?? true;
-    }
-
     return true;
   }
 
@@ -157,8 +165,11 @@ enum ViewsEnum {
     switch (str) {
       case 'items':
         return ViewsEnum.items;
+      case 'planned':
+      // Households saved before the expense system was removed keep their
+      // view ordering; the old balances view became the planned buys view.
       case 'balances':
-        return ViewsEnum.balances;
+        return ViewsEnum.planned;
       case 'persons':
         return ViewsEnum.persons;
       case 'birthdays':

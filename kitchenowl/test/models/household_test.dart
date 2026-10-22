@@ -8,15 +8,15 @@ import 'package:kitchenowl/models/shoppinglist.dart';
 void main() {
   test("Household should be equal", () {
     // Given
-    final h1 = Household(id: 1, name: "Name", featureExpenses: true);
-    final h2 = Household(id: 1, name: "Name", featureExpenses: true);
+    final h1 = Household(id: 1, name: "Name");
+    final h2 = Household(id: 1, name: "Name");
     // Then
     expect(h1 == h2, equals(true));
   });
   test("Household should not be equal", () {
     // Given
-    final h1 = Household(id: 1, name: "Name", featureExpenses: true);
-    final h2 = Household(id: 1, name: "Name", featureExpenses: false);
+    final h1 = Household(id: 1, name: "Name");
+    final h2 = Household(id: 1, name: "Other Name");
     // Then
     expect(h1 == h2, equals(false));
   });
@@ -25,7 +25,6 @@ void main() {
     final h = Household(
       id: 1,
       name: "Name",
-      featureExpenses: true,
       defaultShoppingList: ShoppingList(name: "S"),
       viewOrdering: ViewsEnum.addMissing(ViewsEnum.values.sublist(1, 4)),
       member: [Member(id: 0, name: "M", username: "username")],

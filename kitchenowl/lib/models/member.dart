@@ -3,7 +3,6 @@ import 'package:kitchenowl/models/user.dart';
 class Member extends User {
   final bool owner;
   final bool admin;
-  final double balance;
 
   const Member({
     required super.id,
@@ -13,7 +12,6 @@ class Member extends User {
     this.owner = false,
     super.serverAdmin = false,
     this.admin = true,
-    this.balance = 0,
   });
 
   factory Member.fromUser(
@@ -36,14 +34,11 @@ class Member extends User {
       image: map['photo'],
       owner: map['owner'] ?? false,
       admin: map['admin'] ?? true,
-      balance:
-          ((map['expense_balance'] as double? ?? 0) * 100).round().toDouble() /
-              100,
     );
   }
 
   @override
-  List<Object?> get props => super.props + [owner, admin, balance];
+  List<Object?> get props => super.props + [owner, admin];
 
   @override
   Map<String, dynamic> toJson() => {
@@ -57,7 +52,6 @@ class Member extends User {
         "name": name,
         "owner": owner,
         "admin": admin || serverAdmin,
-        "expense_balance": balance,
       };
 
   Member copyWith({
@@ -71,7 +65,6 @@ class Member extends User {
         image: image ?? this.image,
         username: username,
         admin: admin ?? this.admin,
-        balance: balance,
         owner: owner,
         serverAdmin: serverAdmin,
       );

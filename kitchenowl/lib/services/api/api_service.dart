@@ -16,7 +16,7 @@ export 'shoppinglist.dart';
 export 'person.dart';
 export 'note.dart';
 export 'import_export.dart';
-export 'expense.dart';
+export 'planned_buy.dart';
 export 'tag.dart';
 export 'upload.dart';
 export 'category.dart';

@@ -4,14 +4,10 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kitchenowl/cubits/auth_cubit.dart';
-import 'package:kitchenowl/enums/expenselist_sorting.dart';
 import 'package:kitchenowl/helpers/fade_through_transition_page.dart';
 import 'package:kitchenowl/helpers/shared_axis_transition_page.dart';
-import 'package:kitchenowl/models/expense.dart';
 import 'package:kitchenowl/models/household.dart';
 import 'package:kitchenowl/pages/email_confirm_page.dart';
-import 'package:kitchenowl/pages/expense_overview_page.dart';
-import 'package:kitchenowl/pages/expense_page.dart';
 import 'package:kitchenowl/pages/household_page/_export.dart';
 import 'package:kitchenowl/pages/household_list_page.dart';
 import 'package:kitchenowl/pages/household_about_page.dart';
@@ -31,7 +27,6 @@ import 'package:kitchenowl/pages/unreachable_page.dart';
 import 'package:kitchenowl/pages/household_page.dart';
 import 'package:kitchenowl/pages/unsupported_page.dart';
 import 'package:kitchenowl/services/storage/storage.dart';
-import 'package:tuple/tuple.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
@@ -287,45 +282,12 @@ final router = GoRouter(
               ),
             ),
             GoRoute(
-              path: "balances",
+              path: "planned",
               pageBuilder: (context, state) => FadeThroughTransitionPage(
                 key: state.pageKey,
                 name: state.name,
-                child: const ExpenseListPage(),
+                child: const PlannedBuysPage(),
               ),
-              routes: [
-                GoRoute(
-                  parentNavigatorKey: _rootNavigatorKey,
-                  path: 'overview',
-                  builder: (context, state) => ExpenseOverviewPage(
-                    household: Household(
-                      id: int.tryParse(state.pathParameters['id'] ?? '') ?? -1,
-                    ),
-                    initialSorting: state.extra as ExpenselistSorting? ??
-                        ExpenselistSorting.all,
-                  ),
-                ),
-                GoRoute(
-                  parentNavigatorKey: _rootNavigatorKey,
-                  path: ':expenseId',
-                  builder: (context, state) => ExpensePage(
-                    key: ValueKey(state.pathParameters['id']),
-                    household: (state.extra as Tuple2<Household, Expense>?)
-                            ?.item1 ??
-                        Household(
-                          id: int.tryParse(state.pathParameters['id'] ?? '') ??
-                              -1,
-                        ),
-                    expense:
-                        (state.extra as Tuple2<Household, Expense>?)?.item2 ??
-                            Expense(
-                              id: int.tryParse(
-                                  state.pathParameters['expenseId'] ?? ''),
-                              paidById: 0,
-                            ),
-                  ),
-                ),
-              ],
             ),
           ],
         ),

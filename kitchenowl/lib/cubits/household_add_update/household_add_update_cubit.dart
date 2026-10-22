@@ -23,7 +23,6 @@ abstract class HouseholdAddUpdateCubit<State extends HouseholdAddUpdateState>
 abstract class HouseholdAddUpdateState extends Equatable {
   final String name;
   final String? language;
-  final bool featureExpenses;
   final List<ViewsEnum> viewOrdering;
 
   final Map<String, String>? supportedLanguages;
@@ -31,7 +30,6 @@ abstract class HouseholdAddUpdateState extends Equatable {
   const HouseholdAddUpdateState({
     this.name = "",
     this.language,
-    this.featureExpenses = true,
     this.viewOrdering = ViewsEnum.values,
     this.supportedLanguages,
   });
@@ -40,16 +38,11 @@ abstract class HouseholdAddUpdateState extends Equatable {
   List<Object?> get props => [
         name,
         language,
-        featureExpenses,
         viewOrdering,
         supportedLanguages,
       ];
 
   bool isViewActive(ViewsEnum view) {
-    if (view == ViewsEnum.balances) {
-      return featureExpenses;
-    }
-
     return true;
   }
 }

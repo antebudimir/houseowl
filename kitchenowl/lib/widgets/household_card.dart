@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:kitchenowl/cubits/auth_cubit.dart';
 import 'package:kitchenowl/cubits/household_list_cubit.dart';
 import 'package:kitchenowl/kitchenowl.dart';
@@ -79,14 +78,11 @@ class HouseholdCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
-                  if (user != null &&
-                      member != null &&
-                      (household.featureExpenses ?? false) &&
-                      member.balance != 0)
+                  if (user != null && member != null)
                     Padding(
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 6),
                       child: Text(
-                        "${AppLocalizations.of(context)!.balances}: ${NumberFormat.simpleCurrency(locale: household.language).format(member.balance)}",
+                        member.username,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ),

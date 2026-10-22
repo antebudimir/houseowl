@@ -1,7 +1,6 @@
 import 'package:kitchenowl/enums/views_enum.dart';
 import 'package:kitchenowl/helpers/named_bytearray.dart';
 import 'package:kitchenowl/models/category.dart';
-import 'package:kitchenowl/models/expense_category.dart';
 import 'package:kitchenowl/models/household.dart';
 import 'package:kitchenowl/models/import_settings.dart';
 import 'package:kitchenowl/models/member.dart';
@@ -19,7 +18,6 @@ class HouseholdUpdateCubit
       : super(LoadingHouseholdUpdateState(
           name: household.name,
           image: household.image,
-          featureExpenses: household.featureExpenses ?? true,
           viewOrdering: household.viewOrdering ?? ViewsEnum.values,
           language: household.language,
           description: household.description ?? "",
@@ -59,21 +57,17 @@ class HouseholdUpdateCubit
         ApiService.getInstance().getAllTags(this.household);
     Future<List<Category>?> categories =
         ApiService.getInstance().getCategories(this.household);
-    Future<List<ExpenseCategory>?> expenseCategories =
-        ApiService.getInstance().getExpenseCategories(this.household);
 
     Household household = await fHousehold ?? this.household;
 
     emit(HouseholdUpdateState(
       name: household.name,
-      featureExpenses: household.featureExpenses ?? true,
       viewOrdering: household.viewOrdering ?? ViewsEnum.values,
       language: household.language,
       image: household.image,
       shoppingLists: await shoppingLists ?? const [],
       tags: await tags ?? {},
       categories: await categories ?? const [],
-      expenseCategories: await expenseCategories ?? const [],
       supportedLanguages: state.supportedLanguages,
       link: household.link ?? "",
       description: household.description ?? "",
@@ -107,12 +101,7 @@ class HouseholdUpdateCubit
   }
 
   @override
-  void setView(ViewsEnum view, bool value) {
-    if (view == ViewsEnum.balances) {
-      emit(state.copyWith(featureExpenses: value));
-      saveHousehold();
-    }
-  }
+  void setView(ViewsEnum view, bool value) {}
 
   @override
   void reorderView(int oldIndex, int newIndex) {
@@ -133,7 +122,6 @@ class HouseholdUpdateCubit
       name: state.name,
       image: state.image,
       language: state.language,
-      featureExpenses: state.featureExpenses,
       viewOrdering: state.viewOrdering,
       link: state.link,
       description: state.description,
@@ -235,39 +223,6 @@ class HouseholdUpdateCubit
     return res;
   }
 
-  Future<bool> deleteExpenseCategory(ExpenseCategory category) async {
-    final res = await ApiService.getInstance().deleteExpenseCategory(category);
-    refresh();
-
-    return res;
-  }
-
-  Future<bool> addExpenseCategory(ExpenseCategory category) async {
-    final res =
-        await ApiService.getInstance().addExpenseCategory(household, category);
-    refresh();
-
-    return res;
-  }
-
-  Future<bool> updateExpenseCategory(ExpenseCategory category) async {
-    final res = await ApiService.getInstance().updateExpenseCategory(category);
-    refresh();
-
-    return res;
-  }
-
-  Future<bool> mergeExpenseCategory(
-    ExpenseCategory category,
-    ExpenseCategory other,
-  ) async {
-    final res =
-        await ApiService.getInstance().mergeExpenseCategories(category, other);
-    refresh();
-
-    return res;
-  }
-
   @override
   Future<void> setLanguage(String? langCode) {
     if (state.language?.isNotEmpty ?? false) return Future.value();
@@ -291,7 +246,6 @@ class HouseholdUpdateCubit
   ]) async {
     content = {
       if (settings.items) "items": content["items"],
-      if (settings.expenses) "expenses": content["expenses"],
       if (settings.shoppinglists) "shoppinglists": content["shoppinglists"],
     };
     await ApiService.getInstance()
@@ -304,7 +258,6 @@ class HouseholdUpdateState extends HouseholdAddUpdateState {
   final List<ShoppingList> shoppingLists;
   final Set<Tag> tags;
   final List<Category> categories;
-  final List<ExpenseCategory> expenseCategories;
   final String link;
   final String description;
 
@@ -314,27 +267,23 @@ class HouseholdUpdateState extends HouseholdAddUpdateState {
     this.description = "",
     this.image,
     super.language,
-    super.featureExpenses = true,
     super.viewOrdering = ViewsEnum.values,
     super.supportedLanguages,
     this.shoppingLists = const [],
     this.tags = const {},
     this.categories = const [],
-    this.expenseCategories = const [],
   });
 
   HouseholdUpdateState copyWith({
     String? name,
     String? image,
     String? language,
-    bool? featureExpenses,
     List<ViewsEnum>? viewOrdering,
     Map<String, String>? supportedLanguages,
     List<Member>? member,
     List<ShoppingList>? shoppingLists,
     Set<Tag>? tags,
     List<Category>? categories,
-    List<ExpenseCategory>? expenseCategories,
     String? link,
     String? description,
   }) =>
@@ -342,13 +291,11 @@ class HouseholdUpdateState extends HouseholdAddUpdateState {
         name: name ?? this.name,
         image: image ?? this.image,
         language: language ?? this.language,
-        featureExpenses: featureExpenses ?? this.featureExpenses,
         viewOrdering: viewOrdering ?? this.viewOrdering,
         supportedLanguages: supportedLanguages ?? this.supportedLanguages,
         shoppingLists: shoppingLists ?? this.shoppingLists,
         tags: tags ?? this.tags,
         categories: categories ?? this.categories,
-        expenseCategories: expenseCategories ?? this.expenseCategories,
         link: link ?? this.link,
         description: description ?? this.description,
       );
@@ -361,7 +308,6 @@ class HouseholdUpdateState extends HouseholdAddUpdateState {
         shoppingLists,
         tags,
         categories,
-        expenseCategories,
         link,
         description,
       ];
@@ -371,7 +317,6 @@ class LoadingHouseholdUpdateState extends HouseholdUpdateState {
   const LoadingHouseholdUpdateState({
     super.name,
     super.image,
-    super.featureExpenses,
     super.viewOrdering,
     super.language,
     super.supportedLanguages,
@@ -384,14 +329,12 @@ class LoadingHouseholdUpdateState extends HouseholdUpdateState {
     String? name,
     String? image,
     String? language,
-    bool? featureExpenses,
     List<ViewsEnum>? viewOrdering,
     Map<String, String>? supportedLanguages,
     List<Member>? member,
     List<ShoppingList>? shoppingLists,
     Set<Tag>? tags,
     List<Category>? categories,
-    List<ExpenseCategory>? expenseCategories,
     String? link,
     String? description,
   }) =>
@@ -399,7 +342,6 @@ class LoadingHouseholdUpdateState extends HouseholdUpdateState {
         name: name ?? this.name,
         image: image ?? this.image,
         language: language ?? this.language,
-        featureExpenses: featureExpenses ?? this.featureExpenses,
         viewOrdering: viewOrdering ?? this.viewOrdering,
         supportedLanguages: supportedLanguages ?? this.supportedLanguages,
         link: link ?? this.link,

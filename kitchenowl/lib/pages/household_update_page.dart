@@ -7,7 +7,6 @@ import 'package:kitchenowl/models/household.dart';
 import 'package:kitchenowl/pages/settings_household/household_settings_category_page.dart';
 import 'package:kitchenowl/pages/settings_household/household_settings_items_page.dart';
 import 'package:kitchenowl/widgets/settings_household/sliver_household_danger_zone.dart';
-import 'package:kitchenowl/pages/settings_household/household_settings_expense_category_page.dart';
 import 'package:kitchenowl/widgets/settings_household/sliver_household_feature_settings.dart';
 import 'package:kitchenowl/pages/settings_household/household_settings_shoppinglist_page.dart';
 import 'package:kitchenowl/pages/settings_household/household_settings_tags_page.dart';
@@ -226,23 +225,6 @@ class _HouseholdUpdatePageState extends State<HouseholdUpdatePage> {
                           ),
                         ),
                       ),
-                      if (true)
-                        ListTile(
-                          title: Text(
-                              AppLocalizations.of(context)!.expenseCategories),
-                          leading: const Icon(Icons.attach_money_rounded),
-                          trailing: const Icon(Icons.arrow_forward_ios_rounded),
-                          contentPadding:
-                              const EdgeInsets.only(left: 16, right: 16),
-                          onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => BlocProvider.value(
-                                value: cubit,
-                                child: HouseholdSettingsExpenseCategoryPage(),
-                              ),
-                            ),
-                          ),
-                        )
                     ]),
                   ),
                 ),

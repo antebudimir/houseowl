@@ -2,7 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kitchenowl/cubits/auth_cubit.dart';
-import 'package:kitchenowl/cubits/expense_list_cubit.dart';
+import 'package:kitchenowl/cubits/planned_buys_cubit.dart';
 import 'package:kitchenowl/cubits/household_cubit.dart';
 import 'package:kitchenowl/cubits/persons_cubit.dart';
 import 'package:kitchenowl/cubits/notes_cubit.dart';
@@ -36,7 +36,7 @@ class _HouseholdPageState extends State<HouseholdPage>
 
   late final HouseholdCubit householdCubit;
   late final ShoppinglistCubit shoppingListCubit;
-  late final ExpenseListCubit expenseListCubit;
+  late final PlannedBuysCubit plannedBuysCubit;
   late final PersonsCubit personsCubit;
   late final NotesCubit notesCubit;
 
@@ -45,13 +45,13 @@ class _HouseholdPageState extends State<HouseholdPage>
     super.initState();
     householdCubit = HouseholdCubit(widget.household);
     shoppingListCubit = ShoppinglistCubit(widget.household);
-    expenseListCubit = ExpenseListCubit(widget.household);
+    plannedBuysCubit = PlannedBuysCubit(widget.household);
     personsCubit = PersonsCubit(widget.household);
     notesCubit = NotesCubit(widget.household);
     WidgetsBinding.instance.addObserver(this);
 
-    if (router.state.uri.path.contains("balances")) {
-      expenseListCubit.refresh();
+    if (router.state.uri.path.contains("planned")) {
+      plannedBuysCubit.refresh();
     }
     if (router.state.uri.path.contains("persons") ||
         router.state.uri.path.contains("birthdays")) {
@@ -80,7 +80,7 @@ class _HouseholdPageState extends State<HouseholdPage>
     WidgetsBinding.instance.removeObserver(this);
     householdCubit.close();
     shoppingListCubit.close();
-    expenseListCubit.close();
+    plannedBuysCubit.close();
     personsCubit.close();
     notesCubit.close();
     super.dispose();
@@ -105,8 +105,8 @@ class _HouseholdPageState extends State<HouseholdPage>
     if (router.state.uri.path.contains("notes")) {
       notesCubit.refresh();
     }
-    if (router.state.uri.path.contains("balances")) {
-      expenseListCubit.refresh();
+    if (router.state.uri.path.contains("planned")) {
+      plannedBuysCubit.refresh();
     }
   }
 
@@ -124,8 +124,8 @@ class _HouseholdPageState extends State<HouseholdPage>
           shoppingListCubit.refresh();
         }
         break;
-      case ViewsEnum.balances:
-        expenseListCubit.refresh();
+      case ViewsEnum.planned:
+        plannedBuysCubit.refresh();
         break;
       case ViewsEnum.persons:
       case ViewsEnum.birthdays:
@@ -155,7 +155,7 @@ class _HouseholdPageState extends State<HouseholdPage>
       providers: [
         BlocProvider.value(value: householdCubit),
         BlocProvider.value(value: shoppingListCubit),
-        BlocProvider.value(value: expenseListCubit),
+        BlocProvider.value(value: plannedBuysCubit),
         BlocProvider.value(value: personsCubit),
         BlocProvider.value(value: notesCubit),
       ],

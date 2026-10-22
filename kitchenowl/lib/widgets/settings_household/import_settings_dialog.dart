@@ -39,15 +39,6 @@ class _ImportSettingsDialogState extends State<_ImportSettingsDialog> {
             },
           ),
           CheckboxListTile(
-            title: Text(AppLocalizations.of(context)!.expense),
-            value: settings.expenses,
-            onChanged: (value) {
-              setState(() {
-                settings = settings.copyWith(expenses: value);
-              });
-            },
-          ),
-          CheckboxListTile(
             title: Text(AppLocalizations.of(context)!.shoppingLists),
             value: settings.shoppinglists,
             onChanged: (value) {

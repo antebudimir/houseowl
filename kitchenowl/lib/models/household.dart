@@ -11,7 +11,6 @@ class Household extends Model {
   final String? image;
   final String? imageHash;
   final String? language;
-  final bool? featureExpenses;
   final List<ViewsEnum>? viewOrdering;
   final List<Member>? member;
   final ShoppingList? defaultShoppingList;
@@ -25,7 +24,6 @@ class Household extends Model {
     this.image,
     this.imageHash,
     this.language,
-    this.featureExpenses,
     this.viewOrdering,
     this.member,
     this.defaultShoppingList,
@@ -53,7 +51,6 @@ class Household extends Model {
       image: map['photo'],
       imageHash: map['photo_hash'],
       language: map['language'],
-      featureExpenses: map['expenses_feature'] ?? false,
       description: map['description'],
       link: map['link'],
       verified: map['verified'] ?? false,
@@ -72,7 +69,6 @@ class Household extends Model {
     String? description,
     String? link,
     bool? verified,
-    bool? featureExpenses,
     List<ViewsEnum>? viewOrdering,
   }) =>
       Household(
@@ -81,7 +77,6 @@ class Household extends Model {
         image: image ?? this.image,
         imageHash: imageHash,
         language: language ?? this.language,
-        featureExpenses: featureExpenses ?? this.featureExpenses,
         viewOrdering: viewOrdering ?? this.viewOrdering,
         description: description ?? this.description,
         link: link ?? this.link,
@@ -95,7 +90,6 @@ class Household extends Model {
         image,
         imageHash,
         language,
-        featureExpenses,
         viewOrdering,
         member,
         defaultShoppingList,
@@ -115,9 +109,6 @@ class Household extends Model {
     }
     if (language != null) {
       data['language'] = language;
-    }
-    if (featureExpenses != null) {
-      data['expenses_feature'] = featureExpenses;
     }
     if (viewOrdering != null) {
       data['view_ordering'] = viewOrdering!.map((e) => e.toString()).toList()
