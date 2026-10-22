@@ -2,7 +2,6 @@ import 'package:kitchenowl/models/category.dart';
 import 'package:kitchenowl/models/household.dart';
 import 'package:kitchenowl/models/note.dart';
 import 'package:kitchenowl/models/person.dart';
-import 'package:kitchenowl/models/recipe.dart';
 import 'package:kitchenowl/models/shoppinglist.dart';
 import 'package:kitchenowl/models/tag.dart';
 import 'package:kitchenowl/models/user.dart';
@@ -28,7 +27,6 @@ class MemStorage {
         value?.map((household) async {
               await Future.wait([
                 clearShoppingLists(household),
-                clearRecipes(household),
                 clearPersons(household),
                 clearNotes(household),
                 clearCategories(household),
@@ -84,25 +82,6 @@ class MemStorage {
   ) async {
     persistentStorage?.writeShoppingLists(household, shoppingLists);
     _shoppinglists[household.id] = shoppingLists;
-  }
-
-  Map<int, List<Recipe>?> _recipes = {};
-
-  Future<List<Recipe>?> readRecipes(Household household) async {
-    if (persistentStorage != null && _recipes[household.id] == null) {
-      _recipes[household.id] = await persistentStorage!.readRecipes(household);
-    }
-    if (_recipes[household.id] == null) return null;
-    return List.of(_recipes[household.id]!);
-  }
-
-  Future<void> writeRecipes(Household household, List<Recipe> recipes) async {
-    persistentStorage?.writeRecipes(household, recipes);
-    _recipes[household.id] = recipes;
-  }
-
-  Future<void> clearRecipes(Household household) async {
-    _recipes = {};
   }
 
   Map<int, List<Person>?> _persons = {};

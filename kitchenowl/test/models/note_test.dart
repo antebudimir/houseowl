@@ -20,13 +20,19 @@ void main() {
     final map = note.toJsonWithId();
     expect(map["id"], 5);
     expect(map["title"], "Wi-Fi");
+    // toJson writes tag names (the server resolves ids)...
     expect(map["tags"], ["house"]);
 
-    final reparsed = Note.fromJson(map);
+    // ...while fromJson only accepts the full tag objects the server returns.
+    final reparsed = Note.fromJson({
+      ...map,
+      "tags": [
+        {"id": 1, "name": "house"},
+      ],
+    });
     expect(reparsed.title, note.title);
     expect(reparsed.body, note.body);
-    // Tags travel as names; the server resolves ids.
-    expect(reparsed.tags.map((e) => e.name), ["house"]);
+    expect(reparsed.tags.single, const Tag(id: 1, name: "house"));
   });
 
   test("Note defaults tolerate a missing body and tags", () {

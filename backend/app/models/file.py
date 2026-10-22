@@ -6,14 +6,13 @@ from app import db
 from app.config import UPLOAD_FOLDER
 from app.errors import ForbiddenRequest
 from app.helpers import DbModelAuthorizeMixin
-from app.models.recipe import RecipeVisibility
 from app.models.user import User
 import os
 from sqlalchemy.orm import Mapped
 
 Model = db.Model
 if TYPE_CHECKING:
-    from app.models import Household, Recipe, Expense
+    from app.models import Household, Expense
     from app.helpers.db_model_base import DbModelBase
 
     Model = DbModelBase
@@ -44,13 +43,6 @@ class File(Model, DbModelAuthorizeMixin):
             uselist=False,
         ),
     )
-    recipe: Mapped["Recipe"] = cast(
-        Mapped["Recipe"],
-        db.relationship(
-            "Recipe",
-            uselist=False,
-        ),
-    )
     expense: Mapped["Expense"] = cast(
         Mapped["Expense"],
         db.relationship(
@@ -78,7 +70,6 @@ class File(Model, DbModelAuthorizeMixin):
     def isUnused(self) -> bool:
         return (
             not self.household
-            and not self.recipe
             and not self.expense
             and not self.profile_picture
         )
@@ -90,11 +81,6 @@ class File(Model, DbModelAuthorizeMixin):
             pass  # created by user can access his pictures
         elif self.profile_picture and current_user:
             pass  # profile pictures are public for logged in users
-        elif self.recipe:
-            if self.recipe.visibility == RecipeVisibility.PRIVATE:
-                super().checkAuthorized(
-                    household_id=self.recipe.household_id, requires_admin=requires_admin
-                )
         elif self.household and current_user:
             pass  # profile pictures are public for logged in users
         elif self.expense:

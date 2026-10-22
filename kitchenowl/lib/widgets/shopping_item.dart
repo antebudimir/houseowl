@@ -13,7 +13,7 @@ class ShoppingItemWidget<T extends Item> extends StatelessWidget {
   final Widget? extraOption;
 
   /// Only applicable if gridStyle = false, raises the list items and makes them fully opaque.
-  /// defaults to true for item is ShoppinglistItem || item is RecipeItem && selected
+  /// defaults to true for ShoppinglistItem
   final bool? raised;
   final bool gridStyle;
   final ListStyle listStyle;
@@ -51,7 +51,7 @@ class ShoppingItemWidget<T extends Item> extends StatelessWidget {
             icon: ItemIcons.get(item),
             listStyle: listStyle,
             raised: raised ??
-                item is ShoppinglistItem || item is RecipeItem && selected,
+                item is ShoppinglistItem,
             description: (item is ItemWithDescription)
                 ? (item as ItemWithDescription).description
                 : null,

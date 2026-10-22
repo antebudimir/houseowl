@@ -1,11 +1,9 @@
 import 'package:kitchenowl/models/model.dart';
-import 'package:kitchenowl/models/recipe.dart';
 import 'package:kitchenowl/models/user.dart';
 
 class Report extends Model {
   final int? id;
   final String? description;
-  final Recipe? recipe;
   final User? user;
   final User? createdBy;
   final DateTime? createdAt;
@@ -13,7 +11,6 @@ class Report extends Model {
   const Report({
     this.id,
     this.description,
-    this.recipe,
     this.user,
     this.createdBy,
     this.createdAt,
@@ -23,7 +20,6 @@ class Report extends Model {
     return Report(
       id: map['id'],
       description: map['description'],
-      recipe: map.containsKey("recipe") ? Recipe.fromJson(map['recipe']) : null,
       user: map.containsKey("user") ? User.fromJson(map['user']) : null,
       createdBy: map.containsKey("created_by")
           ? User.fromJson(map['created_by'])
@@ -38,7 +34,6 @@ class Report extends Model {
   List<Object?> get props => [
         id,
         description,
-        recipe,
         user,
         createdBy,
       ];
@@ -46,7 +41,6 @@ class Report extends Model {
   @override
   Map<String, dynamic> toJson() => {
         "description": description,
-        "recipe": recipe?.toJson(),
         "user": user?.toJson(),
       };
 

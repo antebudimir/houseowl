@@ -5,9 +5,8 @@ import 'package:kitchenowl/models/tag.dart';
 import 'package:kitchenowl/services/transaction_handler.dart';
 import 'package:kitchenowl/services/transactions/tag.dart';
 
-/// Tag state for the note editor. Mirrors the recipe editor: it loads the
-/// household's tag vocabulary and tracks the selection for the shared
-/// [KitchenOwlTagSelector].
+/// Tag state for the note editor. It loads the household's tag vocabulary
+/// and tracks the selection for the shared [KitchenOwlTagSelector].
 class NoteAddUpdateCubit extends Cubit<NoteAddUpdateState> {
   final Household household;
 

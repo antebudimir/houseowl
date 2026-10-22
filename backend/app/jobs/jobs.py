@@ -1,13 +1,11 @@
 from datetime import timedelta
 from typing import TYPE_CHECKING, cast
-from app.jobs.recipe_suggestions import computeRecipeSuggestions
 from app.config import app, scheduler, celery_app
 from celery.schedules import crontab
 from app.models import (
     Token,
     Household,
     Shoppinglist,
-    Recipe,
     ChallengePasswordReset,
     OIDCRequest,
 )
@@ -94,9 +92,6 @@ def daily():
         if shopping_instances:
             findItemOrdering(shopping_instances)
             findItemSuggestions(shopping_instances)
-        # recipe planner tasks
-        computeRecipeSuggestions(household.id)
-        Recipe.compute_suggestion_ranking(household.id)
 
     app.logger.info("--- daily analysis is completed ---")
 

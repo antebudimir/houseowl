@@ -39,29 +39,6 @@ class _ImportSettingsDialogState extends State<_ImportSettingsDialog> {
             },
           ),
           CheckboxListTile(
-            title: Text(AppLocalizations.of(context)!.recipes),
-            value: settings.recipes,
-            onChanged: (value) {
-              setState(() {
-                settings = settings.copyWith(recipes: value);
-              });
-            },
-          ),
-          CheckboxListTile(
-            title: Text(AppLocalizations.of(context)!.recipesOverwrite),
-            subtitle: Text(
-              AppLocalizations.of(context)!.recipesOverwriteDescription,
-            ),
-            value: settings.recipesOverwrite,
-            onChanged: settings.recipes
-                ? (value) {
-                    setState(() {
-                      settings = settings.copyWith(recipesOverwrite: value);
-                    });
-                  }
-                : null,
-          ),
-          CheckboxListTile(
             title: Text(AppLocalizations.of(context)!.expense),
             value: settings.expenses,
             onChanged: (value) {

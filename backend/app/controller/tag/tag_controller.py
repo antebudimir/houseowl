@@ -2,7 +2,7 @@ from app.helpers import validate_args, authorize_household
 from flask import jsonify, Blueprint
 from app.errors import NotFoundRequest
 from flask_jwt_extended import jwt_required
-from app.models import Tag, RecipeTags, Recipe
+from app.models import Tag
 from .schemas import AddTag, UpdateTag
 
 tag = Blueprint("tag", __name__)
@@ -26,23 +26,6 @@ def getTag(id):
         raise NotFoundRequest()
     tag.checkAuthorized()
     return jsonify(tag.obj_to_dict())
-
-
-@tag.route("/<int:id>/recipes", methods=["GET"])
-@jwt_required()
-def getTagRecipes(id):
-    tag = Tag.find_by_id(id)
-    if not tag:
-        raise NotFoundRequest()
-    tag.checkAuthorized()
-
-    tags = (
-        RecipeTags.query.filter(RecipeTags.tag_id == id)
-        .join(RecipeTags.recipe)
-        .order_by(Recipe.name)
-        .all()
-    )
-    return jsonify([e.recipe.obj_to_dict() for e in tags])
 
 
 @tagHousehold.route("", methods=["POST"])

@@ -9,7 +9,6 @@ if TYPE_CHECKING:
         Item,
         Shoppinglist,
         Category,
-        Recipe,
         Tag,
         Expense,
         ExpenseCategory,
@@ -28,9 +27,6 @@ class Household(Model):
     name: Mapped[str] = db.Column(db.String(128), nullable=False)
     photo: Mapped[str | None] = db.Column(db.String(), db.ForeignKey("file.filename"))
     language: Mapped[str] = db.Column(db.String())
-    planner_feature: Mapped[bool] = db.Column(
-        db.Boolean(), nullable=False, default=True
-    )
     expenses_feature: Mapped[bool] = db.Column(
         db.Boolean(), nullable=False, default=True
     )
@@ -61,14 +57,6 @@ class Household(Model):
         Mapped[List["Category"]],
         db.relationship(
             "Category",
-            back_populates="household",
-            cascade="all, delete-orphan",
-        ),
-    )
-    recipes: Mapped[List["Recipe"]] = cast(
-        Mapped[List["Recipe"]],
-        db.relationship(
-            "Recipe",
             back_populates="household",
             cascade="all, delete-orphan",
         ),
@@ -147,11 +135,9 @@ class Household(Model):
             "name": self.name,
             "language": self.language,
             "view_ordering": self.view_ordering,
-            "planner_feature": self.planner_feature,
             "expenses_feature": self.expenses_feature,
             "member": [m.user.username for m in getattr(self, "member")],
             "shoppinglists": [s.name for s in self.shoppinglists],
-            "recipes": [s.obj_to_export_dict() for s in self.recipes],
             "items": [s.obj_to_export_dict() for s in self.items],
             "expenses": [s.obj_to_export_dict() for s in self.expenses],
         }

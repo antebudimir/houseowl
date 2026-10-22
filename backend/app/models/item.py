@@ -10,7 +10,7 @@ from sqlalchemy.orm import Mapped
 
 Model = db.Model
 if TYPE_CHECKING:
-    from app.models import Household, RecipeItems, ShoppinglistItems
+    from app.models import Household, ShoppinglistItems
     from app.helpers.db_model_base import DbModelBase
 
     Model = DbModelBase
@@ -45,14 +45,6 @@ class Item(Model, DbModelAuthorizeMixin):
         ),
     )
 
-    recipes: Mapped[List["RecipeItems"]] = cast(
-        Mapped[List["RecipeItems"]],
-        db.relationship(
-            "RecipeItems",
-            back_populates="item",
-            cascade="all, delete-orphan",
-        ),
-    )
     shoppinglists: Mapped[List["ShoppinglistItems"]] = cast(
         Mapped[List["ShoppinglistItems"]],
         db.relationship(
@@ -113,7 +105,6 @@ class Item(Model, DbModelAuthorizeMixin):
         if other.household_id != self.household_id:
             return
 
-        from app.models import RecipeItems
         from app.models import History
         from app.models import ShoppinglistItems
 
@@ -125,19 +116,6 @@ class Item(Model, DbModelAuthorizeMixin):
 
         if not self.icon and other.icon:
             self.icon = other.icon
-
-        for ri in RecipeItems.query.filter(RecipeItems.item_id == other.id).all():
-            ri: RecipeItems
-            existingRi = RecipeItems.find_by_ids(ri.recipe_id, self.id)
-            if not existingRi:
-                ri.item_id = self.id
-                db.session.add(ri)
-            else:
-                existingRi.description = description_merger.merge(
-                    existingRi.description, ri.description
-                )
-                db.session.delete(ri)
-                db.session.add(existingRi)
 
         for si in ShoppinglistItems.query.filter(
             ShoppinglistItems.item_id == other.id

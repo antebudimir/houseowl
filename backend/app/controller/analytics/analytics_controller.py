@@ -82,9 +82,6 @@ def getBaseAnalytics():
                 "expense_feature": Household.query.filter(
                     Household.expenses_feature == True
                 ).count(),
-                "planner_feature": Household.query.filter(
-                    Household.planner_feature == True
-                ).count(),
             },
         }
     )

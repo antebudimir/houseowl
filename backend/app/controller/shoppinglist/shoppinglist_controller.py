@@ -16,7 +16,6 @@ from .schemas import (
     UpdateDescription,
     AddItemByName,
     CreateList,
-    AddRecipeItems,
     GetItems,
     UpdateList,
     GetRecentItems,
@@ -397,51 +396,3 @@ def removeShoppinglistItemFunc(
     return con
 
 
-@shoppinglist.route("/<int:id>/recipeitems", methods=["POST"])
-@jwt_required()
-@validate_args(AddRecipeItems)
-def addRecipeItems(args, id):
-    shoppinglist = Shoppinglist.find_by_id(id)
-    if not shoppinglist:
-        raise NotFoundRequest()
-    shoppinglist.checkAuthorized()
-
-    try:
-        for recipeItem in args["items"]:
-            item = Item.find_by_id(recipeItem["id"])
-            if item:
-                item.checkAuthorized()
-                description = recipeItem["description"]
-                con = ShoppinglistItems.find_by_ids(shoppinglist.id, item.id)
-                if con:
-                    # merge descriptions
-                    con.description = description_merger.merge(
-                        con.description, description
-                    )
-                    db.session.add(con)
-                else:
-                    con = ShoppinglistItems(description=description)
-                    con.created_by = current_user.id
-                    con.item = item
-                    con.shoppinglist = shoppinglist
-                    db.session.add(con)
-
-                db.session.add(
-                    History.create_added_without_save(shoppinglist, item, description)
-                )
-
-                socketio.emit(
-                    "shoppinglist_item:add",
-                    {
-                        "item": con.obj_to_item_dict(),
-                        "shoppinglist": shoppinglist.obj_to_dict(),
-                    },
-                    to="household/" + str(shoppinglist.household_id),
-                )
-
-        db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        raise e
-
-    return jsonify({"msg": "DONE"})

@@ -4,7 +4,6 @@ import 'package:kitchenowl/kitchenowl.dart';
 import 'package:kitchenowl/models/category.dart';
 import 'package:kitchenowl/models/household.dart';
 import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/models/recipe.dart';
 import 'package:kitchenowl/models/shoppinglist.dart';
 import 'package:kitchenowl/services/api/api_service.dart';
 import 'package:kitchenowl/services/transaction_handler.dart';
@@ -44,25 +43,7 @@ class ItemEditCubit<T extends Item> extends Cubit<ItemEditState> {
     refresh();
   }
 
-  Future<void> refresh() async {
-    if (_item.id != null) {
-      final recipes = (await TransactionHandler.getInstance()
-          .runTransaction(TransactionItemGetRecipes(
-        household: household,
-        item: _item,
-      )))
-        ..sort(((a, b) {
-          if (a.isPlanned == b.isPlanned) {
-            return 0;
-          } else if (b.isPlanned) {
-            return 1;
-          } else {
-            return -1;
-          }
-        }));
-      emit(state.copyWith(recipes: recipes));
-    }
-  }
+  Future<void> refresh() async {}
 
   Future<void> saveItem() async {
     if (shoppingList != null && state.hasChangedDescription(_item)) {
@@ -134,7 +115,6 @@ class ItemEditState extends Equatable {
   final String name;
   final String description;
   final String? icon;
-  final List<Recipe> recipes;
   final Category? category;
   final bool hasMerged;
 
@@ -142,7 +122,6 @@ class ItemEditState extends Equatable {
     this.name = "",
     this.description = "",
     this.icon,
-    this.recipes = const [],
     this.category,
     this.hasMerged = false,
   });
@@ -151,7 +130,6 @@ class ItemEditState extends Equatable {
     String? name,
     String? description,
     Nullable<String>? icon,
-    List<Recipe>? recipes,
     Nullable<Category>? category,
     bool? hasMerged,
   }) =>
@@ -159,14 +137,13 @@ class ItemEditState extends Equatable {
         name: name ?? this.name,
         description: description ?? this.description,
         icon: (icon ?? Nullable(this.icon)).value,
-        recipes: recipes ?? this.recipes,
         category: (category ?? Nullable(this.category)).value,
         hasMerged: hasMerged ?? this.hasMerged,
       );
 
   @override
   List<Object?> get props =>
-      [name, description, icon, recipes, category, hasMerged];
+      [name, description, icon, category, hasMerged];
 
   bool hasChanged(Item comparedTo) =>
       hasChangedItem(comparedTo) || hasChangedDescription(comparedTo);

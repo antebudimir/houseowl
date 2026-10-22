@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:kitchenowl/models/recipe.dart';
 import 'package:kitchenowl/models/report.dart';
 import 'package:kitchenowl/models/user.dart';
 import 'package:kitchenowl/services/api/api_service.dart';
@@ -9,14 +8,12 @@ extension ReportApi on ApiService {
 
   Future<bool?> addReport({
     String? description,
-    Recipe? recipe,
     User? user,
   }) async {
     final res = await post(
         baseRoute,
         jsonEncode({
           if (description != null) 'description': description,
-          if (recipe != null) 'recipe_id': recipe.id,
           if (user != null) 'user_id': user.id,
         }));
 

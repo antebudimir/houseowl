@@ -20,7 +20,6 @@ class HouseholdUpdateCubit
           name: household.name,
           image: household.image,
           featureExpenses: household.featureExpenses ?? true,
-          featurePlanner: household.featurePlanner ?? true,
           viewOrdering: household.viewOrdering ?? ViewsEnum.values,
           language: household.language,
           description: household.description ?? "",
@@ -68,7 +67,6 @@ class HouseholdUpdateCubit
     emit(HouseholdUpdateState(
       name: household.name,
       featureExpenses: household.featureExpenses ?? true,
-      featurePlanner: household.featurePlanner ?? true,
       viewOrdering: household.viewOrdering ?? ViewsEnum.values,
       language: household.language,
       image: household.image,
@@ -110,10 +108,6 @@ class HouseholdUpdateCubit
 
   @override
   void setView(ViewsEnum view, bool value) {
-    if (view == ViewsEnum.planner) {
-      emit(state.copyWith(featurePlanner: value));
-      saveHousehold();
-    }
     if (view == ViewsEnum.balances) {
       emit(state.copyWith(featureExpenses: value));
       saveHousehold();
@@ -140,7 +134,6 @@ class HouseholdUpdateCubit
       image: state.image,
       language: state.language,
       featureExpenses: state.featureExpenses,
-      featurePlanner: state.featurePlanner,
       viewOrdering: state.viewOrdering,
       link: state.link,
       description: state.description,
@@ -298,12 +291,11 @@ class HouseholdUpdateCubit
   ]) async {
     content = {
       if (settings.items) "items": content["items"],
-      if (settings.recipes) "recipes": content["recipes"],
       if (settings.expenses) "expenses": content["expenses"],
       if (settings.shoppinglists) "shoppinglists": content["shoppinglists"],
     };
     await ApiService.getInstance()
-        .importHousehold(household, content, settings.recipesOverwrite);
+        .importHousehold(household, content);
   }
 }
 
@@ -322,7 +314,6 @@ class HouseholdUpdateState extends HouseholdAddUpdateState {
     this.description = "",
     this.image,
     super.language,
-    super.featurePlanner = true,
     super.featureExpenses = true,
     super.viewOrdering = ViewsEnum.values,
     super.supportedLanguages,
@@ -336,7 +327,6 @@ class HouseholdUpdateState extends HouseholdAddUpdateState {
     String? name,
     String? image,
     String? language,
-    bool? featurePlanner,
     bool? featureExpenses,
     List<ViewsEnum>? viewOrdering,
     Map<String, String>? supportedLanguages,
@@ -352,7 +342,6 @@ class HouseholdUpdateState extends HouseholdAddUpdateState {
         name: name ?? this.name,
         image: image ?? this.image,
         language: language ?? this.language,
-        featurePlanner: featurePlanner ?? this.featurePlanner,
         featureExpenses: featureExpenses ?? this.featureExpenses,
         viewOrdering: viewOrdering ?? this.viewOrdering,
         supportedLanguages: supportedLanguages ?? this.supportedLanguages,
@@ -383,7 +372,6 @@ class LoadingHouseholdUpdateState extends HouseholdUpdateState {
     super.name,
     super.image,
     super.featureExpenses,
-    super.featurePlanner,
     super.viewOrdering,
     super.language,
     super.supportedLanguages,
@@ -396,7 +384,6 @@ class LoadingHouseholdUpdateState extends HouseholdUpdateState {
     String? name,
     String? image,
     String? language,
-    bool? featurePlanner,
     bool? featureExpenses,
     List<ViewsEnum>? viewOrdering,
     Map<String, String>? supportedLanguages,
@@ -412,7 +399,6 @@ class LoadingHouseholdUpdateState extends HouseholdUpdateState {
         name: name ?? this.name,
         image: image ?? this.image,
         language: language ?? this.language,
-        featurePlanner: featurePlanner ?? this.featurePlanner,
         featureExpenses: featureExpenses ?? this.featureExpenses,
         viewOrdering: viewOrdering ?? this.viewOrdering,
         supportedLanguages: supportedLanguages ?? this.supportedLanguages,

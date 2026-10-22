@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kitchenowl/kitchenowl.dart';
 import 'package:kitchenowl/models/tag.dart';
 
-/// The shared tag selection component used by recipes and notes.
+/// The shared tag selection component used by notes.
 /// Renders the household's tags as selectable [FilterChip]s plus an
 /// add-tag button backed by a [TextDialog].
 class KitchenOwlTagSelector extends StatelessWidget {

@@ -93,18 +93,6 @@ extension ShoppinglistApi on ApiService {
     return res.statusCode == 200;
   }
 
-  Future<bool> addRecipeItems(
-    ShoppingList shoppinglist,
-    List<RecipeItem> items,
-  ) async {
-    final res = await post(
-      '${route(shoppinglist: shoppinglist)}/recipeitems',
-      jsonEncode({'items': items.map((e) => e.toJsonWithId()).toList()}),
-    );
-
-    return res.statusCode == 200;
-  }
-
   Future<bool> removeItem(
     ShoppingList shoppinglist,
     ShoppinglistItem item, [

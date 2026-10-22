@@ -100,11 +100,6 @@ class AnalyticsPage extends StatelessWidget {
                   title: const Text("with Balances"),
                   trailing: Text("${data['households']['expense_feature']}"),
                 ),
-                ListTile(
-                  dense: true,
-                  title: const Text("with Planner"),
-                  trailing: Text("${data['households']['planner_feature']}"),
-                ),
                 const Divider(),
                 ListTile(
                   title: const Text("Available storage"),

@@ -61,26 +61,6 @@ def item_name():
     return "testitem"
 
 
-@pytest.fixture
-def recipe_name():
-    return "Test Recipe"
-
-
-@pytest.fixture
-def recipe_description():
-    return "A test recipe description"
-
-
-@pytest.fixture
-def recipe_yields():
-    return 4
-
-
-@pytest.fixture
-def recipe_time():
-    return 30
-
-
 FIX_DATETIME = int(
     (
         datetime.now(timezone.utc)
@@ -193,50 +173,3 @@ def item_id(user_client_with_household, shoppinglist_id_with_item):
     assert len(data) == 1
     assert "id" in data[0]
     return data[0]["id"]
-
-
-@pytest.fixture
-def recipe_with_items(
-    user_client_with_household,
-    household_id,
-    recipe_name,
-    recipe_description,
-    recipe_yields,
-    recipe_time,
-    item_name,
-):
-    # Create recipe with the item
-    recipe_data = {
-        "name": recipe_name,
-        "description": recipe_description,
-        "yields": recipe_yields,
-        "time": recipe_time,
-        "items": [{"name": item_name, "description": "2 pieces"}],
-    }
-
-    response = user_client_with_household.post(
-        f"/api/household/{household_id}/recipe", json=recipe_data
-    )
-    assert response.status_code == 200
-    recipe = response.get_json()
-    assert "id" in recipe
-    return recipe["id"]
-
-
-@pytest.fixture
-def planned_recipe(user_client_with_household, household_id, recipe_with_items):
-    """Fixture that creates a meal plan with the test recipe"""
-    plan_data = {"recipe_id": recipe_with_items, "cooking_date": FIX_DATETIME}
-    response = user_client_with_household.post(
-        f"/api/household/{household_id}/planner/recipe", json=plan_data
-    )
-    assert response.status_code == 200
-
-    # Verify plan was created
-    response = user_client_with_household.get(f"/api/household/{household_id}/planner")
-    assert response.status_code == 200
-    planned_meals = response.get_json()
-    assert len(planned_meals) > 0
-    assert any(meal["recipe"]["id"] == recipe_with_items for meal in planned_meals)
-
-    return recipe_with_items  # Return recipe_id for convenience

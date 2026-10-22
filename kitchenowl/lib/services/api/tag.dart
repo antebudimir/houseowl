@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/recipe.dart';
 import 'package:kitchenowl/models/tag.dart';
 import 'package:kitchenowl/services/api/api_service.dart';
 
@@ -49,15 +48,6 @@ extension TagApi on ApiService {
     final body = jsonDecode(res.body);
 
     return Tag.fromJson(body);
-  }
-
-  Future<List<Recipe>?> getTagRecipes(Tag tag) async {
-    final res = await get('$baseRoute/${tag.id}/recipes');
-    if (res.statusCode != 200) return null;
-
-    final body = List.from(jsonDecode(res.body));
-
-    return body.map((e) => Recipe.fromJson(e)).toList();
   }
 
   Future<bool> deleteTag(Tag tag) async {

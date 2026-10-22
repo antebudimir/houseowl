@@ -3,7 +3,7 @@ from flask import jsonify, Blueprint
 from app.errors import InvalidUsage, NotFoundRequest
 import app.util.description_splitter as description_splitter
 from flask_jwt_extended import jwt_required
-from app.models import Item, RecipeItems, Recipe, Category
+from app.models import Item, Category
 from .schemas import SearchByNameRequest, UpdateItem, AddItem
 
 item = Blueprint("item", __name__)
@@ -27,22 +27,6 @@ def getItem(id):
         raise NotFoundRequest()
     item.checkAuthorized()
     return jsonify(item.obj_to_dict())
-
-
-@item.route("/<int:id>/recipes", methods=["GET"])
-@jwt_required()
-def getItemRecipes(id):
-    item = Item.find_by_id(id)
-    if not item:
-        raise NotFoundRequest()
-    item.checkAuthorized()
-    recipe = (
-        RecipeItems.query.filter(RecipeItems.item_id == id)
-        .join(RecipeItems.recipe)  # noqa
-        .order_by(Recipe.name)
-        .all()
-    )
-    return jsonify([e.obj_to_recipe_dict() for e in recipe])
 
 
 @item.route("/<int:id>", methods=["DELETE"])

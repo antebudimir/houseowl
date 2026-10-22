@@ -28,17 +28,6 @@
       }
     }
   },
-  "@addRecipeToPlanner": {
-    "placeholders": {
-      "number": {
-        "example": "2",
-        "type": "int"
-      }
-    }
-  },
-  "@addRecipeToPlannerShort": {
-    "description": "A shorter title/button text used wherever the space is limited. Excludes the number of yields."
-  },
   "@addShoppingList": {},
   "@addTag": {},
   "@addedBy": {
@@ -226,7 +215,6 @@
   "@linkNoun": {
     "description": "The noun, as in share using a link (URL)"
   },
-  "@linkRecipeDescription": {},
   "@list": {},
   "@lltCreate": {},
   "@lltDelete": {},
@@ -257,7 +245,6 @@
   "@longPressToReorder": {},
   "@longerThanExpected": {},
   "@markAsPaid": {},
-  "@mealPlanner": {},
   "@member": {},
   "@memberAdd": {},
   "@memberRemove": {},
@@ -313,9 +300,6 @@
   "@passwordReset": {},
   "@passwordSave": {},
   "@personal": {},
-  "@planner": {},
-  "@plannerEmpty": {},
-  "@plannerTitle": {},
   "@preparationTime": {},
   "@privacyPolicy": {},
   "@privacyPolicyAgree": {
@@ -331,62 +315,17 @@
     }
   },
   "@private": {},
-  "@privateRecipeDescription": {},
   "@profile": {},
   "@public": {},
-  "@publicRecipeDescription": {},
   "@reason": {},
   "@recentItemsCategorize": {},
   "@shoppingListKeepAwake": {},
-  "@recipeAdd": {},
-  "@recipeAddToHousehold": {
-    "placeholders": {
-      "householdName": {
-        "example": "Home",
-        "type": "String"
-      }
-    }
-  },
-  "@recipeAddUrl": {},
-  "@recipeDelete": {},
-  "@recipeDeleteConfirmation": {
-    "placeholders": {
-      "recipe": {
-        "example": "Cake",
-        "type": "String"
-      }
-    }
-  },
-  "@recipeEdit": {},
-  "@recipeEmpty": {},
-  "@recipeEmptySearch": {},
-  "@recipeGoToInHousehold": {
-    "placeholders": {
-      "householdName": {
-        "example": "Home",
-        "type": "String"
-      }
-    }
-  },
-  "@recipeImageSelect": {},
-  "@recipeNew": {},
-  "@recipeSource": {},
-  "@recipes": {},
-  "@recipesCurated": {},
-  "@recipesDiscover": {},
-  "@recipesNewestCommunity": {},
-  "@recipesOverwrite": {},
-  "@recipesOverwriteDescription": {},
-  "@recipesPopular": {},
-  "@recipesRecent": {},
-  "@recipesSuggested": {},
   "@redo": {},
   "@refresh": {},
   "@rememberLastShoppingList": {},
   "@remove": {},
   "@rename": {},
   "@reportIssue": {},
-  "@reportRecipe": {},
   "@reportUser": {},
   "@reset": {},
   "@save": {},
@@ -463,15 +402,6 @@
   "@totalTime": {},
   "@tutorialItemDescription1": {},
   "@tutorialItemDescription2": {},
-  "@tutorialRecipeDescription": {},
-  "@tutorialRecipeMore": {
-    "placeholders": {
-      "url": {
-        "example": "https://...",
-        "type": "String"
-      }
-    }
-  },
   "@uncategorized": {},
   "@underConstruction": {},
   "@undo": {},
@@ -483,7 +413,6 @@
   "@unsavedChangesTitle": {},
   "@unsupportedBackendMessage": {},
   "@unsupportedFrontendMessage": {},
-  "@unsupportedScrapeMessage": {},
   "@usedIn": {},
   "@user": {},
   "@userAdd": {},
@@ -527,8 +456,6 @@
   "addLanguage": "Add language",
   "addLanguageConfirm": "Are you sure you want to set the language to '{lang}'? This cannot be undone and will add items and categories to your household.",
   "addNumberIngredients": "Add {number} ingredients",
-  "addRecipeToPlanner": "Add to meal plan ({number} serves)",
-  "addRecipeToPlannerShort": "Add to meal plan",
   "addShoppingList": "Add shopping list",
   "addTag": "Add tag",
   "addedBy": "Added by {name}",
@@ -637,7 +564,6 @@
   "lastUsed": "Last used",
   "link": "Link",
   "linkNoun": "Link",
-  "linkRecipeDescription": "Anyone with the link to this recipe can view it.",
   "list": "List",
   "lltCreate": "Create long-lived token",
   "lltDelete": "Delete long-lived token",
@@ -654,7 +580,6 @@
   "longPressToReorder": "Long press to reorder",
   "longerThanExpected": "This is taking longer than expected",
   "markAsPaid": "Mark as paid",
-  "mealPlanner": "Meal planner",
   "member": "Member",
   "memberAdd": "Add member",
   "memberRemove": "Remove member",
@@ -692,47 +617,20 @@
   "passwordReset": "Reset password",
   "passwordSave": "Update password",
   "personal": "Personal",
-  "planner": "Planner",
-  "plannerEmpty": "No meals planned, start by selecting one of your recipes!",
-  "plannerTitle": "Your planned meals",
   "preparationTime": "Preparation time",
   "privacyPolicy": "Privacy policy",
   "privacyPolicyAgree": "By creating an account you agree to our {privacyPolicy} and {terms}",
   "private": "Private",
-  "privateRecipeDescription": "Only members of the household can view the recipe.",
   "profile": "Profile",
   "public": "Public",
-  "publicRecipeDescription": "The recipe is public and might be suggested to others.",
   "reason": "Reason",
   "recentItemsCategorize": "Categorize recent items",
-  "recipeAdd": "Add recipe",
-  "recipeAddToHousehold": "Add to {householdName}",
-  "recipeAddUrl": "Add recipe from URL",
-  "recipeDelete": "Delete recipe",
-  "recipeDeleteConfirmation": "Are you sure you want to remove {recipe}?",
-  "recipeEdit": "Edit recipe",
-  "recipeEmpty": "No recipes, start by adding one!",
-  "recipeEmptySearch": "No recipes found :(",
-  "recipeGoToInHousehold": "Already added, go to recipe in {householdName}",
-  "recipeImageSelect": "Select a recipe image",
-  "recipeNew": "New recipe",
-  "recipeSource": "Recipe source",
-  "recipes": "Recipes",
-  "recipesCurated": "Curated recipes",
-  "recipesDiscover": "Discover recipes",
-  "recipesNewestCommunity": "Newest community recipes",
-  "recipesOverwrite": "Overwrite recipes",
-  "recipesOverwriteDescription": "If activated, existing recipes with the same name will be overwritten",
-  "recipesPopular": "Popular recipes",
-  "recipesRecent": "Recent",
-  "recipesSuggested": "Suggested",
   "redo": "Redo",
   "refresh": "Refresh",
   "rememberLastShoppingList": "Remember the last used shopping list",
   "remove": "Remove",
   "rename": "Rename",
   "reportIssue": "Report an issue",
-  "reportRecipe": "Report recipe",
   "reportUser": "Report user",
   "reset": "Reset",
   "save": "Save",
@@ -784,8 +682,6 @@
   "totalTime": "Total time",
   "tutorialItemDescription1": "When searching for items, you can add an amount at the start of your query, and it will be added as a description.",
   "tutorialItemDescription2": "Or, if amounts are not enough, use a comma to separate the item name and description.",
-  "tutorialRecipeDescription": "Inside of recipes, you can use Markdown. Basic features are headlines specified with hash signs, numbered lists for instruction steps, and references to ingredients using an at sign followed by the ingredient name.",
-  "tutorialRecipeMore": "For more information, visit the [documentation]({url}).",
   "uncategorized": "Uncategorized",
   "underConstruction": "Under construction",
   "undo": "Undo",
@@ -817,7 +713,6 @@
   "unsavedChangesTitle": "You have unsaved changes",
   "unsupportedBackendMessage": "The server version is not supported, please update the backend",
   "unsupportedFrontendMessage": "The app version is not supported, please update the app",
-  "unsupportedScrapeMessage": "This website is not supported",
   "usedIn": "Used in",
   "user": "User",
   "userAdd": "Add user",

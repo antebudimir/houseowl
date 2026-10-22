@@ -9,9 +9,6 @@ class AddReport(Schema):
         validate=lambda a: not a or not a.isspace(),
         allow_none=True,
     )
-    recipe_id = fields.Integer(
-        allow_none=True,
-    )
     user_id = fields.Integer(
         allow_none=True,
     )

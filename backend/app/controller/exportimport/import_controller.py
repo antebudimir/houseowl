@@ -3,7 +3,6 @@ from app.config import app
 from app.models import Household
 from app.service.importServices import (
     importItem,
-    importRecipe,
     importExpense,
     importShoppinglist,
 )
@@ -31,14 +30,6 @@ def importData(args, household_id):
     if "items" in args:
         for item in args["items"]:
             importItem(household, item)
-
-    if "recipes" in args:
-        for recipe in args["recipes"]:
-            importRecipe(
-                household_id,
-                recipe,
-                args["recipe_overwrite"] if "recipe_overwrite" in args else False,
-            )
 
     if "expenses" in args:
         for expense in args["expenses"]:

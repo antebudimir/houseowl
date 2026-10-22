@@ -1,7 +1,6 @@
 import 'package:kitchenowl/models/model.dart';
 import 'package:kitchenowl/services/transactions/note.dart';
 import 'package:kitchenowl/services/transactions/person.dart';
-import 'package:kitchenowl/services/transactions/planner.dart';
 import 'package:kitchenowl/services/transactions/shoppinglist.dart';
 
 abstract class Transaction<T> extends Model {
@@ -15,12 +14,6 @@ abstract class Transaction<T> extends Model {
         TransactionShoppingListRemoveItems.fromJson(m, t),
     "TransactionShoppingListUpdateItem": (m, t) =>
         TransactionShoppingListUpdateItem.fromJson(m, t),
-    "TransactionShoppingListAddRecipeItems": (m, t) =>
-        TransactionShoppingListAddRecipeItems.fromJson(m, t),
-    "TransactionPlannerAddRecipe": (m, t) =>
-        TransactionPlannerAddRecipe.fromJson(m, t),
-    "TransactionPlannerRemoveRecipe": (m, t) =>
-        TransactionPlannerRemoveRecipe.fromJson(m, t),
     "TransactionPersonAdd": (m, t) => TransactionPersonAdd.fromJson(m, t),
     "TransactionPersonUpdate": (m, t) =>
         TransactionPersonUpdate.fromJson(m, t),

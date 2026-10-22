@@ -43,19 +43,19 @@ class ItemWrapMenu extends StatelessWidget {
             label: Text(AppLocalizations.of(context)!.changeIcon),
             onPressed: () => _handleItemAction(context, _ItemAction.changeIcon),
           ),
-        if (item is! RecipeItem && item.id != null)
+        if (item.id != null)
           ActionChip(
             avatar: const Icon(Icons.edit_rounded),
             onPressed: () => _handleItemAction(context, _ItemAction.rename),
             label: Text(AppLocalizations.of(context)!.rename),
           ),
-        if (household != null && item.id != null && item is! RecipeItem)
+        if (household != null && item.id != null)
           ActionChip(
             avatar: const Icon(Icons.merge_rounded),
             onPressed: () => _handleItemAction(context, _ItemAction.merge),
             label: Text(AppLocalizations.of(context)!.merge),
           ),
-        if (item is! RecipeItem && item.id != null)
+        if (item.id != null)
           ActionChip(
             avatar: const Icon(Icons.delete_rounded),
             onPressed: () => _handleItemAction(context, _ItemAction.delete),

@@ -5,7 +5,7 @@ from sqlalchemy.orm import Mapped
 
 Model = db.Model
 if TYPE_CHECKING:
-    from app.models import User, Recipe
+    from app.models import User
     from app.helpers.db_model_base import DbModelBase
 
     Model = DbModelBase
@@ -22,9 +22,6 @@ class Report(Model):
 
     user_id: Mapped[int] = db.Column(
         db.Integer, db.ForeignKey("user.id"), nullable=True
-    )
-    recipe_id: Mapped[int] = db.Column(
-        db.Integer, db.ForeignKey("recipe.id"), nullable=True
     )
 
     created_by: Mapped["User"] = cast(
@@ -44,13 +41,6 @@ class Report(Model):
             back_populates="reports",
         ),
     )
-    recipe: Mapped["Recipe"] = cast(
-        Mapped["Recipe"],
-        db.relationship(
-            "Recipe",
-            back_populates="reports",
-        ),
-    )
 
     def obj_to_full_dict(
         self,
@@ -60,8 +50,6 @@ class Report(Model):
         res = self.obj_to_dict(skip_columns, include_columns)
         if self.user:
             res["user"] = self.user.obj_to_dict()
-        if self.recipe:
-            res["recipe"] = self.recipe.obj_to_dict()
         if self.created_by:
             res["created_by"] = self.created_by.obj_to_dict()
 

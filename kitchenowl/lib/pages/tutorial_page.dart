@@ -1,12 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:kitchenowl/cubits/auth_cubit.dart';
-import 'package:kitchenowl/helpers/recipe_item_markdown_extension.dart';
 import 'package:kitchenowl/kitchenowl.dart';
 import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/models/recipe.dart';
-import 'package:kitchenowl/widgets/recipe_markdown_body.dart';
 import 'package:kitchenowl/widgets/shopping_item.dart';
 
 class TutorialPage extends StatefulWidget {
@@ -19,10 +15,7 @@ class TutorialPage extends StatefulWidget {
 class _TutorialPageState extends State<TutorialPage> {
   int step = 0;
 
-  static const int lastStep = 2;
-
-  static const String _tutorialMarkdown =
-      "## Instructions\n1. First use @eggs\n2. Now stir";
+  static const int lastStep = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +54,7 @@ class _TutorialPageState extends State<TutorialPage> {
                   ),
                   Expanded(
                     child: AbsorbPointer(
-                      absorbing: step != 2,
+                      absorbing: step != 1,
                       child: IndexedStack(
                         children: [
                           Column(
@@ -133,108 +126,6 @@ class _TutorialPageState extends State<TutorialPage> {
                                 ),
                               ),
                               const Spacer(flex: 3),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Spacer(),
-                              Expanded(
-                                child: Text(AppLocalizations.of(context)!
-                                    .tutorialRecipeDescription),
-                                flex: 2,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                      child: Text(
-                                    "Markdown",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelMedium!
-                                        .copyWith(
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .labelMedium
-                                              ?.color
-                                              ?.withAlpha(85),
-                                        ),
-                                  )),
-                                  Text(
-                                    AppLocalizations.of(context)!.recipes,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelMedium!
-                                        .copyWith(
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .labelMedium
-                                              ?.color
-                                              ?.withAlpha(85),
-                                        ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 15),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(child: Text(_tutorialMarkdown)),
-                                  SizedBox(
-                                    height: 120,
-                                    width: 60,
-                                    child: VerticalDivider(),
-                                  ),
-                                  Expanded(
-                                    child: RecipeMarkdownBody(
-                                      recipeItemBuilder:
-                                          RecipeItemMarkdownBuilder(
-                                        items: [
-                                          RecipeItem(
-                                            name: "Eggs",
-                                            description: "2",
-                                            icon: "eggs",
-                                          ),
-                                        ],
-                                      ),
-                                      recipe: Recipe(
-                                        description: _tutorialMarkdown,
-                                        items: [
-                                          RecipeItem(
-                                            name: "Eggs",
-                                            description: "2",
-                                            icon: "eggs",
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const Spacer(flex: 1),
-                              KitchenOwlMarkdownBody(
-                                data: AppLocalizations.of(context)!
-                                    .tutorialRecipeMore(
-                                  "https://docs.kitchenowl.org/latest/Tips-%26-Tricks/markdown/",
-                                ),
-                                styleSheet: MarkdownStyleSheet(
-                                  p: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium
-                                      ?.copyWith(
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .labelMedium
-                                            ?.color
-                                            ?.withAlpha(76),
-                                      ),
-                                  a: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                ),
-                              ),
-                              const Spacer(flex: 1),
                             ],
                           )
                         ],

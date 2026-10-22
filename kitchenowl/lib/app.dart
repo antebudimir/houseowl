@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:background_fetch/background_fetch.dart';
@@ -21,7 +20,6 @@ import 'package:kitchenowl/services/storage/storage.dart';
 import 'package:kitchenowl/services/transaction_handler.dart';
 import 'package:kitchenowl/styles/colors.dart';
 import 'package:kitchenowl/styles/themes.dart';
-import 'package:share_handler/share_handler.dart';
 import 'package:image_picker_android/image_picker_android.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 
@@ -57,18 +55,12 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> with WidgetsBindingObserver {
-  StreamSubscription? _intentDataStreamSubscription;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-      final handler = ShareHandlerPlatform.instance;
-      _intentDataStreamSubscription =
-          handler.sharedMediaStream.listen(_handleSharedMedia);
-    }
 
     final ImagePickerPlatform imagePickerPlatform =
         ImagePickerPlatform.instance;
@@ -125,7 +117,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _intentDataStreamSubscription?.cancel();
     super.dispose();
   }
 
@@ -173,19 +164,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                       .then((id) =>
                           router.go("/household${id == null ? "" : "/$id"}"));
                   return;
-                }
-                if (initialLocation != null) {
-                  final match = RegExp(r'\/recipe\/(\d+)')
-                      .matchAsPrefix(initialLocation!.path);
-                  if (match != null) {
-                    // Redirect public recipe links to last household recipe links
-                    PreferenceStorage.getInstance()
-                        .readInt(key: 'lastHouseholdId')
-                        .then((id) => router.go(id == null
-                            ? initialLocation!.toString()
-                            : "/household/${id}/recipes/details/${match.group(1)}"));
-                    return;
-                  }
                 }
               }
               router.go(initialLocation!.toString());
@@ -279,18 +257,4 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     }
   }
 
-  void _handleSharedMedia(SharedMedia media) {
-    if (mounted && media.content != null) {
-      PreferenceStorage.getInstance()
-          .readInt(key: 'lastHouseholdId')
-          .then((id) {
-        if (id != null) {
-          router.go(Uri(
-            path: "/household/$id/recipes/scrape",
-            queryParameters: {"url": media.content!},
-          ).toString());
-        }
-      });
-    }
-  }
 }

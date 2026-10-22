@@ -50,8 +50,6 @@ def addReport(args):
         report.description = args["description"]
     if "user_id" in args:
         report.user_id = args["user_id"]
-    elif "recipe_id" in args:
-        report.recipe_id = args["recipe_id"]
     else:
         raise InvalidUsage()
     report.save()

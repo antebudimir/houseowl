@@ -11,19 +11,6 @@ class AddItemByName(Schema):
     description = fields.String()
 
 
-class AddRecipeItems(Schema):
-    class RecipeItem(Schema):
-        class Meta:
-            unknown = EXCLUDE
-
-        id = fields.Integer(required=True)
-        name = fields.String(required=True, validate=lambda a: a and not a.isspace())
-        description = fields.String(load_default="")
-        optional = fields.Boolean(load_default=True)
-
-    items = fields.List(fields.Nested(RecipeItem))
-
-
 class CreateList(Schema):
     name = fields.String(required=True, validate=lambda a: a and not a.isspace())
 
@@ -53,7 +40,7 @@ class RemoveItem(Schema):
 
 
 class RemoveItems(Schema):
-    class RecipeItem(Schema):
+    class RemovedItem(Schema):
         class Meta:
             unknown = EXCLUDE
 
@@ -62,4 +49,4 @@ class RemoveItems(Schema):
         )
         removed_at = fields.Integer()
 
-    items = fields.List(fields.Nested(RecipeItem))
+    items = fields.List(fields.Nested(RemovedItem))

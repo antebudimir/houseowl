@@ -9,7 +9,6 @@ import 'package:kitchenowl/helpers/fade_through_transition_page.dart';
 import 'package:kitchenowl/helpers/shared_axis_transition_page.dart';
 import 'package:kitchenowl/models/expense.dart';
 import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/recipe.dart';
 import 'package:kitchenowl/pages/email_confirm_page.dart';
 import 'package:kitchenowl/pages/expense_overview_page.dart';
 import 'package:kitchenowl/pages/expense_page.dart';
@@ -22,9 +21,6 @@ import 'package:kitchenowl/pages/onboarding_page.dart';
 import 'package:kitchenowl/pages/page_not_found.dart';
 import 'package:kitchenowl/pages/password_forgot_page.dart';
 import 'package:kitchenowl/pages/password_reset_page.dart';
-import 'package:kitchenowl/pages/recipe_discover_page.dart';
-import 'package:kitchenowl/pages/recipe_page.dart';
-import 'package:kitchenowl/pages/recipe_scraper_page.dart';
 import 'package:kitchenowl/pages/settings_page.dart';
 import 'package:kitchenowl/pages/settings_user_page.dart';
 import 'package:kitchenowl/pages/setup_page.dart';
@@ -49,7 +45,6 @@ const List<String> publicRoutes = [
   "/confirm-email",
   "/reset-password",
   "/forgot-password",
-  "/recipe",
 ];
 
 // GoRouter configuration
@@ -268,80 +263,6 @@ final router = GoRouter(
               ),
             ),
             GoRoute(
-              path: "recipes",
-              pageBuilder: (context, state) => FadeThroughTransitionPage(
-                key: state.pageKey,
-                name: state.name,
-                child: const RecipeListPage(),
-              ),
-              routes: [
-                GoRoute(
-                  parentNavigatorKey: _rootNavigatorKey,
-                  path: 'details/:recipeId',
-                  builder: (context, state) {
-                    final extra = (state.extra as Tuple2<Household, Recipe>?);
-
-                    return RecipePage(
-                      key: ValueKey(state.pathParameters['recipeId']),
-                      recipe: extra?.item2 ??
-                          Recipe(
-                            id: int.tryParse(
-                              state.pathParameters['recipeId'] ?? '',
-                            ),
-                          ),
-                      household: extra?.item1 ??
-                          Household(
-                            id: int.tryParse(
-                                  state.pathParameters['id'] ?? '',
-                                ) ??
-                                -1,
-                          ),
-                      updateOnPlanningEdit:
-                          state.uri.queryParameters['updateOnPlanningEdit'] ==
-                              true.toString(),
-                      selectedYields: int.tryParse(
-                        state.uri.queryParameters['selectedYields'] ?? "",
-                      ),
-                      showHousehold:
-                          state.uri.queryParameters['showHousehold'] !=
-                              false.toString(),
-                    );
-                  },
-                ),
-                GoRoute(
-                  parentNavigatorKey: _rootNavigatorKey,
-                  path: 'scrape',
-                  builder: (context, state) => RecipeScraperPage(
-                    url: state.uri.queryParameters['url']!,
-                    household: Household(
-                      id: int.tryParse(state.pathParameters['id'] ?? '') ?? -1,
-                    ),
-                  ),
-                ),
-                GoRoute(
-                  parentNavigatorKey: _rootNavigatorKey,
-                  path: 'discover',
-                  builder: (context, state) => RecipeDiscoverPage(
-                    household: ((state.extra is Household?)
-                            ? (state.extra as Household?)
-                            : null) ??
-                        Household(
-                          id: int.tryParse(state.pathParameters['id'] ?? '') ??
-                              -1,
-                        ),
-                  ),
-                ),
-              ],
-            ),
-            GoRoute(
-              path: "planner",
-              pageBuilder: (context, state) => FadeThroughTransitionPage(
-                key: state.pageKey,
-                name: state.name,
-                child: const PlannerPage(),
-              ),
-            ),
-            GoRoute(
               path: "persons",
               pageBuilder: (context, state) => FadeThroughTransitionPage(
                 key: state.pageKey,
@@ -409,27 +330,6 @@ final router = GoRouter(
           ],
         ),
       ],
-    ),
-    GoRoute(
-      parentNavigatorKey: _rootNavigatorKey,
-      path: '/recipe/:recipeId',
-      builder: (context, state) => RecipePage(
-        key: ValueKey(state.pathParameters['recipeId']),
-        recipe: (state.extra as Recipe?) ??
-            Recipe(
-              id: int.tryParse(
-                state.pathParameters['recipeId'] ?? '',
-              ),
-            ),
-        updateOnPlanningEdit:
-            state.uri.queryParameters['updateOnPlanningEdit'] ==
-                true.toString(),
-        selectedYields: int.tryParse(
-          state.uri.queryParameters['selectedYields'] ?? "",
-        ),
-        showHousehold:
-            state.uri.queryParameters['showHousehold'] != false.toString(),
-      ),
     ),
     GoRoute(
       path: '/settings',

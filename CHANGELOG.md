@@ -46,11 +46,28 @@ features, that's the same commit.
   **only reachable via the drawer / More view** on phones. Accepted for v1;
   revisit whether Birthdays should claim a bottom-nav slot over a less-used
   entry.
-- Meal-plan `cooking_date` is truncated to a local-time date before storage
-  (`backend/app/controller/planner_controller.py`), so in non-UTC timezones
-  the stored date can shift by a day. Real upstream TZ bug; to be fixed with
-  a UTC-normalizing one-liner **before Phase 4 (Events)**, which is calendar-
-  adjacent.
+
+### Removed
+
+- Recipe feature, end to end: backend `Recipe`/`RecipeItems`/`RecipeTags`/
+  `RecipeHistory` models, recipe + scraper + discover endpoints, recipe MCP
+  tools, recipe scraping/suggestion jobs and services, and the client recipe
+  models, cubits, pages, widgets, transactions, offline caches, router routes,
+  and l10n keys. Includes the tag cleanup this unblocked: `Tag` no longer
+  carries a recipe branch (`RecipeTags` gone; `Tag.merge()` now only re-points
+  note tags), and `Note.fromJson` no longer dual-accepts tag-name strings —
+  the server always returns full tag objects. Migration `c8d9e0a12b34` drops
+  the recipe tables.
+- Meal planner, together with the recipes it structurally depends on
+  (`Planner.recipe_id` is a primary-key FK to `recipe.id`): backend planner
+  model/endpoints/MCP tools, household `planner_feature` flag, and the client
+  planner page, cubit, transactions, cache, and `ViewsEnum.planner` entry.
+  The queued planner TZ fix is moot — the planner is gone; Events (Phase 4)
+  will not reuse it.
+- Recipe-based reports (`report.recipe_id` + navigation) and the "used in
+  recipes" section on the item page; reports are now user reports only.
+  Recipe/planner export & import branches and the recipe-link deep redirect
+  and share-handler scrape route went with them.
 
 ### Changed
 

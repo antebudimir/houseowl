@@ -5,7 +5,7 @@ from sqlalchemy.orm import Mapped
 
 Model = db.Model
 if TYPE_CHECKING:
-    from app.models import Household, RecipeTags
+    from app.models import Household, NoteTags
     from app.helpers.db_model_base import DbModelBase
 
     Model = DbModelBase
@@ -28,14 +28,6 @@ class Tag(Model, DbModelAuthorizeMixin):
             uselist=False,
         ),
     )
-    recipes: Mapped[List["RecipeTags"]] = cast(
-        Mapped[List["RecipeTags"]],
-        db.relationship(
-            "RecipeTags",
-            back_populates="tag",
-            cascade="all, delete-orphan",
-        ),
-    )
     notes: Mapped[List["NoteTags"]] = cast(
         Mapped[List["NoteTags"]],
         db.relationship(
@@ -53,19 +45,7 @@ class Tag(Model, DbModelAuthorizeMixin):
         if self.household_id != other.household_id:
             return
 
-        from app.models import RecipeTags, NoteTags
-
-        for rectag in RecipeTags.query.filter(
-            RecipeTags.tag_id == other.id,
-            RecipeTags.recipe_id.notin_(
-                db.session.query(RecipeTags.recipe_id)
-                .filter(RecipeTags.tag_id == self.id)
-                .subquery()
-                .select()
-            ),
-        ).all():
-            rectag.tag_id = self.id
-            db.session.add(rectag)
+        from app.models import NoteTags
 
         for notetag in NoteTags.query.filter(
             NoteTags.tag_id == other.id,

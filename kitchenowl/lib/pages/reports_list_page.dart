@@ -1,5 +1,4 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:kitchenowl/gen/l10n/app_localizations.dart';
 import 'package:kitchenowl/models/report.dart';
@@ -74,13 +73,11 @@ class ReportsListPage extends StatelessWidget {
                     ApiService.getInstance().deleteReport(report.id!);
                 },
                 child: ListTile(
-                  leading: Icon(report.recipe != null
-                      ? Icons.receipt_rounded
-                      : report.user != null
-                          ? Icons.person_rounded
-                          : Icons.done_all_rounded),
+                  leading: Icon(report.user != null
+                      ? Icons.person_rounded
+                      : Icons.done_all_rounded),
                   title: Text("#${report.id}: " +
-                      (report.user?.username ?? report.recipe?.name ?? "")),
+                      (report.user?.username ?? "")),
                   isThreeLine: true,
                   subtitle: report.description != null
                       ? RichText(
@@ -109,8 +106,6 @@ class ReportsListPage extends StatelessWidget {
                           user: report.user,
                         ),
                       ));
-                    } else if (report.recipe != null) {
-                      context.push("/recipe/${report.recipe!.id}");
                     }
                   },
                 ),

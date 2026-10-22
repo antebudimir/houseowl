@@ -21,9 +21,7 @@ class Note extends Model {
       body: map['body'] ?? '',
       tags: map['tags'] != null
           ? List.from(map['tags'])
-              .map((e) => e is Map
-                  ? Tag.fromJson(Map<String, dynamic>.from(e))
-                  : Tag(name: e as String))
+              .map((e) => Tag.fromJson(Map<String, dynamic>.from(e as Map)))
               .toList()
           : const [],
     );

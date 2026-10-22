@@ -6,7 +6,6 @@ import 'package:kitchenowl/models/category.dart';
 import 'package:kitchenowl/models/household.dart';
 import 'package:kitchenowl/models/note.dart';
 import 'package:kitchenowl/models/person.dart';
-import 'package:kitchenowl/models/recipe.dart';
 import 'package:kitchenowl/models/shoppinglist.dart';
 import 'package:kitchenowl/models/tag.dart';
 import 'package:kitchenowl/models/user.dart';
@@ -44,12 +43,6 @@ class TempStorage {
     return File('$path/${household.id}-shoppinglists.json');
   }
 
-  Future<File> _localRecipesFile(Household household) async {
-    final path = await _localPath;
-
-    return File('$path/${household.id}-recipes.json');
-  }
-
   Future<File> _localPersonsFile(Household household) async {
     final path = await _localPath;
 
@@ -74,7 +67,6 @@ class TempStorage {
         value?.map((household) async {
               await Future.wait([
                 clearShoppingLists(household),
-                clearRecipes(household),
                 clearPersons(household),
                 clearNotes(household),
                 clearCategories(household),
@@ -152,39 +144,6 @@ class TempStorage {
       await file.writeAsString(
         json.encode(shoppingLists.map((e) => e.toJsonWithId()).toList()),
       );
-    }
-  }
-
-  Future<List<Recipe>?> readRecipes(Household household) async {
-    if (!foundation.kIsWeb) {
-      try {
-        final file = await _localRecipesFile(household);
-        final String content = await file.readAsString();
-
-        return List<Recipe>.from(
-          json.decode(content).map((e) => Recipe.fromJson(e)),
-        );
-      } catch (_) {}
-    }
-
-    return null;
-  }
-
-  Future<void> writeRecipes(Household household, List<Recipe> recipes) async {
-    if (!foundation.kIsWeb) {
-      final file = await _localRecipesFile(household);
-      await file.writeAsString(
-        json.encode(recipes.map((e) => e.toJsonWithId()).toList()),
-      );
-    }
-  }
-
-  Future<void> clearRecipes(Household household) async {
-    if (!foundation.kIsWeb) {
-      try {
-        final file = await _localRecipesFile(household);
-        if (await file.exists()) await file.delete();
-      } catch (_) {}
     }
   }
 

@@ -12,10 +12,8 @@ extension ImportExportApi on ApiService {
 
   Future<void> importHousehold(
     Household household,
-    Map<String, dynamic> content, [
-    bool overwriteRecipes = false,
-  ]) async {
-    content["recipe_overwrite"] = overwriteRecipes;
+    Map<String, dynamic> content,
+  ) async {
     await post(
       '${householdPath(household)}$baseRoute',
       jsonEncode(content),

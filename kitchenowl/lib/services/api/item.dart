@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:kitchenowl/models/household.dart';
 import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/models/recipe.dart';
 import 'package:kitchenowl/services/api/api_service.dart';
 
 extension ItemApi on ApiService {
@@ -27,14 +26,6 @@ extension ItemApi on ApiService {
     return Item.fromJson(body);
   }
 
-  Future<List<Recipe>?> getItemRecipes(Item item) async {
-    final res = await get('$baseRoute/${item.id}/recipes');
-    if (res.statusCode != 200) return null;
-
-    final body = List.from(jsonDecode(res.body));
-
-    return body.map((e) => Recipe.fromJson(e)).toList();
-  }
 
   Future<List<ItemWithDescription>?> searchItem(
     Household household,
