@@ -12,7 +12,7 @@ from sqlalchemy.orm import Mapped
 
 Model = db.Model
 if TYPE_CHECKING:
-    from app.models import Household, Expense
+    from app.models import Household
     from app.helpers.db_model_base import DbModelBase
 
     Model = DbModelBase
@@ -43,13 +43,6 @@ class File(Model, DbModelAuthorizeMixin):
             uselist=False,
         ),
     )
-    expense: Mapped["Expense"] = cast(
-        Mapped["Expense"],
-        db.relationship(
-            "Expense",
-            uselist=False,
-        ),
-    )
     profile_picture: Mapped["User"] = cast(
         Mapped["User"],
         db.relationship(
@@ -70,7 +63,6 @@ class File(Model, DbModelAuthorizeMixin):
     def isUnused(self) -> bool:
         return (
             not self.household
-            and not self.expense
             and not self.profile_picture
         )
 
@@ -83,10 +75,6 @@ class File(Model, DbModelAuthorizeMixin):
             pass  # profile pictures are public for logged in users
         elif self.household and current_user:
             pass  # profile pictures are public for logged in users
-        elif self.expense:
-            super().checkAuthorized(
-                household_id=self.expense.household_id, requires_admin=requires_admin
-            )
         else:
             raise ForbiddenRequest()
 

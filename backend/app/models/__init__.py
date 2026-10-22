@@ -1,14 +1,13 @@
 from .user import User
 from .item import Item
 from .association import Association
-from .expense import Expense, ExpensePaidFor
+from .planned_buy import PlannedBuy
 from .settings import Settings
 from .history import History, Status
 from .tag import Tag
 from .person import Person
 from .note import Note, NoteTags
 from .shoppinglist import ShoppinglistItems, Shoppinglist
-from .expense_category import ExpenseCategory
 from .category import Category
 from .token import Token
 from .household import Household, HouseholdMember

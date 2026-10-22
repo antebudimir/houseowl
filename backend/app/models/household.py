@@ -10,8 +10,6 @@ if TYPE_CHECKING:
         Shoppinglist,
         Category,
         Tag,
-        Expense,
-        ExpenseCategory,
         User,
         File,
     )
@@ -27,9 +25,6 @@ class Household(Model):
     name: Mapped[str] = db.Column(db.String(128), nullable=False)
     photo: Mapped[str | None] = db.Column(db.String(), db.ForeignKey("file.filename"))
     language: Mapped[str] = db.Column(db.String())
-    expenses_feature: Mapped[bool] = db.Column(
-        db.Boolean(), nullable=False, default=True
-    )
     description: Mapped[str | None] = db.Column(db.String())
     link: Mapped[str | None] = db.Column(db.String(255))
     # For households that have verified their authenticity
@@ -65,22 +60,6 @@ class Household(Model):
         Mapped[List["Tag"]],
         db.relationship(
             "Tag",
-            back_populates="household",
-            cascade="all, delete-orphan",
-        ),
-    )
-    expenses: Mapped[List["Expense"]] = cast(
-        Mapped[List["Expense"]],
-        db.relationship(
-            "Expense",
-            back_populates="household",
-            cascade="all, delete-orphan",
-        ),
-    )
-    expenseCategories: Mapped[List["ExpenseCategory"]] = cast(
-        Mapped[List["ExpenseCategory"]],
-        db.relationship(
-            "ExpenseCategory",
             back_populates="household",
             cascade="all, delete-orphan",
         ),
@@ -135,11 +114,9 @@ class Household(Model):
             "name": self.name,
             "language": self.language,
             "view_ordering": self.view_ordering,
-            "expenses_feature": self.expenses_feature,
             "member": [m.user.username for m in getattr(self, "member")],
             "shoppinglists": [s.name for s in self.shoppinglists],
             "items": [s.obj_to_export_dict() for s in self.items],
-            "expenses": [s.obj_to_export_dict() for s in self.expenses],
         }
 
 
@@ -155,8 +132,6 @@ class HouseholdMember(Model):
 
     owner: Mapped[bool] = db.Column(db.Boolean(), default=False, nullable=False)
     admin: Mapped[bool] = db.Column(db.Boolean(), default=True, nullable=False)
-
-    expense_balance: Mapped[float] = db.Column(db.Float(), default=0, nullable=False)
 
     household: Mapped["Household"] = cast(
         Mapped["Household"],
@@ -177,7 +152,6 @@ class HouseholdMember(Model):
         res = self.user.obj_to_dict()
         res["owner"] = getattr(self, "owner")
         res["admin"] = getattr(self, "admin")
-        res["expense_balance"] = getattr(self, "expense_balance")
         return res
 
     def delete(self):

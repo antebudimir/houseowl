@@ -49,8 +49,6 @@ def addHousehold(args):
         household.photo = file_has_access_or_download(args["photo"], household.photo)
     if "language" in args and args["language"] in SUPPORTED_LANGUAGES:
         household.language = args["language"]
-    if "expenses_feature" in args:
-        household.expenses_feature = args["expenses_feature"]
     if "view_ordering" in args:
         household.view_ordering = args["view_ordering"]
     if "link" in args:
@@ -105,8 +103,6 @@ def updateHousehold(args, household_id):
     ):
         household.language = args["language"]
         gevent.spawn(importLanguage, household.id, household.language)
-    if "expenses_feature" in args:
-        household.expenses_feature = args["expenses_feature"]
     if "view_ordering" in args:
         household.view_ordering = args["view_ordering"]
     if "link" in args:

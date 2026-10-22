@@ -12,7 +12,7 @@ api.household.register_blueprint(
     api.categoryHousehold, url_prefix="/<int:household_id>/category"
 )
 api.household.register_blueprint(
-    api.expenseHousehold, url_prefix="/<int:household_id>/expense"
+    api.plannedBuyHousehold, url_prefix="/<int:household_id>/planned_buy"
 )
 api.household.register_blueprint(
     api.itemHousehold, url_prefix="/<int:household_id>/item"
@@ -34,7 +34,7 @@ apiv1.register_blueprint(
 apiv1.register_blueprint(api.auth, url_prefix="/auth")
 apiv1.register_blueprint(api.household, url_prefix="/household")
 apiv1.register_blueprint(api.category, url_prefix="/category")
-apiv1.register_blueprint(api.expense, url_prefix="/expense")
+apiv1.register_blueprint(api.plannedBuy, url_prefix="/planned_buy")
 apiv1.register_blueprint(api.item, url_prefix="/item")
 apiv1.register_blueprint(api.onboarding, url_prefix="/onboarding")
 apiv1.register_blueprint(api.settings, url_prefix="/settings")

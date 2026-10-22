@@ -3,10 +3,8 @@ from app.config import app
 from app.models import Household
 from app.service.importServices import (
     importItem,
-    importExpense,
     importShoppinglist,
 )
-from app.service.recalculate_balances import recalculateBalances
 from .schemas import ImportSchema
 from app.helpers import validate_args, authorize_household
 from flask import jsonify, Blueprint
@@ -30,11 +28,6 @@ def importData(args, household_id):
     if "items" in args:
         for item in args["items"]:
             importItem(household, item)
-
-    if "expenses" in args:
-        for expense in args["expenses"]:
-            importExpense(household, expense)
-        recalculateBalances(household.id)
 
     if "shoppinglists" in args:
         for shoppinglist in args["shoppinglists"]:

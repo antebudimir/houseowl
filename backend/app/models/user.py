@@ -14,8 +14,6 @@ if TYPE_CHECKING:
         ChallengePasswordReset,
         ChallengeMailVerify,
         HouseholdMember,
-        Expense,
-        ExpensePaidFor,
         File,
         OIDCLink,
         OIDCRequest,
@@ -88,22 +86,6 @@ class User(Model):
         ),
     )
 
-    expenses_paid: Mapped[List["Expense"]] = cast(
-        Mapped[List["Expense"]],
-        db.relationship(
-            "Expense",
-            back_populates="paid_by",
-            cascade="all, delete-orphan",
-        ),
-    )
-    expenses_paid_for: Mapped[List["ExpensePaidFor"]] = cast(
-        Mapped[List["ExpensePaidFor"]],
-        db.relationship(
-            "ExpensePaidFor",
-            back_populates="user",
-            cascade="all, delete-orphan",
-        ),
-    )
     photo_file: Mapped["File"] = cast(
         Mapped["File"],
         db.relationship(

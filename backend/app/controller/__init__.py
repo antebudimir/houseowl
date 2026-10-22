@@ -5,7 +5,7 @@ from .shoppinglist import *
 from .onboarding import *
 from .exportimport import *
 from .settings import *
-from .expense import *
+from .plannedbuy import *
 from .tag import *
 from .person import *
 from .note import *

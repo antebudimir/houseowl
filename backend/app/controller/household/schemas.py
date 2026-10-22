@@ -10,7 +10,6 @@ class AddHousehold(Schema):
     link = fields.String()
     description = fields.String()
     language = fields.String()
-    expenses_feature = fields.Boolean()
     view_ordering = fields.List(fields.String)
     member = fields.List(fields.Integer)
 
@@ -24,7 +23,6 @@ class UpdateHousehold(Schema):
     link = fields.String()
     description = fields.String()
     language = fields.String()
-    expenses_feature = fields.Boolean()
     view_ordering = fields.List(fields.String)
 
 

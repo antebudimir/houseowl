@@ -4,7 +4,6 @@ import json
 import uuid
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from datetime import datetime
 from queue import Empty, Queue
 from typing import Any
 
@@ -15,8 +14,6 @@ from app import db
 from app.config import BACKEND_VERSION
 from app.errors import NotFoundRequest
 from app.models import (
-    Expense,
-    File,
     History,
     Household,
     HouseholdMember,
@@ -179,48 +176,6 @@ def _tool_remove_item_from_list(args: dict[str, Any]) -> Any:
     return {"removed": True, "list_id": list_id, "item": removed_item}
 
 
-def _tool_list_expenses(args: dict[str, Any]) -> Any:
-    household_id = int(args["household_id"])
-    search = str(args.get("search", "")).strip()
-    _require_household_access(household_id)
-
-    q = Expense.query.filter(Expense.household_id == household_id)
-    if search:
-        q = q.filter(Expense.name.ilike(f"%{search}%"))
-    expenses = q.order_by(Expense.date.desc()).limit(50).all()
-    return {"items": [e.obj_to_full_dict() for e in expenses]}
-
-
-def _tool_create_expense(args: dict[str, Any]) -> Any:
-    household_id = int(args["household_id"])
-    _require_household_access(household_id)
-
-    expense = Expense()
-    expense.household_id = household_id
-    expense.name = str(args["name"]).strip()[:128]
-    expense.amount = float(args["amount"])
-    expense.description = str(args.get("description", ""))
-    expense.paid_by_id = current_user.id
-
-    date_raw = args.get("date")
-    if date_raw:
-        expense.date = datetime.fromisoformat(str(date_raw).replace("Z", "+00:00"))
-
-    expense.save()
-    return expense.obj_to_full_dict()
-
-
-def _tool_delete_expense(args: dict[str, Any]) -> Any:
-    expense_id = int(args["expense_id"])
-    expense = Expense.find_by_id(expense_id)
-    if not expense:
-        raise NotFoundRequest()
-    expense.checkAuthorized()
-    name = expense.name
-    expense.delete()
-    return {"deleted": True, "id": expense_id, "name": name}
-
-
 TOOLS: dict[str, tuple[dict[str, Any], Callable[[dict[str, Any]], Any]]] = {
     "list_households": (
         {"type": "object", "properties": {}},
@@ -315,39 +270,6 @@ TOOLS: dict[str, tuple[dict[str, Any], Callable[[dict[str, Any]], Any]]] = {
         },
         _tool_remove_item_from_list,
     ),
-    "list_expenses": (
-        {
-            "type": "object",
-            "properties": {
-                "household_id": {"type": "integer"},
-                "search": {"type": "string"},
-            },
-            "required": ["household_id"],
-        },
-        _tool_list_expenses,
-    ),
-    "create_expense": (
-        {
-            "type": "object",
-            "properties": {
-                "household_id": {"type": "integer"},
-                "name": {"type": "string"},
-                "amount": {"type": "number"},
-                "description": {"type": "string"},
-                "date": {"type": "string"},
-            },
-            "required": ["household_id", "name", "amount"],
-        },
-        _tool_create_expense,
-    ),
-    "delete_expense": (
-        {
-            "type": "object",
-            "properties": {"expense_id": {"type": "integer"}},
-            "required": ["expense_id"],
-        },
-        _tool_delete_expense,
-    ),
 }
 
 
@@ -357,7 +279,7 @@ LATEST_PROTOCOL_VERSION = SUPPORTED_PROTOCOL_VERSIONS[0]
 
 SERVER_INSTRUCTIONS = (
     "KitchenOwl manages households, each of which owns shopping lists, items, "
-    "tags, notes and expenses. Nearly every tool is scoped to a "
+    "tags, notes and planned buys. Nearly every tool is scoped to a "
     "household, so call list_households first and reuse the id you get back."
 )
 
