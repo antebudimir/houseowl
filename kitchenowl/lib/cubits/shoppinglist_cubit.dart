@@ -119,6 +119,20 @@ class ShoppinglistCubit extends Cubit<ShoppinglistCubitState> {
 
   Future<void> search(String query) => refresh(query: query);
 
+  Future<bool> addShoppingList(String name) async {
+    final success = await ApiService.getInstance()
+        .addShoppingList(household, ShoppingList(name: name));
+    if (success) await refresh();
+    return success;
+  }
+
+  Future<bool> deleteShoppingList(ShoppingList shoppinglist) async {
+    final success =
+        await ApiService.getInstance().deleteShoppingList(shoppinglist);
+    if (success) await refresh();
+    return success;
+  }
+
   Future<void> add(Item item) async {
     final _state = state;
     addLocally(ShoppinglistItem.fromItem(item: item));

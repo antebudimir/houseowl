@@ -1,5 +1,4 @@
 import 'package:animations/animations.dart';
-import 'package:collection/collection.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kitchenowl/app.dart';
@@ -8,8 +7,7 @@ import 'package:kitchenowl/cubits/shoppinglist_cubit.dart';
 import 'package:kitchenowl/enums/shoppinglist_sorting.dart';
 import 'package:kitchenowl/models/item.dart';
 import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/widgets/choice_scroll.dart';
-import 'package:kitchenowl/widgets/shopping_list/shopping_list_choice_chip.dart';
+import 'package:kitchenowl/widgets/shopping_list/shoppinglist_header.dart';
 import 'package:kitchenowl/widgets/shopping_list/sliver_shopinglist_item_view.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
@@ -82,28 +80,13 @@ class _ShoppinglistPageState extends State<ShoppinglistPage> {
               bloc: cubit,
               builder: (context, state) {
                 final header = LeftRightWrap(
-                  left: (state.shoppinglists.length < 2)
-                      ? const SizedBox()
-                      : ChoiceScroll(
-                          children: state.shoppinglists.values
-                              .sorted((a, b) =>
-                                  b.items.length.compareTo(a.items.length))
-                              .map(
-                                (shoppinglist) => ShoppingListChoiceChip(
-                                  shoppingList: shoppinglist,
-                                  selected: shoppinglist.id ==
-                                      state.selectedShoppinglistId,
-                                  onSelected: (bool selected) {
-                                    if (selected) {
-                                      cubit.setShoppingList(
-                                        shoppinglist,
-                                      );
-                                    }
-                                  },
-                                ),
-                              )
-                              .toList(),
-                        ),
+                  left: ShoppinglistHeader(
+                    shoppinglists: state.shoppinglists.values.toList(),
+                    selectedShoppinglistId: state.selectedShoppinglistId,
+                    onSelect: cubit.setShoppingList,
+                    onAdd: cubit.addShoppingList,
+                    onDelete: cubit.deleteShoppingList,
+                  ),
                   right: Padding(
                     padding: const EdgeInsets.only(right: 16, bottom: 6),
                     child: TrailingIconTextButton(
