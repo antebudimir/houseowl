@@ -14,6 +14,20 @@ features, that's the same commit.
 
 ### Fixed
 
+- Flutter-material widgets (ListTile, InkWell, FilterChip, table_calendar, …)
+  crashed with "No Material widget found" when hosted under the `material_ui`
+  fork's Scaffold (whose `Material` is a different type): the app now provides
+  a transparent Flutter `Material` above the navigator, and tooltip-hovered
+  controls (tag selector "+", date-clear buttons) carry their own transparent
+  `Material` because the tooltip `OverlayPortal` boundary hides ancestors
+- The add-task page briefly flashed an error when opened with an assignee or
+  buy link set: the assignee/buy dropdowns built a value with no matching item
+  while their option lists were still loading (or a request failed); they now
+  render empty items until data arrives and dedupe entries by id
+- `GET /api/household/<id>/task` returned 500 on every call: the JSON provider
+  serialized plain `date` values (e.g. task due dates) with
+  `date.replace(tzinfo=...)`, which is unsupported; dates now encode as
+  midnight-UTC epoch milliseconds (matching the person birthday handling)
 - The note, task, and event add/edit pages crashed on open ("Looking up a
   deactivated widget's ancestor" / provider-not-found): their editor cubits are
   now provided by the pages themselves, and every add/edit push site injects
