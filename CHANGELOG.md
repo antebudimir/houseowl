@@ -76,8 +76,42 @@ features, that's the same commit.
   `create_task`, `complete_task`, `delete_task`; the MCP server docstring no
   longer advertises tools that don't exist (planned-buy MCP tools remain
   future scope)
+- Events calendar: a new "Events" view with a month calendar (`table_calendar`)
+  plus a per-day agenda (tap to edit, long-press to delete with
+  confirmation), and an add/edit page with name, description, **location**
+  (nullable, 256 chars — for concerts, kindergarten meetings, etc.), an
+  all-day toggle, date/time pickers, and an attendee multi-select
+- Multi-attendee conflict detection is **per person, via a join table**:
+  an event double-books someone only if an *attendee* is already booked,
+  so Mom and Dad can each have overlapping solo events but a family event
+  conflicts on any shared person. Overlap uses half-open `[start, end)`
+  intervals, so back-to-back events never conflict; events with no
+  attendees are never blocked. Updates exclude the event itself
+- The **server is authoritative**: creating/updating onto a conflict is
+  hard-blocked with `409` + the conflicting events (race-safe), while the
+  form additionally pre-checks via `GET …/event/conflicts` to show a live
+  "Conflicts with *Dentist* — Mom, Dad" banner before saving
+- Time handling: events are stored as UTC `DateTime` and serialized to
+  epoch milliseconds by the shared JSON provider (no boundary conversion
+  needed, unlike `Person.birthday`); the client sends and renders epoch ms
+  in local time. All-day events store the UTC instants of the creator's
+  local `[midnight, next midnight)` — a client-render flag, so the server
+  never does timezone math
+- Backend `Event` + `EventAttendee` models (composite-PK join; deleting a
+  person cascades their attendance), `/api/household/<id>/event` (list with
+  optional `?from`/`?to` ms range, create) + `/api/event/<id>`
+  (get/update/delete) + `/conflicts`; `event:update` Socket.IO event;
+  migration `f9d2a4b6c1e8` (smoke-tested up and down via the new
+  `make smoke-migration` target, which also documents the `DB_NAME`
+  (not `KITCHENOWL_DATABASE_URI`) gotcha); MCP tools `list_events`,
+  `create_event` (conflicts surfaced as a `reason: conflict` result),
+  `delete_event`
 
 ### Known limitations
+- Events are **online-only** for v1 (no offline cache or queue), and the
+  conflict check is a hard block rather than a warning — accepted for a
+  family app. Deleting a person silently removes their attendance from
+  events (the events themselves remain)
 - Planned buys and tasks are **online-only** for v1 (no offline cache or
   queue). Intentional — the `MemStorage` transaction pattern is available if
   offline support is needed later
