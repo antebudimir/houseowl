@@ -24,6 +24,7 @@ abstract class HouseholdAddUpdateState extends Equatable {
   final String name;
   final String? language;
   final List<ViewsEnum> viewOrdering;
+  final List<ViewsEnum> hiddenViews;
 
   final Map<String, String>? supportedLanguages;
 
@@ -31,6 +32,7 @@ abstract class HouseholdAddUpdateState extends Equatable {
     this.name = "",
     this.language,
     this.viewOrdering = ViewsEnum.values,
+    this.hiddenViews = const [],
     this.supportedLanguages,
   });
 
@@ -39,10 +41,11 @@ abstract class HouseholdAddUpdateState extends Equatable {
         name,
         language,
         viewOrdering,
+        hiddenViews,
         supportedLanguages,
       ];
 
   bool isViewActive(ViewsEnum view) {
-    return true;
+    return !hiddenViews.contains(view);
   }
 }

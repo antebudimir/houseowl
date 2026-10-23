@@ -3,6 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kitchenowl/app.dart';
 import 'package:kitchenowl/cubits/auth_cubit.dart';
 import 'package:kitchenowl/cubits/household_cubit.dart';
+import 'package:kitchenowl/cubits/persons_cubit.dart';
+import 'package:kitchenowl/cubits/planned_buys_cubit.dart';
+import 'package:kitchenowl/cubits/notes_cubit.dart';
+import 'package:kitchenowl/cubits/tasks_cubit.dart';
+import 'package:kitchenowl/cubits/events_cubit.dart';
 import 'package:kitchenowl/enums/update_enum.dart';
 import 'package:kitchenowl/kitchenowl.dart';
 import 'package:kitchenowl/models/household.dart';
@@ -116,10 +121,13 @@ enum ViewsEnum {
                 tooltip: AppLocalizations.of(context)!.plannedBuyAdd,
                 onPressed: () => Navigator.of(context).push<UpdateEnum>(
                   MaterialPageRoute(
-                    builder: (ctx) => PlannedBuyAddUpdatePage(
-                      household: BlocProvider.of<HouseholdCubit>(context)
-                          .state
-                          .household,
+                    builder: (ctx) => BlocProvider.value(
+                      value: BlocProvider.of<PlannedBuysCubit>(context),
+                      child: PlannedBuyAddUpdatePage(
+                        household: BlocProvider.of<HouseholdCubit>(context)
+                            .state
+                            .household,
+                      ),
                     ),
                   ),
                 ),
@@ -134,10 +142,13 @@ enum ViewsEnum {
                 tooltip: AppLocalizations.of(context)!.taskAdd,
                 onPressed: () => Navigator.of(context).push<UpdateEnum>(
                   MaterialPageRoute(
-                    builder: (ctx) => TaskAddUpdatePage(
-                      household: BlocProvider.of<HouseholdCubit>(context)
-                          .state
-                          .household,
+                    builder: (ctx) => BlocProvider.value(
+                      value: BlocProvider.of<TasksCubit>(context),
+                      child: TaskAddUpdatePage(
+                        household: BlocProvider.of<HouseholdCubit>(context)
+                            .state
+                            .household,
+                      ),
                     ),
                   ),
                 ),
@@ -152,10 +163,13 @@ enum ViewsEnum {
                 tooltip: AppLocalizations.of(context)!.eventAdd,
                 onPressed: () => Navigator.of(context).push<UpdateEnum>(
                   MaterialPageRoute(
-                    builder: (ctx) => EventAddUpdatePage(
-                      household: BlocProvider.of<HouseholdCubit>(context)
-                          .state
-                          .household,
+                    builder: (ctx) => BlocProvider.value(
+                      value: BlocProvider.of<EventsCubit>(context),
+                      child: EventAddUpdatePage(
+                        household: BlocProvider.of<HouseholdCubit>(context)
+                            .state
+                            .household,
+                      ),
                     ),
                   ),
                 ),
@@ -170,7 +184,10 @@ enum ViewsEnum {
                 tooltip: AppLocalizations.of(context)!.personAdd,
                 onPressed: () => Navigator.of(context).push<UpdateEnum>(
                   MaterialPageRoute(
-                    builder: (ctx) => const PersonAddUpdatePage(),
+                    builder: (ctx) => BlocProvider.value(
+                      value: BlocProvider.of<PersonsCubit>(context),
+                      child: const PersonAddUpdatePage(),
+                    ),
                   ),
                 ),
                 child: const Icon(Icons.add_rounded),
@@ -181,10 +198,12 @@ enum ViewsEnum {
           tooltip: AppLocalizations.of(context)!.noteAdd,
           onPressed: () => Navigator.of(context).push<UpdateEnum>(
             MaterialPageRoute(
-              builder: (ctx) => NoteAddUpdatePage(
-                household: BlocProvider.of<HouseholdCubit>(context)
-                    .state
-                    .household,
+              builder: (ctx) => BlocProvider.value(
+                value: BlocProvider.of<NotesCubit>(context),
+                child: NoteAddUpdatePage(
+                  household:
+                      BlocProvider.of<HouseholdCubit>(context).state.household,
+                ),
               ),
             ),
           ),
@@ -200,7 +219,9 @@ enum ViewsEnum {
   }
 
   bool isViewActive(Household household) {
-    return true;
+    // 'more' is the settings entry point and always visible.
+    return this == ViewsEnum.more ||
+        !(household.hiddenViews?.contains(this) ?? false);
   }
 
   /// Adds all missing views.

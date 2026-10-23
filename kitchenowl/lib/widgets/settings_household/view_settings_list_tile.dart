@@ -4,8 +4,8 @@ import 'package:kitchenowl/cubits/household_add_update/household_add_update_cubi
 import 'package:kitchenowl/enums/views_enum.dart';
 import 'package:kitchenowl/kitchenowl.dart';
 
-class ViewSettingsListTile<Cubit extends HouseholdAddUpdateCubit>
-    extends StatelessWidget {
+class ViewSettingsListTile<Cubit extends HouseholdAddUpdateCubit<State>,
+    State extends HouseholdAddUpdateState> extends StatelessWidget {
   final ViewsEnum view;
   final bool isActive;
   final bool showHandleIfNotOptional;
@@ -19,33 +19,41 @@ class ViewSettingsListTile<Cubit extends HouseholdAddUpdateCubit>
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        view.toLocalizedString(context),
-      ),
-      leading: Icon(view.toSelectedIcon(context)),
-      contentPadding: EdgeInsets.only(left: 16),
-      trailing: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (view.isOptional())
-            KitchenOwlSwitch(
-              value: isActive,
-              onChanged: (value) =>
-                  BlocProvider.of<Cubit>(context).setView(view, value),
-            ),
-          if (view.isOptional())
-            const VerticalDivider(
-              endIndent: 4,
-              indent: 4,
-            ),
-          if (showHandleIfNotOptional)
-            const Padding(
-              padding: EdgeInsets.only(left: 4, right: 16),
-              child: Icon(Icons.drag_handle),
-            ),
-        ],
-      ),
+    return BlocBuilder<Cubit, State>(
+      builder: (context, state) {
+        final activeCount = state.viewOrdering.where(state.isViewActive).length;
+
+        return ListTile(
+          title: Text(
+            view.toLocalizedString(context),
+          ),
+          leading: Icon(view.toSelectedIcon(context)),
+          contentPadding: EdgeInsets.only(left: 16),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // The last active view must stay visible — its switch is
+              // disabled so the view switcher can never dead-end.
+              KitchenOwlSwitch(
+                value: isActive,
+                onChanged: (!isActive || activeCount > 1)
+                    ? (value) =>
+                        BlocProvider.of<Cubit>(context).setView(view, value)
+                    : null,
+              ),
+              const VerticalDivider(
+                endIndent: 4,
+                indent: 4,
+              ),
+              if (showHandleIfNotOptional)
+                const Padding(
+                  padding: EdgeInsets.only(left: 4, right: 16),
+                  child: Icon(Icons.drag_handle),
+                ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

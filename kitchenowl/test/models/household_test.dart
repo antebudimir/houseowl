@@ -34,4 +34,29 @@ void main() {
     // Then
     expect(actual, equals(h));
   });
+  test("Household should de-/serialize hidden views", () {
+    // Given
+    final h = Household(
+      id: 1,
+      name: "Name",
+      hiddenViews: [ViewsEnum.notes, ViewsEnum.tasks],
+    );
+    // When
+    final actual = Household.fromJson(h.toJsonWithId());
+    // Then
+    expect(actual.hiddenViews, equals([ViewsEnum.notes, ViewsEnum.tasks]));
+    expect(actual.name, equals("Name"));
+  });
+  test("isViewActive respects hidden views", () {
+    // Given
+    final h = Household(
+      id: 1,
+      name: "Name",
+      hiddenViews: [ViewsEnum.notes],
+    );
+    // Then
+    expect(ViewsEnum.notes.isViewActive(h), isFalse);
+    expect(ViewsEnum.tasks.isViewActive(h), isTrue);
+    expect(ViewsEnum.more.isViewActive(h), isTrue);
+  });
 }

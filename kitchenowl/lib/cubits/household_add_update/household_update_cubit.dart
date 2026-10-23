@@ -19,6 +19,7 @@ class HouseholdUpdateCubit
           name: household.name,
           image: household.image,
           viewOrdering: household.viewOrdering ?? ViewsEnum.values,
+          hiddenViews: household.hiddenViews ?? const [],
           language: household.language,
           description: household.description ?? "",
           link: household.link ?? "",
@@ -63,6 +64,7 @@ class HouseholdUpdateCubit
     emit(HouseholdUpdateState(
       name: household.name,
       viewOrdering: household.viewOrdering ?? ViewsEnum.values,
+      hiddenViews: household.hiddenViews ?? const [],
       language: household.language,
       image: household.image,
       shoppingLists: await shoppingLists ?? const [],
@@ -101,7 +103,20 @@ class HouseholdUpdateCubit
   }
 
   @override
-  void setView(ViewsEnum view, bool value) {}
+  void setView(ViewsEnum view, bool value) {
+    final l = List.of(state.hiddenViews);
+    if (value) {
+      l.remove(view);
+    } else {
+      // Never hide the last active view — the view switcher would dead-end.
+      if (state.viewOrdering.where(state.isViewActive).length <= 1) {
+        return;
+      }
+      l.add(view);
+    }
+    emit(state.copyWith(hiddenViews: l));
+    saveHousehold();
+  }
 
   @override
   void reorderView(int oldIndex, int newIndex) {
@@ -123,6 +138,7 @@ class HouseholdUpdateCubit
       image: state.image,
       language: state.language,
       viewOrdering: state.viewOrdering,
+      hiddenViews: state.hiddenViews,
       link: state.link,
       description: state.description,
     ));
@@ -248,8 +264,7 @@ class HouseholdUpdateCubit
       if (settings.items) "items": content["items"],
       if (settings.shoppinglists) "shoppinglists": content["shoppinglists"],
     };
-    await ApiService.getInstance()
-        .importHousehold(household, content);
+    await ApiService.getInstance().importHousehold(household, content);
   }
 }
 
@@ -268,6 +283,7 @@ class HouseholdUpdateState extends HouseholdAddUpdateState {
     this.image,
     super.language,
     super.viewOrdering = ViewsEnum.values,
+    super.hiddenViews = const [],
     super.supportedLanguages,
     this.shoppingLists = const [],
     this.tags = const {},
@@ -279,6 +295,7 @@ class HouseholdUpdateState extends HouseholdAddUpdateState {
     String? image,
     String? language,
     List<ViewsEnum>? viewOrdering,
+    List<ViewsEnum>? hiddenViews,
     Map<String, String>? supportedLanguages,
     List<Member>? member,
     List<ShoppingList>? shoppingLists,
@@ -292,6 +309,7 @@ class HouseholdUpdateState extends HouseholdAddUpdateState {
         image: image ?? this.image,
         language: language ?? this.language,
         viewOrdering: viewOrdering ?? this.viewOrdering,
+        hiddenViews: hiddenViews ?? this.hiddenViews,
         supportedLanguages: supportedLanguages ?? this.supportedLanguages,
         shoppingLists: shoppingLists ?? this.shoppingLists,
         tags: tags ?? this.tags,
@@ -318,6 +336,7 @@ class LoadingHouseholdUpdateState extends HouseholdUpdateState {
     super.name,
     super.image,
     super.viewOrdering,
+    super.hiddenViews,
     super.language,
     super.supportedLanguages,
     super.link,
@@ -330,6 +349,7 @@ class LoadingHouseholdUpdateState extends HouseholdUpdateState {
     String? image,
     String? language,
     List<ViewsEnum>? viewOrdering,
+    List<ViewsEnum>? hiddenViews,
     Map<String, String>? supportedLanguages,
     List<Member>? member,
     List<ShoppingList>? shoppingLists,
@@ -343,6 +363,7 @@ class LoadingHouseholdUpdateState extends HouseholdUpdateState {
         image: image ?? this.image,
         language: language ?? this.language,
         viewOrdering: viewOrdering ?? this.viewOrdering,
+        hiddenViews: hiddenViews ?? this.hiddenViews,
         supportedLanguages: supportedLanguages ?? this.supportedLanguages,
         link: link ?? this.link,
         description: description ?? this.description,

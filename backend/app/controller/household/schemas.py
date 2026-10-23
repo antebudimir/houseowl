@@ -11,6 +11,7 @@ class AddHousehold(Schema):
     description = fields.String()
     language = fields.String()
     view_ordering = fields.List(fields.String)
+    hidden_views = fields.List(fields.String)
     member = fields.List(fields.Integer)
 
 
@@ -24,6 +25,7 @@ class UpdateHousehold(Schema):
     description = fields.String()
     language = fields.String()
     view_ordering = fields.List(fields.String)
+    hidden_views = fields.List(fields.String)
 
 
 class UpdateHouseholdMember(Schema):

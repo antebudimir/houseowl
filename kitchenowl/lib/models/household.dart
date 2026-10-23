@@ -12,6 +12,7 @@ class Household extends Model {
   final String? imageHash;
   final String? language;
   final List<ViewsEnum>? viewOrdering;
+  final List<ViewsEnum>? hiddenViews;
   final List<Member>? member;
   final ShoppingList? defaultShoppingList;
   final String? description;
@@ -25,6 +26,7 @@ class Household extends Model {
     this.imageHash,
     this.language,
     this.viewOrdering,
+    this.hiddenViews,
     this.member,
     this.defaultShoppingList,
     this.description,
@@ -45,6 +47,13 @@ class Household extends Model {
       member = List.from(map['member'].map((e) => Member.fromJson(e)));
     }
 
+    List<ViewsEnum>? hiddenViews;
+    if (map.containsKey('hidden_views')) {
+      hiddenViews = List.from(map['hidden_views']
+          .map((e) => ViewsEnum.parse(e))
+          .where((e) => e != null));
+    }
+
     return Household(
       id: map['id'],
       name: map['name'],
@@ -55,6 +64,7 @@ class Household extends Model {
       link: map['link'],
       verified: map['verified'] ?? false,
       viewOrdering: viewOrdering,
+      hiddenViews: hiddenViews,
       member: member,
       defaultShoppingList: map.containsKey("default_shopping_list")
           ? ShoppingList.fromJson(map['default_shopping_list'])
@@ -70,6 +80,7 @@ class Household extends Model {
     String? link,
     bool? verified,
     List<ViewsEnum>? viewOrdering,
+    List<ViewsEnum>? hiddenViews,
   }) =>
       Household(
         id: id,
@@ -78,6 +89,7 @@ class Household extends Model {
         imageHash: imageHash,
         language: language ?? this.language,
         viewOrdering: viewOrdering ?? this.viewOrdering,
+        hiddenViews: hiddenViews ?? this.hiddenViews,
         description: description ?? this.description,
         link: link ?? this.link,
         verified: verified ?? this.verified,
@@ -91,6 +103,7 @@ class Household extends Model {
         imageHash,
         language,
         viewOrdering,
+        hiddenViews,
         member,
         defaultShoppingList,
         description,
@@ -113,6 +126,9 @@ class Household extends Model {
     if (viewOrdering != null) {
       data['view_ordering'] = viewOrdering!.map((e) => e.toString()).toList()
         ..remove(ViewsEnum.more.toString());
+    }
+    if (hiddenViews != null) {
+      data['hidden_views'] = hiddenViews!.map((e) => e.toString()).toList();
     }
     if (description != null) {
       data['description'] = description;

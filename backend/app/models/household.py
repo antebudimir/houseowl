@@ -31,6 +31,7 @@ class Household(Model):
     verified: Mapped[bool | None] = db.Column(db.Boolean, default=False)
 
     view_ordering: Mapped[List[str]] = db.Column(DbListType(), default=list())
+    hidden_views: Mapped[List[str]] = db.Column(DbListType(), default=list())
 
     items: Mapped[List["Item"]] = cast(
         Mapped[List["Item"]],
@@ -114,6 +115,7 @@ class Household(Model):
             "name": self.name,
             "language": self.language,
             "view_ordering": self.view_ordering,
+            "hidden_views": self.hidden_views,
             "member": [m.user.username for m in getattr(self, "member")],
             "shoppinglists": [s.name for s in self.shoppinglists],
             "items": [s.obj_to_export_dict() for s in self.items],

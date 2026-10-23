@@ -33,7 +33,19 @@ class HouseholdAddCubit extends HouseholdAddUpdateCubit<HouseholdAddState> {
   }
 
   @override
-  void setView(ViewsEnum view, bool value) {}
+  void setView(ViewsEnum view, bool value) {
+    final l = List.of(state.hiddenViews);
+    if (value) {
+      l.remove(view);
+    } else {
+      // Never hide the last active view — the view switcher would dead-end.
+      if (state.viewOrdering.where(state.isViewActive).length <= 1) {
+        return;
+      }
+      l.add(view);
+    }
+    emit(state.copyWith(hiddenViews: l));
+  }
 
   @override
   void reorderView(int oldIndex, int newIndex) {
@@ -78,6 +90,7 @@ class HouseholdAddCubit extends HouseholdAddUpdateCubit<HouseholdAddState> {
       image: image,
       language: _state.language,
       viewOrdering: _state.viewOrdering,
+      hiddenViews: _state.hiddenViews,
       member: _state.members,
     ));
   }
@@ -99,6 +112,7 @@ class HouseholdAddState extends HouseholdAddUpdateState {
     this.image,
     super.language,
     super.viewOrdering = ViewsEnum.values,
+    super.hiddenViews = const [],
     super.supportedLanguages,
     this.members = const [],
   });
@@ -108,6 +122,7 @@ class HouseholdAddState extends HouseholdAddUpdateState {
     NamedByteArray? image,
     Nullable<String>? language,
     List<ViewsEnum>? viewOrdering,
+    List<ViewsEnum>? hiddenViews,
     Map<String, String>? supportedLanguages,
     List<Member>? members,
   }) =>
@@ -116,6 +131,7 @@ class HouseholdAddState extends HouseholdAddUpdateState {
         image: image ?? this.image,
         language: (language ?? Nullable(this.language)).value,
         viewOrdering: viewOrdering ?? this.viewOrdering,
+        hiddenViews: hiddenViews ?? this.hiddenViews,
         supportedLanguages: supportedLanguages ?? this.supportedLanguages,
         members: members ?? this.members,
       );

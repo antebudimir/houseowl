@@ -2,7 +2,7 @@ import gevent
 from app.config import SUPPORTED_LANGUAGES
 from app.helpers import validate_args, authorize_household, RequiredRights
 from flask import jsonify, Blueprint
-from app.errors import NotFoundRequest
+from app.errors import NotFoundRequest, InvalidUsage
 from flask_jwt_extended import current_user, jwt_required
 from app.models import Household, HouseholdMember, Shoppinglist, User
 from app.service.import_language import importLanguage
@@ -11,6 +11,19 @@ from .schemas import AddHousehold, UpdateHousehold, UpdateHouseholdMember
 from app import socketio, db
 
 household = Blueprint("household", __name__)
+
+# The view_ordering redirect dead-ends when every view is hidden, so an
+# update that would hide the last active view is rejected.
+VALID_UPDATE_VIEWS = ("items", "planned", "persons", "birthdays", "notes",
+                      "tasks", "events")
+
+
+def validate_hidden_views(ordering: list[str], hidden_views: list[str]):
+    hidden = set(hidden_views)
+    visible = [v for v in (ordering or VALID_UPDATE_VIEWS)
+               if v != "more" and v not in hidden]
+    if not visible:
+        raise InvalidUsage("Cannot hide the last active view")
 
 
 @household.route("", methods=["GET"])
@@ -51,6 +64,8 @@ def addHousehold(args):
         household.language = args["language"]
     if "view_ordering" in args:
         household.view_ordering = args["view_ordering"]
+    if "hidden_views" in args:
+        household.hidden_views = args["hidden_views"]
     if "link" in args:
         household.link = args["link"]
     if "description" in args:
@@ -105,6 +120,9 @@ def updateHousehold(args, household_id):
         gevent.spawn(importLanguage, household.id, household.language)
     if "view_ordering" in args:
         household.view_ordering = args["view_ordering"]
+    if "hidden_views" in args:
+        validate_hidden_views(household.view_ordering, args["hidden_views"])
+        household.hidden_views = args["hidden_views"]
     if "link" in args:
         household.link = args["link"].strip()[:255]
     if "description" in args:

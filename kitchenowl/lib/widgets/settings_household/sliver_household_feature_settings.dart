@@ -55,7 +55,7 @@ class SliverHouseholdFeatureSettings<
             children: state.viewOrdering
                 .sublist(0, state.viewOrdering.length - 1)
                 .map(
-                  (view) => ViewSettingsListTile<Cubit>(
+                  (view) => ViewSettingsListTile<Cubit, State>(
                     key: ValueKey(view),
                     view: view,
                     isActive: state.isViewActive(view),
