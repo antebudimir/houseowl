@@ -8,6 +8,7 @@ import 'package:kitchenowl/kitchenowl.dart';
 import 'package:kitchenowl/models/household.dart';
 import 'package:kitchenowl/models/person.dart';
 import 'package:kitchenowl/models/planned_buy.dart';
+import 'package:kitchenowl/models/tag.dart';
 import 'package:kitchenowl/models/task.dart';
 import 'package:kitchenowl/services/api/api_service.dart';
 
@@ -36,6 +37,7 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
   int? _buyId;
   late final Future<List<Person>> _persons;
   late final Future<List<PlannedBuy>> _buys;
+  late final TaskAddUpdateCubit _cubit;
   bool _isLoading = false;
 
   bool get isEditing => widget.task != null;
@@ -46,6 +48,10 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
     _nameController = TextEditingController(text: widget.task?.name ?? "");
     _descriptionController =
         TextEditingController(text: widget.task?.description ?? "");
+    _cubit = TaskAddUpdateCubit(
+      widget.household,
+      selectedTags: Set<Tag>.from(widget.task?.tags ?? const <Tag>[]),
+    );
     _recurrence = widget.task?.recurrence ?? TaskRecurrence.none;
     _priority = widget.task?.priority ?? 0;
     _dueDate = widget.task?.dueDate;
@@ -63,6 +69,7 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
+    _cubit.close();
     super.dispose();
   }
 
@@ -97,8 +104,7 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
       dueDate: _dueDate,
       assigneeId: _assigneeId,
       buyId: _buyId,
-      tags: BlocProvider.of<TaskAddUpdateCubit>(context).state.selectedTags
-          .toList(),
+      tags: _cubit.state.selectedTags.toList(),
     );
 
     final cubit = BlocProvider.of<TasksCubit>(context);
@@ -120,20 +126,23 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          isEditing
-              ? AppLocalizations.of(context)!.taskEdit
-              : AppLocalizations.of(context)!.taskAdd,
+    return BlocProvider.value(
+      value: _cubit,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            isEditing
+                ? AppLocalizations.of(context)!.taskEdit
+                : AppLocalizations.of(context)!.taskAdd,
+          ),
         ),
-      ),
-      body: Form(
-        key: _formKey,
-        child: BlocBuilder<TaskAddUpdateCubit, TaskAddUpdateState>(
-          builder: (context, tagState) => ListView(
-            padding: const EdgeInsets.all(16),
-            children: _buildFormChildren(context, tagState),
+        body: Form(
+          key: _formKey,
+          child: BlocBuilder<TaskAddUpdateCubit, TaskAddUpdateState>(
+            builder: (context, tagState) => ListView(
+              padding: const EdgeInsets.all(16),
+              children: _buildFormChildren(context, tagState),
+            ),
           ),
         ),
       ),
@@ -231,9 +240,8 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
       FutureBuilder<List<PlannedBuy>>(
         future: _buys,
         builder: (context, snapshot) {
-          final buys =
-              snapshot.data?.where((b) => !b.isAcquired).toList() ??
-                  const <PlannedBuy>[];
+          final buys = snapshot.data?.where((b) => !b.isAcquired).toList() ??
+              const <PlannedBuy>[];
 
           return DropdownButtonFormField<int?>(
             initialValue: _buyId,
@@ -254,8 +262,8 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
       KitchenOwlTagSelector(
         tags: tagState.tags,
         selectedTags: tagState.selectedTags,
-        onSelect: BlocProvider.of<TaskAddUpdateCubit>(context).selectTag,
-        onAdd: BlocProvider.of<TaskAddUpdateCubit>(context).addTag,
+        onSelect: _cubit.selectTag,
+        onAdd: _cubit.addTag,
       ),
       const SizedBox(height: 16),
       ElevatedButton(

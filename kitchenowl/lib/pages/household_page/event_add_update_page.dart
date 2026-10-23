@@ -6,6 +6,7 @@ import 'package:kitchenowl/enums/update_enum.dart';
 import 'package:kitchenowl/kitchenowl.dart';
 import 'package:kitchenowl/models/event.dart';
 import 'package:kitchenowl/models/household.dart';
+import 'package:kitchenowl/models/person.dart';
 
 class EventAddUpdatePage extends StatefulWidget {
   final Household household;
@@ -29,6 +30,7 @@ class _EventAddUpdatePageState extends State<EventAddUpdatePage> {
   late DateTime _start;
   late DateTime _end;
   late bool _allDay;
+  late final EventAddUpdateCubit _cubit;
   bool _isLoading = false;
 
   bool get isEditing => widget.event != null;
@@ -47,6 +49,11 @@ class _EventAddUpdatePageState extends State<EventAddUpdatePage> {
         DateTime(now.year, now.month, now.day, now.hour + 1);
     _end = widget.event?.end.toLocal() ?? _start.add(const Duration(hours: 1));
     _allDay = widget.event?.allDay ?? false;
+    _cubit = EventAddUpdateCubit(
+      widget.household,
+      selectedPersons:
+          Set<Person>.from(widget.event?.attendees ?? const <Person>[]),
+    );
   }
 
   @override
@@ -54,6 +61,7 @@ class _EventAddUpdatePageState extends State<EventAddUpdatePage> {
     _nameController.dispose();
     _descriptionController.dispose();
     _locationController.dispose();
+    _cubit.close();
     super.dispose();
   }
 
@@ -110,7 +118,7 @@ class _EventAddUpdatePageState extends State<EventAddUpdatePage> {
   }
 
   void _checkConflicts() {
-    BlocProvider.of<EventAddUpdateCubit>(context).checkConflicts(
+    _cubit.checkConflicts(
       start: _start.toUtc(),
       end: _end.toUtc(),
       excludeId: widget.event?.id,
@@ -133,10 +141,7 @@ class _EventAddUpdatePageState extends State<EventAddUpdatePage> {
       start: _start.toUtc(),
       end: _end.toUtc(),
       allDay: _allDay,
-      attendees: BlocProvider.of<EventAddUpdateCubit>(context)
-          .state
-          .selectedPersons
-          .toList(),
+      attendees: _cubit.state.selectedPersons.toList(),
     );
 
     final cubit = BlocProvider.of<EventsCubit>(context, listen: false);
@@ -161,122 +166,124 @@ class _EventAddUpdatePageState extends State<EventAddUpdatePage> {
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(isEditing ? loc.eventEdit : loc.eventAdd),
-      ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          children: [
-            BlocBuilder<EventAddUpdateCubit, EventAddUpdateState>(
-              builder: (context, state) {
-                if (state.conflicts.isEmpty) return const SizedBox.shrink();
-                final conflict = state.conflicts.first;
+    return BlocProvider.value(
+      value: _cubit,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(isEditing ? loc.eventEdit : loc.eventAdd),
+        ),
+        body: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            children: [
+              BlocBuilder<EventAddUpdateCubit, EventAddUpdateState>(
+                builder: (context, state) {
+                  if (state.conflicts.isEmpty) return const SizedBox.shrink();
+                  final conflict = state.conflicts.first;
 
-                return Card(
-                  color: Theme.of(context).colorScheme.errorContainer,
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.warning_rounded,
-                      color: Theme.of(context).colorScheme.onErrorContainer,
-                    ),
-                    title: Text(
-                      loc.eventConflictsWith(
-                        conflict.name,
-                        conflict.attendees.isEmpty
-                            ? ""
-                            : conflict.attendees
-                                .map((p) => p.name)
-                                .join(", "),
-                      ),
-                      style: TextStyle(
+                  return Card(
+                    color: Theme.of(context).colorScheme.errorContainer,
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.warning_rounded,
                         color: Theme.of(context).colorScheme.onErrorContainer,
                       ),
+                      title: Text(
+                        loc.eventConflictsWith(
+                          conflict.name,
+                          conflict.attendees.isEmpty
+                              ? ""
+                              : conflict.attendees
+                                  .map((p) => p.name)
+                                  .join(", "),
+                        ),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onErrorContainer,
+                        ),
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-            TextFormField(
-              controller: _nameController,
-              decoration: InputDecoration(labelText: loc.name),
-              validator: (value) =>
-                  (value == null || value.trim().isEmpty) ? loc.error : null,
-            ),
-            TextFormField(
-              controller: _descriptionController,
-              decoration: InputDecoration(labelText: loc.description),
-              maxLines: 3,
-            ),
-            TextFormField(
-              controller: _locationController,
-              decoration: InputDecoration(labelText: loc.location),
-            ),
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(loc.allDay),
-              value: _allDay,
-              onChanged: (value) => setState(() => _allDay = value),
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.calendar_today_rounded),
-              title: Text(
-                MaterialLocalizations.of(context).formatMediumDate(_start),
+                  );
+                },
               ),
-              onTap: _pickDate,
-            ),
-            if (!_allDay)
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(labelText: loc.name),
+                validator: (value) =>
+                    (value == null || value.trim().isEmpty) ? loc.error : null,
+              ),
+              TextFormField(
+                controller: _descriptionController,
+                decoration: InputDecoration(labelText: loc.description),
+                maxLines: 3,
+              ),
+              TextFormField(
+                controller: _locationController,
+                decoration: InputDecoration(labelText: loc.location),
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(loc.allDay),
+                value: _allDay,
+                onChanged: (value) => setState(() => _allDay = value),
+              ),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.access_time_rounded),
+                leading: const Icon(Icons.calendar_today_rounded),
                 title: Text(
-                  "${MaterialLocalizations.of(context).formatTimeOfDay(TimeOfDay.fromDateTime(_start))} \u2013 ${MaterialLocalizations.of(context).formatTimeOfDay(TimeOfDay.fromDateTime(_end))}",
+                  MaterialLocalizations.of(context).formatMediumDate(_start),
                 ),
-                onTap: () => _pickTime(isStart: true),
-                onLongPress: () => _pickTime(isStart: false),
+                onTap: _pickDate,
               ),
-            const SizedBox(height: 8),
-            Text(loc.attendees),
-            const SizedBox(height: 8),
-            BlocBuilder<EventAddUpdateCubit, EventAddUpdateState>(
-              builder: (context, state) {
-                if (state.persons.isEmpty) {
-                  return Text(loc.noTags);
-                }
+              if (!_allDay)
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.access_time_rounded),
+                  title: Text(
+                    "${MaterialLocalizations.of(context).formatTimeOfDay(TimeOfDay.fromDateTime(_start))} \u2013 ${MaterialLocalizations.of(context).formatTimeOfDay(TimeOfDay.fromDateTime(_end))}",
+                  ),
+                  onTap: () => _pickTime(isStart: true),
+                  onLongPress: () => _pickTime(isStart: false),
+                ),
+              const SizedBox(height: 8),
+              Text(loc.attendees),
+              const SizedBox(height: 8),
+              BlocBuilder<EventAddUpdateCubit, EventAddUpdateState>(
+                builder: (context, state) {
+                  if (state.persons.isEmpty) {
+                    return Text(loc.noTags);
+                  }
 
-                return Wrap(
-                  runSpacing: 8,
-                  spacing: 5,
-                  children: [
-                    for (final person in state.persons)
-                      FilterChip(
-                        label: Text(person.name),
-                        selected: state.selectedPersons.contains(person),
-                        onSelected: (selected) {
-                          BlocProvider.of<EventAddUpdateCubit>(context)
-                              .selectPerson(person, selected);
-                          _checkConflicts();
-                        },
-                      ),
-                  ],
-                );
-              },
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _isLoading ? null : _save,
-              child: _isLoading
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : Text(loc.save),
-            ),
-          ],
+                  return Wrap(
+                    runSpacing: 8,
+                    spacing: 5,
+                    children: [
+                      for (final person in state.persons)
+                        FilterChip(
+                          label: Text(person.name),
+                          selected: state.selectedPersons.contains(person),
+                          onSelected: (selected) {
+                            _cubit.selectPerson(person, selected);
+                            _checkConflicts();
+                          },
+                        ),
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _isLoading ? null : _save,
+                child: _isLoading
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Text(loc.save),
+              ),
+            ],
+          ),
         ),
       ),
     );

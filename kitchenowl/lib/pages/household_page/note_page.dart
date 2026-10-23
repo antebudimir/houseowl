@@ -24,9 +24,13 @@ class NotePage extends StatelessWidget {
             onPressed: () async {
               final res = await Navigator.of(context).push<UpdateEnum>(
                 MaterialPageRoute(
-                  builder: (ctx) => NoteAddUpdatePage(
-                    household: BlocProvider.of<NotesCubit>(context).household,
-                    note: note,
+                  builder: (ctx) => BlocProvider.value(
+                    value: BlocProvider.of<NotesCubit>(context),
+                    child: NoteAddUpdatePage(
+                      household:
+                          BlocProvider.of<NotesCubit>(context).household,
+                      note: note,
+                    ),
                   ),
                 ),
               );

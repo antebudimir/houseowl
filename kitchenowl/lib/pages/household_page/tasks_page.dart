@@ -84,9 +84,12 @@ class TasksPage extends StatelessWidget {
   ) async {
     final res = await Navigator.of(context).push<UpdateEnum>(
       MaterialPageRoute(
-        builder: (ctx) => TaskAddUpdatePage(
-          household: BlocProvider.of<HouseholdCubit>(context).state.household,
-          task: task,
+        builder: (ctx) => BlocProvider.value(
+          value: cubit,
+          child: TaskAddUpdatePage(
+            household: BlocProvider.of<HouseholdCubit>(context).state.household,
+            task: task,
+          ),
         ),
       ),
     );

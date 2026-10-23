@@ -27,7 +27,10 @@ class PersonPage extends StatelessWidget {
                 icon: const Icon(Icons.edit_rounded),
                 onPressed: () => Navigator.of(context).push<UpdateEnum>(
                   MaterialPageRoute(
-                    builder: (ctx) => PersonAddUpdatePage(person: person),
+                    builder: (ctx) => BlocProvider.value(
+                      value: BlocProvider.of<PersonsCubit>(context),
+                      child: PersonAddUpdatePage(person: person),
+                    ),
                   ),
                 ),
               ),

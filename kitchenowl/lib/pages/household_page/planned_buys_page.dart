@@ -62,12 +62,15 @@ class PlannedBuysPage extends StatelessWidget {
                           final res = await Navigator.of(context)
                               .push<UpdateEnum>(
                             MaterialPageRoute(
-                              builder: (ctx) => PlannedBuyAddUpdatePage(
-                                household:
-                                    BlocProvider.of<HouseholdCubit>(context)
-                                        .state
-                                        .household,
-                                plannedBuy: buy,
+                              builder: (ctx) => BlocProvider.value(
+                                value: cubit,
+                                child: PlannedBuyAddUpdatePage(
+                                  household: BlocProvider.of<HouseholdCubit>(
+                                          context)
+                                      .state
+                                      .household,
+                                  plannedBuy: buy,
+                                ),
                               ),
                             ),
                           );

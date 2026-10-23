@@ -49,9 +49,12 @@ class EventsPage extends StatelessWidget {
   ) async {
     final res = await Navigator.of(context).push<UpdateEnum>(
       MaterialPageRoute(
-        builder: (ctx) => EventAddUpdatePage(
-          household: BlocProvider.of<HouseholdCubit>(context).state.household,
-          event: event,
+        builder: (ctx) => BlocProvider.value(
+          value: cubit,
+          child: EventAddUpdatePage(
+            household: BlocProvider.of<HouseholdCubit>(context).state.household,
+            event: event,
+          ),
         ),
       ),
     );
