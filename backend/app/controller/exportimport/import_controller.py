@@ -4,6 +4,7 @@ from app.models import Household
 from app.service.importServices import (
     importItem,
     importShoppinglist,
+    importDocument,
 )
 from .schemas import ImportSchema
 from app.helpers import validate_args, authorize_household
@@ -32,6 +33,10 @@ def importData(args, household_id):
     if "shoppinglists" in args:
         for shoppinglist in args["shoppinglists"]:
             importShoppinglist(household, shoppinglist)
+
+    if "documents" in args:
+        for document in args["documents"]:
+            importDocument(household, document)
 
     app.logger.info(f"Import took: {(time.time() - t0):.3f}s")
     return jsonify({"msg": "DONE"})

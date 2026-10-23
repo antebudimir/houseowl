@@ -1,8 +1,13 @@
+import base64
+import os
 from datetime import datetime, timedelta, timezone
-from typing import Any, Self, Optional, TYPE_CHECKING, cast
-from app import db
-from app.helpers import DbModelAuthorizeMixin
+from typing import TYPE_CHECKING, Any, Optional, Self, cast
+
 from sqlalchemy.orm import Mapped
+
+from app import db
+from app.config import UPLOAD_FOLDER
+from app.helpers import DbModelAuthorizeMixin
 
 Model = db.Model
 if TYPE_CHECKING:
@@ -106,6 +111,25 @@ class Document(Model, DbModelAuthorizeMixin):
         res = super().obj_to_dict()
         res["file"] = self.file.obj_to_dict() if self.file else None
         res["contact"] = self.contact.obj_to_dict() if self.contact else None
+        return res
+
+    def obj_to_export_dict(self) -> dict[str, Any]:
+        # Portable representation: no ids, ISO expiry, contact by name and the
+        # file blob inlined as base64 so an export is self-contained.
+        res: dict[str, Any] = {
+            "title": self.title,
+            "notes": self.notes,
+            "expires_at": self.expires_at.isoformat() if self.expires_at else None,
+            "contact": self.contact.name if self.contact else None,
+            "file": None,
+        }
+        if self.file:
+            path = os.path.join(UPLOAD_FOLDER, self.file.filename)
+            data = None
+            if os.path.exists(path):
+                with open(path, "rb") as f:
+                    data = base64.b64encode(f.read()).decode()
+            res["file"] = {"filename": self.file.filename, "data": data}
         return res
 
 

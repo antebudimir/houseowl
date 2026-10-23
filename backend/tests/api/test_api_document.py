@@ -203,6 +203,123 @@ def test_document_invalid_contact_rejected(user_client_with_household, household
     assert response.status_code == 400
 
 
+def test_document_export_import_roundtrip(
+    user_client_with_household, household_id
+):
+    import base64
+    import os
+
+    file = _make_file("export_me.pdf")
+    response = user_client_with_household.post(
+        f"/api/household/{household_id}/person", json={"name": "Alice"}
+    )
+    person_name = response.get_json()["name"]
+
+    from datetime import datetime, timedelta, timezone
+
+    expiry = datetime.now(timezone.utc) + timedelta(days=30)
+    _create_document(
+        user_client_with_household,
+        household_id,
+        title="Passport",
+        notes="vault",
+        expires_at=int(expiry.timestamp() * 1000),
+        contact_id=response.get_json()["id"],
+        file_id=file.filename,
+    )
+
+    # Export
+    response = user_client_with_household.get(
+        f"/api/household/{household_id}/export/documents"
+    )
+    assert response.status_code == 200
+    docs = response.get_json()["documents"]
+    assert len(docs) == 1
+    exported = docs[0]
+    assert exported["title"] == "Passport"
+    assert exported["notes"] == "vault"
+    assert exported["contact"] == person_name
+    assert exported["expires_at"] is not None
+    assert exported["file"]["filename"] == file.filename
+    with open(os.path.join(UPLOAD_FOLDER, file.filename), "rb") as f:
+        assert base64.b64decode(exported["file"]["data"]) == f.read()
+
+    # Import into the same household is idempotent (deduped).
+    response = user_client_with_household.post(
+        f"/api/household/{household_id}/import", json={"documents": docs}
+    )
+    assert response.status_code == 200
+    response = user_client_with_household.get(
+        f"/api/household/{household_id}/document"
+    )
+    assert len(response.get_json()) == 1
+
+
+def test_document_import_recreates_file_and_links_contact(
+    user_client_with_household, household_id
+):
+    import base64
+    import os
+    from datetime import datetime, timezone
+
+    expiry = datetime(2030, 1, 2, 3, 4, 5, tzinfo=timezone.utc)
+    payload = {
+        "documents": [
+            {
+                "title": "Deed",
+                "notes": None,
+                "expires_at": expiry.isoformat(),
+                "contact": None,
+                "file": {
+                    "filename": "imported_deed.pdf",
+                    "data": base64.b64encode(b"blob").decode(),
+                },
+            }
+        ]
+    }
+    response = user_client_with_household.post(
+        f"/api/household/{household_id}/import", json=payload
+    )
+    assert response.status_code == 200
+
+    response = user_client_with_household.get(
+        f"/api/household/{household_id}/document"
+    )
+    docs = response.get_json()
+    assert len(docs) == 1
+    assert docs[0]["title"] == "Deed"
+    assert docs[0]["file"]["filename"] == "imported_deed.pdf"
+    assert File.find("imported_deed.pdf") is not None
+    with open(os.path.join(UPLOAD_FOLDER, "imported_deed.pdf"), "rb") as f:
+        assert f.read() == b"blob"
+    # ISO export round-trips through epoch-ms on the API.
+    assert docs[0]["expires_at"] == int(expiry.timestamp() * 1000)
+
+
+def test_document_import_links_existing_contact_by_name(
+    user_client_with_household, household_id
+):
+    response = user_client_with_household.post(
+        f"/api/household/{household_id}/person", json={"name": "Bob"}
+    )
+    person_id = response.get_json()["id"]
+
+    payload = {
+        "documents": [
+            {"title": "Contract", "contact": "Bob", "file": None},
+        ]
+    }
+    response = user_client_with_household.post(
+        f"/api/household/{household_id}/import", json=payload
+    )
+    assert response.status_code == 200
+
+    response = user_client_with_household.get(
+        f"/api/household/{household_id}/document"
+    )
+    assert response.get_json()[0]["contact"]["id"] == person_id
+
+
 def test_document_non_member_forbidden(
     client, user_client_with_household, household_id, admin_username, admin_password
 ):
