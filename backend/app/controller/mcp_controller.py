@@ -14,11 +14,14 @@ from app import db
 from app.config import BACKEND_VERSION
 from app.errors import NotFoundRequest
 from app.models import (
+    Event,
+    EventAttendee,
     History,
     Task,
     Household,
     HouseholdMember,
     Item,
+    Person,
     Shoppinglist,
     ShoppinglistItems,
     Tag,
@@ -180,6 +183,62 @@ def _tool_delete_task(args: dict[str, Any]) -> Any:
         raise NotFoundRequest()
     task.checkAuthorized()
     task.delete()
+    return {"deleted": True}
+
+
+def _tool_list_events(args: dict[str, Any]) -> Any:
+    household_id = int(args["household_id"])
+    _require_household_access(household_id)
+    return {"items": [e.obj_to_full_dict() for e in Event.all_from_household(household_id)]}
+
+
+def _tool_create_event(args: dict[str, Any]) -> Any:
+    household_id = int(args["household_id"])
+    _require_household_access(household_id)
+    name = str(args["name"]).strip()
+    if not name:
+        return {"created": False, "reason": "empty_name"}
+
+    from datetime import datetime, timezone
+
+    start = datetime.fromtimestamp(int(args["start"]) / 1000, timezone.utc)
+    end = datetime.fromtimestamp(int(args["end"]) / 1000, timezone.utc)
+    if end <= start:
+        return {"created": False, "reason": "end_not_after_start"}
+
+    attendee_ids = [int(a) for a in args.get("attendees", [])]
+    conflicts = Event.find_conflicts(household_id, start, end, attendee_ids)
+    if conflicts:
+        return {
+            "created": False,
+            "reason": "conflict",
+            "conflicts": [c.obj_to_full_dict() for c in conflicts],
+        }
+
+    event = Event()
+    event.household_id = household_id
+    event.name = name
+    event.start = start
+    event.end = end
+    event.all_day = bool(args.get("all_day", False))
+    if args.get("description"):
+        event.description = str(args["description"])
+    if args.get("location"):
+        event.location = str(args["location"])
+    event.save()
+    for person_id in attendee_ids:
+        person = Person.find_by_id(person_id)
+        if person and person.household_id == household_id:
+            EventAttendee(event=event, person=person).save()
+    return event.obj_to_full_dict()
+
+
+def _tool_delete_event(args: dict[str, Any]) -> Any:
+    event = Event.find_by_id(int(args["event_id"]))
+    if not event:
+        raise NotFoundRequest()
+    event.checkAuthorized()
+    event.delete()
     return {"deleted": True}
 
 
@@ -374,6 +433,49 @@ TOOLS: dict[str, tuple[dict[str, Any], Callable[[dict[str, Any]], Any]]] = {
         },
         _tool_delete_task,
     ),
+    "list_events": (
+        {
+            "type": "object",
+            "properties": {"household_id": {"type": "integer"}},
+            "required": ["household_id"],
+        },
+        _tool_list_events,
+    ),
+    "create_event": (
+        {
+            "type": "object",
+            "properties": {
+                "household_id": {"type": "integer"},
+                "name": {"type": "string"},
+                "start": {
+                    "type": "integer",
+                    "description": "UTC epoch milliseconds",
+                },
+                "end": {
+                    "type": "integer",
+                    "description": "UTC epoch milliseconds, must be after start",
+                },
+                "all_day": {"type": "boolean"},
+                "description": {"type": "string"},
+                "location": {"type": "string"},
+                "attendees": {
+                    "type": "array",
+                    "items": {"type": "integer"},
+                    "description": "Person ids; conflicting attendees block creation",
+                },
+            },
+            "required": ["household_id", "name", "start", "end"],
+        },
+        _tool_create_event,
+    ),
+    "delete_event": (
+        {
+            "type": "object",
+            "properties": {"event_id": {"type": "integer"}},
+            "required": ["event_id"],
+        },
+        _tool_delete_event,
+    ),
 }
 
 
@@ -383,7 +485,7 @@ LATEST_PROTOCOL_VERSION = SUPPORTED_PROTOCOL_VERSIONS[0]
 
 SERVER_INSTRUCTIONS = (
     "KitchenOwl manages households, each of which owns shopping lists, items, "
-    "tags and tasks. Nearly every tool is scoped to a "
+    "tags, tasks and events. Nearly every tool is scoped to a "
     "household, so call list_households first and reuse the id you get back."
 )
 

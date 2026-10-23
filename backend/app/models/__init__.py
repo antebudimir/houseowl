@@ -3,6 +3,7 @@ from .item import Item
 from .association import Association
 from .planned_buy import PlannedBuy
 from .task import Task, TaskTags, RECURRENCE_VALUES, STATUS_VALUES
+from .event import Event, EventAttendee
 from .settings import Settings
 from .history import History, Status
 from .tag import Tag
