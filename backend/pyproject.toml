@@ -3,7 +3,7 @@ name = "KitchenOwl-Backend"
 version = "0.7.10"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.13,<3.14"
 dependencies = [
     "apispec[marshmallow]>=6.8.1",
     "apispec-webframeworks>=1.2.0",
@@ -57,3 +57,6 @@ dev = [
 [tool.pyright]
 reportMissingTypeStubs = true
 typeCheckingMode = "strict"
+
+[tool.uv]
+no-build-package = ["psycopg2-binary", "sqlite-icu"]
