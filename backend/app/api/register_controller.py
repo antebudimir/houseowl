@@ -36,6 +36,9 @@ api.household.register_blueprint(
 api.household.register_blueprint(
     api.documentHousehold, url_prefix="/<int:household_id>/document"
 )
+api.household.register_blueprint(
+    api.loyaltyCardHousehold, url_prefix="/<int:household_id>/loyalty_card"
+)
 
 apiv1.register_blueprint(
     api.health, url_prefix="/health/8M4F88S8ooi4sMbLBfkkV7ctWwgibW6V"
@@ -54,6 +57,7 @@ apiv1.register_blueprint(api.tag, url_prefix="/tag")
 apiv1.register_blueprint(api.person, url_prefix="/person")
 apiv1.register_blueprint(api.note, url_prefix="/note")
 apiv1.register_blueprint(api.document, url_prefix="/document")
+apiv1.register_blueprint(api.loyaltyCard, url_prefix="/loyalty_card")
 apiv1.register_blueprint(api.user, url_prefix="/user")
 apiv1.register_blueprint(api.upload, url_prefix="/upload")
 apiv1.register_blueprint(api.analytics, url_prefix="/analytics")

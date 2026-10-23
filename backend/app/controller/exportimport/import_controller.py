@@ -5,6 +5,7 @@ from app.service.importServices import (
     importItem,
     importShoppinglist,
     importDocument,
+    importLoyaltyCard,
 )
 from .schemas import ImportSchema
 from app.helpers import validate_args, authorize_household
@@ -37,6 +38,10 @@ def importData(args, household_id):
     if "documents" in args:
         for document in args["documents"]:
             importDocument(household, document)
+
+    if "loyalty_cards" in args:
+        for loyalty_card in args["loyalty_cards"]:
+            importLoyaltyCard(household, loyalty_card)
 
     app.logger.info(f"Import took: {(time.time() - t0):.3f}s")
     return jsonify({"msg": "DONE"})

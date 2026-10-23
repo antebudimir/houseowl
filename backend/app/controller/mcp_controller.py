@@ -15,10 +15,12 @@ from app import db
 from app.config import BACKEND_VERSION
 from app.errors import NotFoundRequest
 from app.models import (
+    BARCODE_FORMATS,
     Document,
     Event,
     EventAttendee,
     History,
+    LoyaltyCard,
     Task,
     Household,
     HouseholdMember,
@@ -227,6 +229,50 @@ def _tool_create_document(args: dict[str, Any]) -> Any:
         document.contact = person
     document.save()
     return document.obj_to_full_dict()
+
+
+def _tool_list_loyalty_cards(args: dict[str, Any]) -> Any:
+    household_id = int(args["household_id"])
+    _require_household_access(household_id)
+    return {
+        "items": [
+            c.obj_to_full_dict()
+            for c in LoyaltyCard.all_from_household(household_id)
+        ]
+    }
+
+
+def _tool_create_loyalty_card(args: dict[str, Any]) -> Any:
+    household_id = int(args["household_id"])
+    _require_household_access(household_id)
+    store_name = str(args["store_name"]).strip()
+    card_number = str(args["card_number"]).strip()
+    barcode_format = str(args["barcode_format"]).strip()
+    if not store_name:
+        return {"created": False, "reason": "empty_store_name"}
+    if not card_number:
+        return {"created": False, "reason": "empty_card_number"}
+    if barcode_format not in BARCODE_FORMATS:
+        return {"created": False, "reason": "invalid_barcode_format"}
+
+    card = LoyaltyCard()
+    card.household_id = household_id
+    card.store_name = store_name
+    card.card_number = card_number
+    card.barcode_format = barcode_format
+    if args.get("notes"):
+        card.notes = str(args["notes"])
+    card.save()
+    return card.obj_to_full_dict()
+
+
+def _tool_delete_loyalty_card(args: dict[str, Any]) -> Any:
+    card = LoyaltyCard.find_by_id(int(args["loyalty_card_id"]))
+    if not card:
+        raise NotFoundRequest()
+    card.checkAuthorized()
+    card.delete()
+    return {"deleted": True}
 
 
 def _tool_list_events(args: dict[str, Any]) -> Any:
@@ -549,6 +595,40 @@ TOOLS: dict[str, tuple[dict[str, Any], Callable[[dict[str, Any]], Any]]] = {
             "required": ["household_id", "title"],
         },
         _tool_create_document,
+    ),
+    "list_loyalty_cards": (
+        {
+            "type": "object",
+            "properties": {"household_id": {"type": "integer"}},
+            "required": ["household_id"],
+        },
+        _tool_list_loyalty_cards,
+    ),
+    "create_loyalty_card": (
+        {
+            "type": "object",
+            "properties": {
+                "household_id": {"type": "integer"},
+                "store_name": {"type": "string"},
+                "card_number": {"type": "string"},
+                "barcode_format": {
+                    "type": "string",
+                    "description": "One of: "
+                    + ", ".join(sorted(BARCODE_FORMATS)),
+                },
+                "notes": {"type": "string"},
+            },
+            "required": ["household_id", "store_name", "card_number", "barcode_format"],
+        },
+        _tool_create_loyalty_card,
+    ),
+    "delete_loyalty_card": (
+        {
+            "type": "object",
+            "properties": {"loyalty_card_id": {"type": "integer"}},
+            "required": ["loyalty_card_id"],
+        },
+        _tool_delete_loyalty_card,
     ),
 }
 

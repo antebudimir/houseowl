@@ -9,6 +9,7 @@ from .history import History, Status
 from .tag import Tag
 from .person import Person
 from .document import Document
+from .loyalty_card import BARCODE_FORMATS, LoyaltyCard
 from .note import Note, NoteTags
 from .shoppinglist import ShoppinglistItems, Shoppinglist
 from .category import Category

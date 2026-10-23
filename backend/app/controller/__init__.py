@@ -12,6 +12,7 @@ from .tag import *
 from .person import *
 from .note import *
 from .document import *
+from .loyaltycard import *
 from .upload import *
 from .household import *
 from .category import *

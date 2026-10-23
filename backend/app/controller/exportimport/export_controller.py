@@ -2,7 +2,7 @@ from flask import jsonify, Blueprint
 from flask_jwt_extended import jwt_required
 from app.errors import NotFoundRequest
 from app.helpers import authorize_household
-from app.models import Document, Household, Item
+from app.models import Document, Household, Item, LoyaltyCard
 
 export = Blueprint("export", __name__)
 
@@ -45,6 +45,24 @@ def getExportDocuments(household_id):
             "documents": [
                 d.obj_to_export_dict()
                 for d in Document.all_from_household(household_id)
+            ]
+        }
+    )
+
+
+@export.route("/loyalty_cards", methods=["GET"])
+@jwt_required()
+@authorize_household()
+def getExportLoyaltyCards(household_id):
+    household = Household.find_by_id(household_id)
+    if not household:
+        raise NotFoundRequest()
+
+    return jsonify(
+        {
+            "loyalty_cards": [
+                c.obj_to_export_dict()
+                for c in LoyaltyCard.all_from_household(household_id)
             ]
         }
     )
