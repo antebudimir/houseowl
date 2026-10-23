@@ -6,6 +6,7 @@ from .onboarding import *
 from .exportimport import *
 from .settings import *
 from .plannedbuy import *
+from .task import *
 from .tag import *
 from .person import *
 from .note import *

@@ -2,6 +2,7 @@ from .user import User
 from .item import Item
 from .association import Association
 from .planned_buy import PlannedBuy
+from .task import Task, TaskTags, RECURRENCE_VALUES, STATUS_VALUES
 from .settings import Settings
 from .history import History, Status
 from .tag import Tag

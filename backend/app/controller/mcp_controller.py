@@ -15,6 +15,7 @@ from app.config import BACKEND_VERSION
 from app.errors import NotFoundRequest
 from app.models import (
     History,
+    Task,
     Household,
     HouseholdMember,
     Item,
@@ -121,6 +122,65 @@ def _tool_create_tag(args: dict[str, Any]) -> Any:
     if not tag:
         tag = Tag.create_by_name(household_id, name)
     return tag.obj_to_full_dict()
+
+
+def _tool_list_tasks(args: dict[str, Any]) -> Any:
+    household_id = int(args["household_id"])
+    _require_household_access(household_id)
+    status = str(args.get("status", "open"))
+    tasks = Task.all_from_household(household_id)
+    if status != "all":
+        tasks = [t for t in tasks if t.status == status]
+    return {"items": [t.obj_to_full_dict() for t in tasks]}
+
+
+def _tool_create_task(args: dict[str, Any]) -> Any:
+    household_id = int(args["household_id"])
+    _require_household_access(household_id)
+    name = str(args["name"]).strip()
+    if not name:
+        return {"created": False, "reason": "empty_name"}
+
+    task = Task()
+    task.household_id = household_id
+    task.name = name
+    if args.get("due_date"):
+        from datetime import date
+
+        task.due_date = date.fromisoformat(str(args["due_date"]))
+    if args.get("recurrence"):
+        task.recurrence = str(args["recurrence"])
+    task.save()
+    if args.get("tags"):
+        from app.models import TaskTags, Tag
+
+        for tag_name in args["tags"]:
+            tag = Tag.find_by_name(household_id, str(tag_name))
+            if not tag:
+                tag = Tag.create_by_name(household_id, str(tag_name))
+            TaskTags(task=task, tag=tag).save()
+    return task.obj_to_full_dict()
+
+
+def _tool_complete_task(args: dict[str, Any]) -> Any:
+    task = Task.find_by_id(int(args["task_id"]))
+    if not task:
+        raise NotFoundRequest()
+    task.checkAuthorized()
+    successor = task.complete()
+    res = {"task": task.obj_to_full_dict()}
+    if successor:
+        res["next_occurrence"] = successor.obj_to_full_dict()
+    return res
+
+
+def _tool_delete_task(args: dict[str, Any]) -> Any:
+    task = Task.find_by_id(int(args["task_id"]))
+    if not task:
+        raise NotFoundRequest()
+    task.checkAuthorized()
+    task.delete()
+    return {"deleted": True}
 
 
 def _tool_create_shoppinglist(args: dict[str, Any]) -> Any:
@@ -270,6 +330,50 @@ TOOLS: dict[str, tuple[dict[str, Any], Callable[[dict[str, Any]], Any]]] = {
         },
         _tool_remove_item_from_list,
     ),
+    "list_tasks": (
+        {
+            "type": "object",
+            "properties": {
+                "household_id": {"type": "integer"},
+                "status": {"type": "string", "enum": ["open", "done", "all"]},
+            },
+            "required": ["household_id"],
+        },
+        _tool_list_tasks,
+    ),
+    "create_task": (
+        {
+            "type": "object",
+            "properties": {
+                "household_id": {"type": "integer"},
+                "name": {"type": "string"},
+                "due_date": {"type": "string", "description": "ISO date YYYY-MM-DD"},
+                "recurrence": {
+                    "type": "string",
+                    "enum": ["none", "daily", "weekly", "biweekly", "monthly", "yearly"],
+                },
+                "tags": {"type": "array", "items": {"type": "string"}},
+            },
+            "required": ["household_id", "name"],
+        },
+        _tool_create_task,
+    ),
+    "complete_task": (
+        {
+            "type": "object",
+            "properties": {"task_id": {"type": "integer"}},
+            "required": ["task_id"],
+        },
+        _tool_complete_task,
+    ),
+    "delete_task": (
+        {
+            "type": "object",
+            "properties": {"task_id": {"type": "integer"}},
+            "required": ["task_id"],
+        },
+        _tool_delete_task,
+    ),
 }
 
 
@@ -279,7 +383,7 @@ LATEST_PROTOCOL_VERSION = SUPPORTED_PROTOCOL_VERSIONS[0]
 
 SERVER_INSTRUCTIONS = (
     "KitchenOwl manages households, each of which owns shopping lists, items, "
-    "tags, notes and planned buys. Nearly every tool is scoped to a "
+    "tags and tasks. Nearly every tool is scoped to a "
     "household, so call list_households first and reuse the id you get back."
 )
 
