@@ -297,6 +297,14 @@ final router = GoRouter(
                 child: const TasksPage(),
               ),
             ),
+            GoRoute(
+              path: "events",
+              pageBuilder: (context, state) => FadeThroughTransitionPage(
+                key: state.pageKey,
+                name: state.name,
+                child: const EventsPage(),
+              ),
+            ),
           ],
         ),
       ],

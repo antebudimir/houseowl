@@ -9,6 +9,7 @@ import 'package:kitchenowl/models/household.dart';
 import 'package:kitchenowl/pages/household_page/note_add_update_page.dart';
 import 'package:kitchenowl/pages/household_page/person_add_update_page.dart';
 import 'package:kitchenowl/pages/household_page/planned_buy_add_update_page.dart';
+import 'package:kitchenowl/pages/household_page/event_add_update_page.dart';
 import 'package:kitchenowl/pages/household_page/task_add_update_page.dart';
 import 'package:kitchenowl/widgets/shoppinglist_confirm_remove_fab.dart';
 
@@ -19,6 +20,7 @@ enum ViewsEnum {
   birthdays,
   notes,
   tasks,
+  events,
   more;
 
   String toLocalizedString(BuildContext context) {
@@ -31,6 +33,7 @@ enum ViewsEnum {
       loc.birthdays,
       loc.notes,
       loc.tasks,
+      loc.events,
       loc.more,
     ][index];
   }
@@ -45,6 +48,7 @@ enum ViewsEnum {
       loc.birthdays,
       loc.notes,
       loc.tasks,
+      loc.events,
       loc.more,
     ][index];
   }
@@ -72,6 +76,7 @@ enum ViewsEnum {
       Icons.cake_outlined,
       Icons.sticky_note_2_outlined,
       Icons.checklist_outlined,
+      Icons.event_outlined,
       App.isOffline ? Icons.cloud_off_rounded : Icons.house_rounded,
     ][index];
   }
@@ -84,6 +89,7 @@ enum ViewsEnum {
       Icons.cake_rounded,
       Icons.sticky_note_2_rounded,
       Icons.checklist_rounded,
+      Icons.event_rounded,
       App.isOffline ? Icons.cloud_off_rounded : Icons.house_rounded,
     ][index];
   }
@@ -94,6 +100,7 @@ enum ViewsEnum {
       true,
       false,
       false,
+      true,
       true,
       true,
     ][index];
@@ -128,6 +135,24 @@ enum ViewsEnum {
                 onPressed: () => Navigator.of(context).push<UpdateEnum>(
                   MaterialPageRoute(
                     builder: (ctx) => TaskAddUpdatePage(
+                      household: BlocProvider.of<HouseholdCubit>(context)
+                          .state
+                          .household,
+                    ),
+                  ),
+                ),
+                child: const Icon(Icons.add_rounded),
+              )
+            : null;
+      case ViewsEnum.events:
+        return !BlocProvider.of<AuthCubit>(context, listen: true)
+                .state
+                .isOffline
+            ? FloatingActionButton(
+                tooltip: AppLocalizations.of(context)!.eventAdd,
+                onPressed: () => Navigator.of(context).push<UpdateEnum>(
+                  MaterialPageRoute(
+                    builder: (ctx) => EventAddUpdatePage(
                       household: BlocProvider.of<HouseholdCubit>(context)
                           .state
                           .household,
@@ -178,7 +203,12 @@ enum ViewsEnum {
     return true;
   }
 
-  /// Adds all missing views
+  /// Adds all missing views.
+  ///
+  /// View orderings are persisted as view name strings (see
+  /// Household.viewOrdering), so appending a new enum value never needs a
+  /// data migration — old orderings simply gain the new view at the end
+  /// via this method.
   static List<ViewsEnum> addMissing(Iterable<ViewsEnum> iterable) {
     final l = iterable.toList();
     l.addAll(ViewsEnum.values.where((e) => !iterable.contains(e)));
@@ -203,6 +233,8 @@ enum ViewsEnum {
         return ViewsEnum.notes;
       case 'tasks':
         return ViewsEnum.tasks;
+      case 'events':
+        return ViewsEnum.events;
       case 'profile':
       case 'more':
         return ViewsEnum.more;
