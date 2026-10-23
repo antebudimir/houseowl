@@ -1,4 +1,7 @@
 export 'more.dart';
+export 'document_add_update_page.dart';
+export 'document_page.dart';
+export 'documents_page.dart';
 export 'note_add_update_page.dart';
 export 'note_page.dart';
 export 'notes_page.dart';

@@ -282,6 +282,14 @@ final router = GoRouter(
               ),
             ),
             GoRoute(
+              path: "documents",
+              pageBuilder: (context, state) => FadeThroughTransitionPage(
+                key: state.pageKey,
+                name: state.name,
+                child: const DocumentsPage(),
+              ),
+            ),
+            GoRoute(
               path: "planned",
               pageBuilder: (context, state) => FadeThroughTransitionPage(
                 key: state.pageKey,

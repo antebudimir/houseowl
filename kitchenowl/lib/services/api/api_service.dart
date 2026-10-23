@@ -19,6 +19,7 @@ export 'import_export.dart';
 export 'planned_buy.dart';
 export 'task.dart';
 export 'event.dart';
+export 'document.dart';
 export 'tag.dart';
 export 'upload.dart';
 export 'category.dart';

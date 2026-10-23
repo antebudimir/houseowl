@@ -6,11 +6,13 @@ import 'package:kitchenowl/cubits/household_cubit.dart';
 import 'package:kitchenowl/cubits/persons_cubit.dart';
 import 'package:kitchenowl/cubits/planned_buys_cubit.dart';
 import 'package:kitchenowl/cubits/notes_cubit.dart';
+import 'package:kitchenowl/cubits/documents_cubit.dart';
 import 'package:kitchenowl/cubits/tasks_cubit.dart';
 import 'package:kitchenowl/cubits/events_cubit.dart';
 import 'package:kitchenowl/enums/update_enum.dart';
 import 'package:kitchenowl/kitchenowl.dart';
 import 'package:kitchenowl/models/household.dart';
+import 'package:kitchenowl/pages/household_page/document_add_update_page.dart';
 import 'package:kitchenowl/pages/household_page/note_add_update_page.dart';
 import 'package:kitchenowl/pages/household_page/person_add_update_page.dart';
 import 'package:kitchenowl/pages/household_page/planned_buy_add_update_page.dart';
@@ -24,6 +26,7 @@ enum ViewsEnum {
   persons,
   birthdays,
   notes,
+  documents,
   tasks,
   events,
   more;
@@ -37,6 +40,7 @@ enum ViewsEnum {
       loc.persons,
       loc.birthdays,
       loc.notes,
+      loc.documents,
       loc.tasks,
       loc.events,
       loc.more,
@@ -52,6 +56,7 @@ enum ViewsEnum {
       loc.persons,
       loc.birthdays,
       loc.notes,
+      loc.documents,
       loc.tasks,
       loc.events,
       loc.more,
@@ -80,6 +85,7 @@ enum ViewsEnum {
       Icons.people_outlined,
       Icons.cake_outlined,
       Icons.sticky_note_2_outlined,
+      Icons.folder_outlined,
       Icons.checklist_outlined,
       Icons.event_outlined,
       App.isOffline ? Icons.cloud_off_rounded : Icons.house_rounded,
@@ -93,6 +99,7 @@ enum ViewsEnum {
       Icons.people_rounded,
       Icons.cake_rounded,
       Icons.sticky_note_2_rounded,
+      Icons.folder_rounded,
       Icons.checklist_rounded,
       Icons.event_rounded,
       App.isOffline ? Icons.cloud_off_rounded : Icons.house_rounded,
@@ -105,6 +112,7 @@ enum ViewsEnum {
       true,
       false,
       false,
+      true,
       true,
       true,
       true,
@@ -209,6 +217,22 @@ enum ViewsEnum {
           ),
           child: const Icon(Icons.add_rounded),
         );
+      case ViewsEnum.documents:
+        return FloatingActionButton(
+          tooltip: AppLocalizations.of(context)!.documentAdd,
+          onPressed: () => Navigator.of(context).push<UpdateEnum>(
+            MaterialPageRoute(
+              builder: (ctx) => BlocProvider.value(
+                value: BlocProvider.of<DocumentsCubit>(context),
+                child: DocumentAddUpdatePage(
+                  household:
+                      BlocProvider.of<HouseholdCubit>(context).state.household,
+                ),
+              ),
+            ),
+          ),
+          child: const Icon(Icons.add_rounded),
+        );
       case ViewsEnum.items:
         return App.settings.shoppingListTapToRemove
             ? null
@@ -252,6 +276,8 @@ enum ViewsEnum {
         return ViewsEnum.birthdays;
       case 'notes':
         return ViewsEnum.notes;
+      case 'documents':
+        return ViewsEnum.documents;
       case 'tasks':
         return ViewsEnum.tasks;
       case 'events':
