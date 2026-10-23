@@ -12,6 +12,26 @@ features, that's the same commit.
 
 ## [Unreleased]
 
+### Fixed
+
+- The note, task, and event add/edit pages crashed on open ("Looking up a
+  deactivated widget's ancestor" / provider-not-found): their editor cubits are
+  now provided by the pages themselves, and every add/edit push site injects
+  the owning list cubit (tasks, persons, notes, planned buys, events) so saves
+  update the list in place. Existing tags/attendees are preselected when
+  editing
+- The shopping list no longer flashes the loading skeleton when refreshing or
+  switching back to an already known-empty list
+- The household settings view editor now offers a visibility switch for every
+  view (not just optional ones); the last active view can never be hidden (its
+  switch is disabled and the backend rejects hiding all views)
+
+### Changed
+
+- Households gained a dedicated `hidden_views` column (migration
+  `b8e4f2a7c9d1`); `ViewsEnum.isViewActive` now checks it instead of always
+  returning true, and newly added views default to visible
+
 ### Added
 
 - Planned buys: a new "Planned" view (replacing the balances view slot in the
