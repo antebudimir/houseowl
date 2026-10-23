@@ -1,5 +1,5 @@
-from datetime import datetime
-from typing import Self, Optional, TYPE_CHECKING, cast
+from datetime import datetime, timedelta, timezone
+from typing import Any, Self, Optional, TYPE_CHECKING, cast
 from app import db
 from app.helpers import DbModelAuthorizeMixin
 from sqlalchemy.orm import Mapped
@@ -60,6 +60,53 @@ class Document(Model, DbModelAuthorizeMixin):
         Find the row with specified id
         """
         return cls.query.filter(cls.id == id).first()
+
+    @classmethod
+    def all_from_household(cls, household_id: int) -> list[Self]:
+        return (
+            cls.query.filter(cls.household_id == household_id)
+            .order_by(cls.updated_at.desc(), cls.id.desc())
+            .all()
+        )
+
+    @classmethod
+    def search(cls, household_id: int, query: str) -> list[Self]:
+        # Server-side ILIKE over title and notes, mirroring Note.search.
+        looking_for = f"%{query}%"
+        return (
+            cls.query.filter(cls.household_id == household_id)
+            .filter(
+                db.or_(
+                    cls.title.ilike(looking_for),
+                    cls.notes.ilike(looking_for),
+                )
+            )
+            .order_by(cls.updated_at.desc(), cls.id.desc())
+            .all()
+        )
+
+    @classmethod
+    def find_expiring(cls, household_id: int, days: int) -> list[Self]:
+        # No lower bound: already-expired documents are the most actionable
+        # entries in the vault (an expired passport still needs attention).
+        # Stored datetimes are naive-UTC on SQLite; compare with naive UTC so
+        # the query works identically on all backends.
+        cutoff = datetime.now(timezone.utc).replace(tzinfo=None) + timedelta(
+            days=days
+        )
+        return (
+            cls.query.filter(cls.household_id == household_id)
+            .filter(cls.expires_at.isnot(None))
+            .filter(cls.expires_at <= cutoff)
+            .order_by(cls.expires_at.asc())
+            .all()
+        )
+
+    def obj_to_full_dict(self) -> dict[str, Any]:
+        res = super().obj_to_dict()
+        res["file"] = self.file.obj_to_dict() if self.file else None
+        res["contact"] = self.contact.obj_to_dict() if self.contact else None
+        return res
 
 
 from datetime import datetime  # noqa: E402

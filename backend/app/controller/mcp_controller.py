@@ -4,6 +4,7 @@ import json
 import uuid
 from collections.abc import Callable
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from queue import Empty, Queue
 from typing import Any
 
@@ -14,6 +15,7 @@ from app import db
 from app.config import BACKEND_VERSION
 from app.errors import NotFoundRequest
 from app.models import (
+    Document,
     Event,
     EventAttendee,
     History,
@@ -184,6 +186,47 @@ def _tool_delete_task(args: dict[str, Any]) -> Any:
     task.checkAuthorized()
     task.delete()
     return {"deleted": True}
+
+
+def _tool_list_documents(args: dict[str, Any]) -> Any:
+    household_id = int(args["household_id"])
+    _require_household_access(household_id)
+    expiring_within = args.get("expiring_within")
+    if expiring_within is not None:
+        return {
+            "items": [
+                d.obj_to_full_dict()
+                for d in Document.find_expiring(household_id, int(expiring_within))
+            ]
+        }
+    return {
+        "items": [d.obj_to_full_dict() for d in Document.all_from_household(household_id)]
+    }
+
+
+def _tool_create_document(args: dict[str, Any]) -> Any:
+    household_id = int(args["household_id"])
+    _require_household_access(household_id)
+    title = str(args["title"]).strip()
+    if not title:
+        return {"created": False, "reason": "empty_title"}
+
+    document = Document()
+    document.household_id = household_id
+    document.title = title
+    if args.get("notes"):
+        document.notes = str(args["notes"])
+    if args.get("expires_at") is not None:
+        document.expires_at = datetime.fromtimestamp(
+            int(args["expires_at"]) / 1000, timezone.utc
+        )
+    if args.get("contact_id"):
+        person = Person.find_by_id(int(args["contact_id"]))
+        if not person or person.household_id != household_id:
+            return {"created": False, "reason": "invalid_contact"}
+        document.contact = person
+    document.save()
+    return document.obj_to_full_dict()
 
 
 def _tool_list_events(args: dict[str, Any]) -> Any:
@@ -475,6 +518,37 @@ TOOLS: dict[str, tuple[dict[str, Any], Callable[[dict[str, Any]], Any]]] = {
             "required": ["event_id"],
         },
         _tool_delete_event,
+    ),
+    "list_documents": (
+        {
+            "type": "object",
+            "properties": {
+                "household_id": {"type": "integer"},
+                "expiring_within": {
+                    "type": "integer",
+                    "description": "Only documents whose expires_at is within this many days (includes already-expired)",
+                },
+            },
+            "required": ["household_id"],
+        },
+        _tool_list_documents,
+    ),
+    "create_document": (
+        {
+            "type": "object",
+            "properties": {
+                "household_id": {"type": "integer"},
+                "title": {"type": "string"},
+                "notes": {"type": "string"},
+                "expires_at": {
+                    "type": "integer",
+                    "description": "UTC epoch milliseconds",
+                },
+                "contact_id": {"type": "integer"},
+            },
+            "required": ["household_id", "title"],
+        },
+        _tool_create_document,
     ),
 }
 

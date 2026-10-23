@@ -11,6 +11,7 @@ from .event import *
 from .tag import *
 from .person import *
 from .note import *
+from .document import *
 from .upload import *
 from .household import *
 from .category import *
