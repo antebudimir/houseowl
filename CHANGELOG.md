@@ -48,6 +48,28 @@ features, that's the same commit.
 
 ### Added
 
+- Documents Vault: a new "Documents" view lists household documents as tiles
+  with title, filename, and expiry badges (red for expired, amber when
+  expiring within 30 days). A pinned "Expiring soon" section (shown on the
+  unfiltered list, sorted soonest-first, expired included) surfaces the
+  time-sensitive entries. Add/edit page offers title, markdown notes, a
+  clearable expiry date, a person contact from the household directory, and a
+  file attachment uploaded via `/api/upload`. Filter chips narrow the list to
+  entries expiring within 30 or 90 days, and search is server-backed.
+  Online-only for v1 (no offline cache or queue); real-time updates via the
+  `document:update` Socket.IO event
+- Backend `Document` model (nullable `expires_at` indexed for expiry queries,
+  `file_id → file.filename` attachment deleted alongside the document,
+  `contact_id → person` with `SET NULL`), `/api/household/<id>/document`
+  (list with `?search=` / `?expiring_within=30d|90d`, create) +
+  `/api/document/<id>` (get/update/delete) endpoints, socket events, and MCP
+  tools; migration `b2f8d5a6c9e1` (commits `7ac27bad`, `a1d5bf9d`)
+- Document export/import: `GET /api/household/<id>/export/documents` returns
+  a portable, self-contained export (no ids, ISO expiry, contact by name,
+  file blob inlined as base64); the `/import` endpoint accepts a
+  `documents` list, recreates file blobs, links contacts that already exist
+  in the target household by name (never inventing person rows), and is
+  idempotent on re-import (commit `d0559701`)
 - Planned buys: a new "Planned" view (replacing the balances view slot in the
   household navigation) lists buys grouped into status sections — Idea,
   Planned, Ordered, Acquired — sorted by status, then target date (nulls
@@ -142,6 +164,22 @@ features, that's the same commit.
   `delete_event`
 
 ### Known limitations
+- Note creation does not reject whitespace-only titles: the marshmallow
+  `_not_blank` validator attached in the note schema is **inert** (it is never
+  invoked by `validate_args`), so empty-titled notes can be stored. Deferred —
+  fixing it belongs with the planned fork rebranding pass
+- A **fresh SQLite clone cannot replay the full migration chain**: the
+  `remove_recipes` migration fails with a foreign-key error when run from
+  scratch (an existing database that already has the tables is unaffected).
+  Deferred to the rebranding pass alongside a `make smoke-migration`-from-zero
+  target
+- `kitchenowl/lib/gen/l10n` (generated Flutter localizations) is gitignored;
+  a fresh client clone must run `flutter gen-l10n --arb-dir=lib/l10n
+  --output-dir=lib/gen/l10n --template-arb-file=app_en.arb
+  --output-localization-file=app_localizations.dart --no-synthetic-package`
+  (or `flutter run`/`flutter build`, which generate it implicitly) before the
+  analyzer sees `AppLocalizations`. Wiring it into the build hook is deferred
+  to the rebranding pass
 - Events are **online-only** for v1 (no offline cache or queue), and the
   conflict check is a hard block rather than a warning — accepted for a
   family app. Deleting a person silently removes their attendance from
