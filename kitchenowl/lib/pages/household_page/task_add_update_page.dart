@@ -212,9 +212,12 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
               : loc.dueDate,
         ),
         trailing: _dueDate != null
-            ? IconButton(
-                icon: const Icon(Icons.clear_rounded),
-                onPressed: () => setState(() => _dueDate = null),
+            ? Material(
+                type: MaterialType.transparency,
+                child: IconButton(
+                  icon: const Icon(Icons.clear_rounded),
+                  onPressed: () => setState(() => _dueDate = null),
+                ),
               )
             : null,
         onTap: _selectDueDate,
@@ -227,12 +230,19 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
           return DropdownButtonFormField<int?>(
             initialValue: _assigneeId,
             decoration: InputDecoration(labelText: loc.assignee),
-            items: [
-              const DropdownMenuItem(value: null, child: Text("\u2014")),
-              ...persons.map(
-                (p) => DropdownMenuItem(value: p.id, child: Text(p.name)),
-              ),
-            ],
+            items: persons.isEmpty
+                ? const <DropdownMenuItem<int?>>[]
+                : [
+                    const DropdownMenuItem(value: null, child: Text("\u2014")),
+                    // Dedupe by id: duplicated entries would trip the
+                    // DropdownButtonFormField value-uniqueness assertion.
+                    ...{
+                      for (final p in persons) p.id: p,
+                    }.values.map(
+                          (p) => DropdownMenuItem(
+                              value: p.id, child: Text(p.name)),
+                        ),
+                  ],
             onChanged: (value) => setState(() => _assigneeId = value),
           );
         },
@@ -246,12 +256,19 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
           return DropdownButtonFormField<int?>(
             initialValue: _buyId,
             decoration: InputDecoration(labelText: loc.buyLink),
-            items: [
-              const DropdownMenuItem(value: null, child: Text("\u2014")),
-              ...buys.map(
-                (b) => DropdownMenuItem(value: b.id, child: Text(b.name)),
-              ),
-            ],
+            items: buys.isEmpty
+                ? const <DropdownMenuItem<int?>>[]
+                : [
+                    const DropdownMenuItem(value: null, child: Text("\u2014")),
+                    // Dedupe by id: duplicated entries would trip the
+                    // DropdownButtonFormField value-uniqueness assertion.
+                    ...{
+                      for (final b in buys) b.id: b,
+                    }.values.map(
+                          (b) => DropdownMenuItem(
+                              value: b.id, child: Text(b.name)),
+                        ),
+                  ],
             onChanged: (value) => setState(() => _buyId = value),
           );
         },

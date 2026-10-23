@@ -235,9 +235,12 @@ class _PlannedBuyAddUpdatePageState extends State<PlannedBuyAddUpdatePage> {
               : loc.targetDate,
         ),
         trailing: _targetDate != null
-            ? IconButton(
-                icon: const Icon(Icons.clear_rounded),
-                onPressed: () => setState(() => _targetDate = null),
+            ? Material(
+                type: MaterialType.transparency,
+                child: IconButton(
+                  icon: const Icon(Icons.clear_rounded),
+                  onPressed: () => setState(() => _targetDate = null),
+                ),
               )
             : null,
         onTap: _selectTargetDate,

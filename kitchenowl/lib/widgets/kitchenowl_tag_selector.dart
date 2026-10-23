@@ -41,25 +41,28 @@ class KitchenOwlTagSelector extends StatelessWidget {
 
     Widget widget = Tooltip(
       message: AppLocalizations.of(context)!.addTag,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(50),
-        onTap: () async {
-          final res = await showDialog<String>(
-            context: context,
-            builder: (BuildContext context) {
-              return TextDialog(
-                title: AppLocalizations.of(context)!.addTag,
-                doneText: AppLocalizations.of(context)!.add,
-                hintText: AppLocalizations.of(context)!.name,
-                isInputValid: (s) => s.isNotEmpty,
-              );
-            },
-          );
-          if (res != null) {
-            onAdd(res);
-          }
-        },
-        child: const Icon(Icons.add),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(50),
+          onTap: () async {
+            final res = await showDialog<String>(
+              context: context,
+              builder: (BuildContext context) {
+                return TextDialog(
+                  title: AppLocalizations.of(context)!.addTag,
+                  doneText: AppLocalizations.of(context)!.add,
+                  hintText: AppLocalizations.of(context)!.name,
+                  isInputValid: (s) => s.isNotEmpty,
+                );
+              },
+            );
+            if (res != null) {
+              onAdd(res);
+            }
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
     );
 
@@ -67,13 +70,19 @@ class KitchenOwlTagSelector extends StatelessWidget {
       children = [Text(AppLocalizations.of(context)!.noTags)];
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Wrap(
-        runSpacing: 8,
-        spacing: 5,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: children + [widget],
+    // Wrap everything in a plain Flutter [Material]: pages hosting this
+    // selector may use the material_ui fork, whose Scaffold provides the
+    // fork's own Material type that Flutter widgets cannot find.
+    return Material(
+      type: MaterialType.transparency,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Wrap(
+          runSpacing: 8,
+          spacing: 5,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: children + [widget],
+        ),
       ),
     );
   }

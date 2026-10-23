@@ -4,6 +4,7 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart' as m;
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,12 +56,10 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> with WidgetsBindingObserver {
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
 
     final ImagePickerPlatform imagePickerPlatform =
         ImagePickerPlatform.instance;
@@ -193,7 +192,15 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                   builder: (context, child) =>
                       AnnotatedRegion<SystemUiOverlayStyle>(
                     value: _getSystemUI(context, state),
-                    child: child ?? const SizedBox(),
+                    // Provide a plain Flutter [Material] above the navigator:
+                    // pages built with Flutter material widgets (ListTile,
+                    // InkWell, table_calendar, ...) may live under the
+                    // material_ui fork's Scaffold, whose Material is a
+                    // different type Flutter widgets cannot find.
+                    child: m.Material(
+                      type: m.MaterialType.transparency,
+                      child: child ?? const SizedBox(),
+                    ),
                   ),
                   onGenerateTitle: (BuildContext context) =>
                       AppLocalizations.of(context)!.appTitle,
@@ -256,5 +263,4 @@ class _AppState extends State<App> with WidgetsBindingObserver {
         );
     }
   }
-
 }
