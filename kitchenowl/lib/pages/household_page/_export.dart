@@ -7,5 +7,6 @@ export 'persons_page.dart';
 export 'birthdays_page.dart';
 export 'person_page.dart';
 export 'planned_buys_page.dart';
+export 'tasks_page.dart';
 export 'planned_buy_add_update_page.dart';
 export 'shoppinglist.dart';

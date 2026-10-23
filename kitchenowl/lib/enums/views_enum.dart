@@ -9,6 +9,7 @@ import 'package:kitchenowl/models/household.dart';
 import 'package:kitchenowl/pages/household_page/note_add_update_page.dart';
 import 'package:kitchenowl/pages/household_page/person_add_update_page.dart';
 import 'package:kitchenowl/pages/household_page/planned_buy_add_update_page.dart';
+import 'package:kitchenowl/pages/household_page/task_add_update_page.dart';
 import 'package:kitchenowl/widgets/shoppinglist_confirm_remove_fab.dart';
 
 enum ViewsEnum {
@@ -17,6 +18,7 @@ enum ViewsEnum {
   persons,
   birthdays,
   notes,
+  tasks,
   more;
 
   String toLocalizedString(BuildContext context) {
@@ -28,6 +30,7 @@ enum ViewsEnum {
       loc.persons,
       loc.birthdays,
       loc.notes,
+      loc.tasks,
       loc.more,
     ][index];
   }
@@ -41,6 +44,7 @@ enum ViewsEnum {
       loc.persons,
       loc.birthdays,
       loc.notes,
+      loc.tasks,
       loc.more,
     ][index];
   }
@@ -67,6 +71,7 @@ enum ViewsEnum {
       Icons.people_outlined,
       Icons.cake_outlined,
       Icons.sticky_note_2_outlined,
+      Icons.checklist_outlined,
       App.isOffline ? Icons.cloud_off_rounded : Icons.house_rounded,
     ][index];
   }
@@ -78,6 +83,7 @@ enum ViewsEnum {
       Icons.people_rounded,
       Icons.cake_rounded,
       Icons.sticky_note_2_rounded,
+      Icons.checklist_rounded,
       App.isOffline ? Icons.cloud_off_rounded : Icons.house_rounded,
     ][index];
   }
@@ -88,6 +94,7 @@ enum ViewsEnum {
       true,
       false,
       false,
+      true,
       true,
     ][index];
   }
@@ -103,6 +110,24 @@ enum ViewsEnum {
                 onPressed: () => Navigator.of(context).push<UpdateEnum>(
                   MaterialPageRoute(
                     builder: (ctx) => PlannedBuyAddUpdatePage(
+                      household: BlocProvider.of<HouseholdCubit>(context)
+                          .state
+                          .household,
+                    ),
+                  ),
+                ),
+                child: const Icon(Icons.add_rounded),
+              )
+            : null;
+      case ViewsEnum.tasks:
+        return !BlocProvider.of<AuthCubit>(context, listen: true)
+                .state
+                .isOffline
+            ? FloatingActionButton(
+                tooltip: AppLocalizations.of(context)!.taskAdd,
+                onPressed: () => Navigator.of(context).push<UpdateEnum>(
+                  MaterialPageRoute(
+                    builder: (ctx) => TaskAddUpdatePage(
                       household: BlocProvider.of<HouseholdCubit>(context)
                           .state
                           .household,
@@ -176,6 +201,8 @@ enum ViewsEnum {
         return ViewsEnum.birthdays;
       case 'notes':
         return ViewsEnum.notes;
+      case 'tasks':
+        return ViewsEnum.tasks;
       case 'profile':
       case 'more':
         return ViewsEnum.more;

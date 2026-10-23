@@ -6,6 +6,7 @@ import 'package:kitchenowl/cubits/planned_buys_cubit.dart';
 import 'package:kitchenowl/cubits/household_cubit.dart';
 import 'package:kitchenowl/cubits/persons_cubit.dart';
 import 'package:kitchenowl/cubits/notes_cubit.dart';
+import 'package:kitchenowl/cubits/tasks_cubit.dart';
 import 'package:kitchenowl/cubits/shoppinglist_cubit.dart';
 import 'package:kitchenowl/enums/views_enum.dart';
 import 'package:kitchenowl/models/household.dart';
@@ -39,6 +40,7 @@ class _HouseholdPageState extends State<HouseholdPage>
   late final PlannedBuysCubit plannedBuysCubit;
   late final PersonsCubit personsCubit;
   late final NotesCubit notesCubit;
+  late final TasksCubit tasksCubit;
 
   @override
   void initState() {
@@ -48,10 +50,14 @@ class _HouseholdPageState extends State<HouseholdPage>
     plannedBuysCubit = PlannedBuysCubit(widget.household);
     personsCubit = PersonsCubit(widget.household);
     notesCubit = NotesCubit(widget.household);
+    tasksCubit = TasksCubit(widget.household);
     WidgetsBinding.instance.addObserver(this);
 
     if (router.state.uri.path.contains("planned")) {
       plannedBuysCubit.refresh();
+    }
+    if (router.state.uri.path.contains("tasks")) {
+      tasksCubit.refresh();
     }
     if (router.state.uri.path.contains("persons") ||
         router.state.uri.path.contains("birthdays")) {
@@ -59,6 +65,7 @@ class _HouseholdPageState extends State<HouseholdPage>
     }
     if (router.state.uri.path.contains("notes")) {
       notesCubit.refresh();
+      tasksCubit.refresh();
     }
   }
 
@@ -83,6 +90,7 @@ class _HouseholdPageState extends State<HouseholdPage>
     plannedBuysCubit.close();
     personsCubit.close();
     notesCubit.close();
+    tasksCubit.close();
     super.dispose();
   }
 
@@ -108,6 +116,9 @@ class _HouseholdPageState extends State<HouseholdPage>
     if (router.state.uri.path.contains("planned")) {
       plannedBuysCubit.refresh();
     }
+    if (router.state.uri.path.contains("tasks")) {
+      tasksCubit.refresh();
+    }
   }
 
   void _onItemTapped(
@@ -126,6 +137,9 @@ class _HouseholdPageState extends State<HouseholdPage>
         break;
       case ViewsEnum.planned:
         plannedBuysCubit.refresh();
+        break;
+      case ViewsEnum.tasks:
+        tasksCubit.refresh();
         break;
       case ViewsEnum.persons:
       case ViewsEnum.birthdays:
@@ -158,6 +172,7 @@ class _HouseholdPageState extends State<HouseholdPage>
         BlocProvider.value(value: plannedBuysCubit),
         BlocProvider.value(value: personsCubit),
         BlocProvider.value(value: notesCubit),
+        BlocProvider.value(value: tasksCubit),
       ],
       child: BlocConsumer<HouseholdCubit, HouseholdState>(
         listener: (context, state) {
