@@ -426,10 +426,16 @@ class ShoppinglistCubit extends Cubit<ShoppinglistCubitState> {
   Future<void> _refresh([String? query]) async {
     // Get required information
     late ShoppinglistCubitState resState;
-    if (state.selectedShoppinglistId == null ||
-        (state.selectedShoppinglist?.items.isEmpty ?? true) &&
-            (state.selectedShoppinglist?.recentItems.isEmpty ?? true) &&
-            (query == null || query.isEmpty)) {
+    final selectedShoppinglist = state.selectedShoppinglist;
+    // A refresh of an already known-empty list must not flash the loading
+    // skeleton; the current state is already correct.
+    final isKnownEmptyListRefresh = state.selectedShoppinglistId != null &&
+        selectedShoppinglist != null &&
+        selectedShoppinglist.items.isEmpty &&
+        selectedShoppinglist.recentItems.isEmpty &&
+        (query == null || query.isEmpty) &&
+        state is! LoadingShoppinglistCubitState;
+    if (state.selectedShoppinglistId == null || !isKnownEmptyListRefresh) {
       emit(LoadingShoppinglistCubitState(
         selectedShoppinglistId: state.selectedShoppinglistId,
         shoppinglists: state.shoppinglists,
