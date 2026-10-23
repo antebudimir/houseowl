@@ -56,9 +56,31 @@ features, that's the same commit.
   offline caches, plus offline-queue transactions for add/update/delete
 - Backend household `Person` model and `/api/household/<id>/person` +
   `/api/person/<id>` endpoints (commit `8eacc2e8`)
+- Tasks: a new "Tasks" view lists open tasks (sorted by due date with nulls
+  last, then priority) above a collapsed "completed" section. Add/edit page
+  offers a description, a 0–3 priority, a due date (bare ISO calendar dates
+  end to end — no timezone math), an optional assignee, an optional link to
+  a non-acquired planned buy, and tag selection reusing the shared tag
+  selector. Completing a task stamps `completed_at` and — for recurring
+  tasks (daily/weekly/biweekly/monthly/yearly) — materializes exactly one
+  successor, schedule-anchored from the original due date (overdue daily
+  tasks catch up to tomorrow instead of spawning a burst) with
+  month-length clamping that keeps the anchored day (Jan 31 monthly →
+  Feb 28 → Mar 31). Completion is idempotent and does **not** touch the
+  linked buy's status; advance the buy manually if desired
+- Backend `Task` model (nullable `assignee_id` and `buy_id`, both
+  `SET NULL`) with `TaskTags` join mirroring `NoteTags`; `Tag.merge()` now
+  re-points task tags alongside note tags; `task:update` Socket.IO event;
+  `/api/household/<id>/task` + `/api/task/<id>` endpoints; migration
+  `e5b1c8d3f7a2` (smoke-tested up and down); MCP tools `list_tasks`,
+  `create_task`, `complete_task`, `delete_task`; the MCP server docstring no
+  longer advertises tools that don't exist (planned-buy MCP tools remain
+  future scope)
 
 ### Known limitations
-
+- Planned buys and tasks are **online-only** for v1 (no offline cache or
+  queue). Intentional — the `MemStorage` transaction pattern is available if
+  offline support is needed later
 - On narrow screens the bottom navigation bar shows at most 5 entries
   (upstream `take(5)` behavior), so the new "People" and "Birthdays" views are
   **only reachable via the drawer / More view** on phones. Accepted for v1;
