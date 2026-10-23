@@ -64,6 +64,7 @@ class File(Model, DbModelAuthorizeMixin):
         return (
             not self.household
             and not self.profile_picture
+            and not self.document
         )
 
     def checkAuthorized(
