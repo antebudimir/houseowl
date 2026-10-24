@@ -36,7 +36,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: KitchenOwl ${{ github.ref_name }}
+          release_name: HouseOwl ${{ github.ref_name }}
           body: ${{steps.github_release.outputs.changelog}}
           draft: true
           prerelease: ${{ startsWith(github.ref_name,'beta-v') }}
@@ -179,19 +179,19 @@ jobs:
         working-directory: kitchenowl
       - name: Rename build for Android
         if: matrix.target == 'Android'
-        run: mv app-release.apk $GITHUB_WORKSPACE/kitchenowl_${{ matrix.target }}.apk
+        run: mv app-release.apk $GITHUB_WORKSPACE/houseowl_${{ matrix.target }}.apk
         working-directory: ${{ matrix.build_path }}
       - name: Compress build for Linux and Web
         if: matrix.target == 'Linux' || matrix.target == 'Web'
-        run: tar czf $GITHUB_WORKSPACE/kitchenowl_${{ matrix.target }}.tar.gz *
+        run: tar czf $GITHUB_WORKSPACE/houseowl_${{ matrix.target }}.tar.gz *
         working-directory: ${{ matrix.build_path }}
       - name: Compress build for macOS
         if: matrix.target == 'macOS'
-        run: ditto -c -k --sequesterRsrc --keepParent kitchenowl.app $GITHUB_WORKSPACE/kitchenowl_${{ matrix.target }}.zip
+        run: ditto -c -k --sequesterRsrc --keepParent HouseOwl.app $GITHUB_WORKSPACE/houseowl_${{ matrix.target }}.zip
         working-directory: ${{ matrix.build_path }}
       - name: Compress build for Windows
         if: matrix.target == 'Windows'
-        run: compress-archive -Path * -DestinationPath ${env:GITHUB_WORKSPACE}\kitchenowl_${{ matrix.target }}.zip
+        run: compress-archive -Path * -DestinationPath ${env:GITHUB_WORKSPACE}\houseowl_${{ matrix.target }}.zip
         working-directory: ${{ matrix.build_path }}
       - name: Package build for debian
         if: matrix.target == 'Debian'
@@ -199,7 +199,7 @@ jobs:
         working-directory: kitchenowl/debian
       - name: Rename build for debian
         if: matrix.target == 'Debian'
-        run: mv kitchenowl.deb $GITHUB_WORKSPACE/kitchenowl_${{ matrix.target }}.deb
+        run: mv houseowl.deb $GITHUB_WORKSPACE/houseowl_${{ matrix.target }}.deb
         working-directory: ${{ matrix.build_path }}
       - name: Package build for Fedora
         if: matrix.target == 'Fedora'
@@ -207,7 +207,7 @@ jobs:
         working-directory: kitchenowl/fedora
       - name: Rename build for fedora
         if: matrix.target == 'Fedora'
-        run: mv KitchenOwl.x86_64.rpm $GITHUB_WORKSPACE/kitchenowl_${{ matrix.target }}.rpm
+        run: mv HouseOwl.x86_64.rpm $GITHUB_WORKSPACE/houseowl_${{ matrix.target }}.rpm
         working-directory: ${{ matrix.build_path }}
 
       # Upload the build.
@@ -218,6 +218,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.draft-release.outputs.upload_url }}
-          asset_path: ./kitchenowl_${{ matrix.target }}${{ matrix.asset_extension }}
-          asset_name: kitchenowl_${{ matrix.target }}${{ matrix.asset_extension }}
+          asset_path: ./houseowl_${{ matrix.target }}${{ matrix.asset_extension }}
+          asset_name: houseowl_${{ matrix.target }}${{ matrix.asset_extension }}
           asset_content_type: ${{ matrix.asset_content_type }}

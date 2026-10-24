@@ -56,7 +56,7 @@ RUN flutter build web --release --no-web-resources-cdn
 # ------------
 FROM nginx:stable-alpine
 
-LABEL org.opencontainers.image.source="https://github.com/TomBursch/kitchenowl"
+LABEL org.opencontainers.image.source="https://github.com/antebudimir/houseowl"
 
 RUN apk add --no-cache bash
 RUN mkdir -p /var/www/web/kitchenowl

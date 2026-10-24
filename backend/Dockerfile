@@ -25,7 +25,7 @@ RUN python -c "import nltk; nltk.download('averaged_perceptron_tagger_eng', down
 # ------------
 FROM python:3.14-slim AS runner
 
-LABEL org.opencontainers.image.source="https://github.com/TomBursch/kitchenowl"
+LABEL org.opencontainers.image.source="https://github.com/antebudimir/houseowl"
 
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends \
@@ -37,7 +37,7 @@ RUN apt-get update \
 COPY --from=builder /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Setup KitchenOwl
+# Setup HouseOwl
 COPY wsgi.ini wsgi.py entrypoint.sh manage.py manage_default_items.py upgrade_default_items.py /usr/src/kitchenowl/
 COPY app /usr/src/kitchenowl/app
 COPY templates /usr/src/kitchenowl/templates

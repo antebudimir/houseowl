@@ -24,7 +24,7 @@ jobs:
       - name: Setup Docs Deploy
         run: |
           git config --global user.name "Docs Deploy"
-          git config --global user.email "support@kitchenowl.org"
+          git config --global user.email "antebudimir@users.noreply.github.com"
       - name: Build Docs Website
         run: mike deploy --push dev
         working-directory: docs

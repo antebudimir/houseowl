@@ -6,11 +6,11 @@ services:
       - "no-new-privileges:true"
     restart: unless-stopped
     environment:
-      POSTGRES_DB: kitchenowl
-      POSTGRES_USER: kitchenowl
+      POSTGRES_DB: houseowl
+      POSTGRES_USER: houseowl
       POSTGRES_PASSWORD: example
     volumes:
-      - kitchenowl_db:/var/lib/postgresql/data
+      - houseowl_db:/var/lib/postgresql/data
     networks:
       - default
     healthcheck:
@@ -20,7 +20,7 @@ services:
       retries: 5
       start_period: 80s
   back:
-    image: tombursch/kitchenowl:latest
+    image: antebudimir/houseowl:latest
     restart: unless-stopped
     ports:
       - "80:8080"
@@ -30,18 +30,18 @@ services:
       JWT_SECRET_KEY: PLEASE_CHANGE_ME
       DB_DRIVER: postgresql
       DB_HOST: db
-      DB_NAME: kitchenowl
-      DB_USER: kitchenowl
+      DB_NAME: houseowl
+      DB_USER: houseowl
       DB_PASSWORD: example
     depends_on:
       - db
     volumes:
-      - kitchenowl_files:/data
+      - houseowl_files:/data
 
 volumes:
-  kitchenowl_files:
+  houseowl_files:
     driver: local
-  kitchenowl_db:
+  houseowl_db:
     driver: local
 
 networks:

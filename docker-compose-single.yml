@@ -1,7 +1,7 @@
 version: "3"
 services:
   back:
-    image: tombursch/kitchenowl:latest
+    image: antebudimir/houseowl:latest
     restart: unless-stopped
     ports:
       - "80:8080"
@@ -10,7 +10,7 @@ services:
       # - KITCHENOWL_MCP_ENABLED=true # Optional: enable MCP endpoint at /mcp
       # - FRONT_URL=http://localhost # Optional take a look at https://docs.kitchenowl.org/self-hosting/advanced/ for more info
     volumes:
-      - kitchenowl_data:/data
+      - houseowl_data:/data
 
 volumes:
-  kitchenowl_data:
+  houseowl_data:
