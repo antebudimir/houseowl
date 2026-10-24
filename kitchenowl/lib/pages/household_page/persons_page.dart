@@ -60,6 +60,19 @@ class PersonsPage extends StatelessWidget {
 }
 
 class _PersonTile extends StatelessWidget {
+  /// Secondary metadata line: role/label first, then phone and email, using
+  /// only what the person actually has.
+  String? _contactLine(Person person) {
+    final parts = <String>[
+      if ((person.role ?? "").isNotEmpty) person.role!,
+      if ((person.phone ?? "").isNotEmpty) person.phone!,
+      if ((person.email ?? "").isNotEmpty) person.email!,
+    ];
+
+    return parts.isEmpty ? null : parts.join(" · ");
+  }
+
+
   final Person person;
 
   const _PersonTile({required this.person});
@@ -72,13 +85,13 @@ class _PersonTile extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      subtitle: (person.role ?? "").isNotEmpty
-          ? Text(
-              person.role!,
+      subtitle: _contactLine(person) == null
+          ? null
+          : Text(
+              _contactLine(person)!,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-            )
-          : null,
+            ),
       leading: CircleAvatar(
         child: Text(
           person.name.isNotEmpty ? person.name[0].toUpperCase() : "?",
