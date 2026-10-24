@@ -14,6 +14,21 @@ features, that's the same commit.
 
 ### Fixed
 
+- Households created without a language silently ended up with zero default
+  items (and therefore no item icons in search/suggestions): `importLanguage`
+  raised "language not supported" for a null language; it now falls back to
+  English defaults
+
+### Changed
+
+- Default-item attributes: the 13 default items that ship without an icon but
+  have an exact-name match in the client icon font (chicken, turkey, wheat,
+  noodles, wipes, squash, …) now get that icon; upstream's attributes.json is
+  a stale periodic export of the official instance's icon consensus, so this
+  intentionally diverges from upstream
+
+### Fixed
+
 - Flutter-material widgets (ListTile, InkWell, FilterChip, table_calendar, …)
   crashed with "No Material widget found" when hosted under the `material_ui`
   fork's Scaffold (whose `Material` is a different type): the app now provides
