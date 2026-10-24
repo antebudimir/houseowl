@@ -18,6 +18,9 @@ class Document extends Model {
   /// backend's `file_id`.
   final String? filename;
 
+  /// BlurHash of the attached image file, as stored by the upload endpoint.
+  final String? fileBlurHash;
+
   const Document({
     this.id,
     this.title = '',
@@ -26,6 +29,7 @@ class Document extends Model {
     this.contact,
     this.contactId,
     this.filename,
+    this.fileBlurHash,
   });
 
   factory Document.fromJson(Map<String, dynamic> map) {
@@ -46,6 +50,9 @@ class Document extends Model {
       filename: map['file'] == null
           ? null
           : (map['file'] as Map)['filename'] as String?,
+      fileBlurHash: map['file'] == null
+          ? null
+          : (map['file'] as Map)['blur_hash'] as String?,
     );
   }
 
@@ -66,6 +73,7 @@ class Document extends Model {
         contact: contact ?? this.contact,
         contactId: contactId ?? this.contactId,
         filename: filename ?? this.filename,
+        fileBlurHash: fileBlurHash ?? this.fileBlurHash,
       );
 
   bool isExpired([DateTime? now]) {
@@ -84,7 +92,7 @@ class Document extends Model {
 
   @override
   List<Object?> get props =>
-      [id, title, notes, expiresAt, contact, contactId, filename];
+      [id, title, notes, expiresAt, contact, contactId, filename, fileBlurHash];
 
   @override
   String toString() => "Document($id, $title)";

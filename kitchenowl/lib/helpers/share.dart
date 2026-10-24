@@ -54,6 +54,42 @@ abstract class Share {
     }
   }
 
+  static Future<void> shareFile(
+    BuildContext context,
+    Uint8List bytes,
+    String filename,
+  ) async {
+    if (kIsWeb) {
+      final url = html.Url.createObjectUrl(html.Blob([bytes]));
+      final anchor = html.document.createElement('a') as html.AnchorElement
+        ..href = url
+        ..style.display = 'none'
+        ..download = filename;
+      html.document.body?.children.add(anchor);
+
+      anchor.click();
+
+      html.document.body?.children.remove(anchor);
+      html.Url.revokeObjectUrl(url);
+    } else if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+      await FilePicker.saveFile(
+        fileName: filename,
+        bytes: bytes,
+      );
+    } else {
+      final box = context.findRenderObject() as RenderBox?;
+      SharePlus.Share.shareXFiles(
+        [
+          SharePlus.XFile.fromData(
+            bytes,
+            name: filename,
+          ),
+        ],
+        sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+      );
+    }
+  }
+
   static Future<void> shareUri(BuildContext context, Uri uri) async {
     final box = context.findRenderObject() as RenderBox?;
     if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {

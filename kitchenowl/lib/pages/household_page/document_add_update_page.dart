@@ -76,13 +76,23 @@ class _DocumentAddUpdatePageState extends State<DocumentAddUpdatePage> {
   Future<void> _pickFile() async {
     // file_picker's web implementation returns the picked bytes with the
     // PlatformFile, so the same flow works on web and desktop.
-    final result = await FilePicker.pickFile(type: FileType.any);
-    if (result != null && result.name.isNotEmpty) {
+    try {
+      final result = await FilePicker.pickFile(type: FileType.any);
+      if (result == null || result.name.isEmpty) return;
       final bytes = await result.readAsBytes();
+      if (bytes.isEmpty) throw Exception('Empty file picked.');
+      if (!mounted) return;
       setState(() {
         _file = NamedByteArray(result.name, bytes);
         _existingFilename = null;
       });
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.error),
+        ),
+      );
     }
   }
 
