@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:kitchenowl/item_icons.dart';
+import 'package:kitchenowl/item_icons_material.dart';
 import 'package:kitchenowl/kitchenowl.dart';
 import 'package:kitchenowl/models/item.dart';
 
@@ -61,10 +62,15 @@ class _IconSelectionPageState extends State<IconSelectionPage> {
             ),
           ),
           SliverItemGridList(
-            items: ItemIcons.map.keys
-                .where((e) => e.contains(filter))
-                .map((e) => Item(name: e, icon: e))
-                .toList(),
+            items: [
+              ...ItemIcons.map.keys
+                  .where((e) => e.contains(filter))
+                  .map((e) => Item(name: e, icon: e)),
+              // Material icon fallback set, stored as `material:<name>` keys.
+              ...materialItemIcons.keys
+                  .where((e) => e.contains(filter))
+                  .map((e) => Item(name: e, icon: 'material:$e')),
+            ],
             selected: (item) => item.icon == widget.oldIcon,
             onLongPressed: const Nullable<void Function(Item)>.empty(),
             shoppingListStyle: const ShoppingListStyle(allRaised: true),
