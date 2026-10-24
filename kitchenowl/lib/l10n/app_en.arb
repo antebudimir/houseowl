@@ -557,6 +557,14 @@
   "hi": "Hi {name}!",
   "hidePastPlans": "Hide past plans",
   "household": "Household",
+  "inDays": "In {count} days",
+  "@inDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "householdDelete": "Delete household",
   "householdDeleteConfirmation": "Are you sure you want to delete {household}? This will delete any items associated with that household.",
   "householdEmpty": "No households, start by creating one!",

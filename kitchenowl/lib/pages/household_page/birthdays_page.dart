@@ -40,6 +40,18 @@ class BirthdaysPage extends StatelessWidget {
                   final isToday = entry.next.year == today.year &&
                       entry.next.month == today.month &&
                       entry.next.day == today.day;
+                  final daysUntil = DateTime(
+                        entry.next.year,
+                        entry.next.month,
+                        entry.next.day,
+                      )
+                      .difference(DateTime(today.year, today.month, today.day))
+                      .inDays;
+                  final subtitle = isToday
+                      ? AppLocalizations.of(context)!.today
+                      : daysUntil == 1
+                          ? AppLocalizations.of(context)!.tomorrow
+                          : '${DateFormat.MMMEd().format(entry.next)} · ${AppLocalizations.of(context)!.inDays(daysUntil)}';
 
                   return ListTile(
                     title: Text(
@@ -47,11 +59,7 @@ class BirthdaysPage extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    subtitle: Text(
-                      isToday
-                          ? AppLocalizations.of(context)!.today
-                          : DateFormat.MMMEd().format(entry.next),
-                    ),
+                    subtitle: Text(subtitle),
                     leading: CircleAvatar(
                       child: Icon(
                         isToday ? Icons.celebration_rounded : Icons.cake_rounded,
