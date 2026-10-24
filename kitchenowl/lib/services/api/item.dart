@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:kitchenowl/models/household.dart';
 import 'package:kitchenowl/models/item.dart';
 import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:kitchenowl/services/transaction_conflict_exception.dart';
 
 extension ItemApi on ApiService {
   static const baseRoute = '/item';
@@ -25,7 +26,6 @@ extension ItemApi on ApiService {
 
     return Item.fromJson(body);
   }
-
 
   Future<List<ItemWithDescription>?> searchItem(
     Household household,
@@ -60,6 +60,12 @@ extension ItemApi on ApiService {
   Future<bool> addItem(Household household, Item item) async {
     final res = await post('${householdPath(household)}$baseRoute',
         jsonEncode(item.toJsonWithId()));
+    // A 400 means the payload was rejected; for this route that is a
+    // duplicate item name (or invalid category) — a conflict, not a
+    // network failure, so it must not be queued for offline retry.
+    if (res.statusCode == 400) {
+      throw const TransactionConflictException('item already exists');
+    }
 
     return res.statusCode == 200;
   }

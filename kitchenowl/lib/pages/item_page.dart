@@ -14,6 +14,7 @@ import 'package:kitchenowl/models/item.dart';
 import 'package:kitchenowl/kitchenowl.dart';
 import 'package:kitchenowl/models/shoppinglist.dart';
 import 'package:kitchenowl/models/update_value.dart';
+import 'package:kitchenowl/services/transaction_conflict_exception.dart';
 import 'package:kitchenowl/widgets/item_popup_menu_button.dart';
 import 'package:kitchenowl/widgets/item_wrap_menu.dart';
 
@@ -70,7 +71,19 @@ class _ItemPageState<T extends Item> extends State<ItemPage<T>> {
         canPop: !state.hasChanged(widget.item),
         onPopInvokedWithResult: (didPop, result) async {
           if (!didPop && state.hasChanged(widget.item)) {
-            await cubit.saveItem();
+            try {
+              await cubit.saveItem();
+            } on TransactionConflictException {
+              if (mounted) {
+                showSnackbar(
+                  context: context,
+                  content: Text(
+                    AppLocalizations.of(context)!.itemAlreadyExists,
+                  ),
+                );
+              }
+              return;
+            }
             if (mounted) {
               Navigator.of(context)
                   .pop(UpdateValue<T>(UpdateEnum.updated, cubit.item));
@@ -172,143 +185,141 @@ class _ItemPageState<T extends Item> extends State<ItemPage<T>> {
                           )
                         : SliverToBoxAdapter(),
                   ),
-                    SliverPadding(
-                      padding: EdgeInsets.only(
-                        top: (widget.item is ItemWithDescription) ? 8 : 16,
-                        bottom: (widget.advancedView) ? 8 : 16,
-                        left: 16,
-                        right: 16,
-                      ),
-                      sliver: SliverList(
-                        delegate: SliverChildListDelegate(
-                          [
-                            Text(
-                              AppLocalizations.of(context)!.category,
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child:
-                                      BlocBuilder<ItemEditCubit, ItemEditState>(
-                                    bloc: cubit,
-                                    buildWhen: (prev, curr) =>
-                                        prev.category != curr.category,
-                                    builder: (context, state) =>
-                                        DropdownButton<Category?>(
-                                      value: state.category,
-                                      isExpanded: true,
-                                      items: [
-                                        DropdownMenuItem(
-                                          value: null,
-                                          child: Text(
-                                            AppLocalizations.of(context)!.none,
-                                          ),
-                                        ),
-                                        for (final e in widget.categories)
-                                          DropdownMenuItem(
-                                            value: e,
-                                            child: Text(e.name),
-                                          ),
-                                      ],
-                                      onChanged: !App.isOffline
-                                          ? cubit.setCategory
-                                          : null,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            if (widget.shoppingList != null)
-                              BlocBuilder<ShoppinglistCubit,
-                                  ShoppinglistCubitState>(
-                                bloc: context.readOrNull<ShoppinglistCubit>(),
-                                builder: (context, listState) {
-                                  // Moving only makes sense with another
-                                  // list to move to. Recipe ingredients are
-                                  // not tied to a list, so they never see
-                                  // this (widget.shoppingList is null).
-                                  final otherLists = listState.shoppinglists
-                                      .values
-                                      .where((e) =>
-                                          e.id != widget.shoppingList!.id)
-                                      .toList();
-                                  if (otherLists.isEmpty) {
-                                    return const SizedBox.shrink();
-                                  }
-                                  return DropdownButtonFormField<ShoppingList>(
-                                    decoration: InputDecoration(
-                                      labelText: AppLocalizations.of(context)!
-                                          .shoppingLists,
-                                    ),
+                  SliverPadding(
+                    padding: EdgeInsets.only(
+                      top: (widget.item is ItemWithDescription) ? 8 : 16,
+                      bottom: (widget.advancedView) ? 8 : 16,
+                      left: 16,
+                      right: 16,
+                    ),
+                    sliver: SliverList(
+                      delegate: SliverChildListDelegate(
+                        [
+                          Text(
+                            AppLocalizations.of(context)!.category,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                child:
+                                    BlocBuilder<ItemEditCubit, ItemEditState>(
+                                  bloc: cubit,
+                                  buildWhen: (prev, curr) =>
+                                      prev.category != curr.category,
+                                  builder: (context, state) =>
+                                      DropdownButton<Category?>(
+                                    value: state.category,
+                                    isExpanded: true,
                                     items: [
-                                      for (final e in otherLists)
+                                      DropdownMenuItem(
+                                        value: null,
+                                        child: Text(
+                                          AppLocalizations.of(context)!.none,
+                                        ),
+                                      ),
+                                      for (final e in widget.categories)
                                         DropdownMenuItem(
                                           value: e,
                                           child: Text(e.name),
                                         ),
                                     ],
-                                    onChanged: (target) async {
-                                      if (target == null) return;
-                                      final navigator = Navigator.of(context);
-                                      final messenger =
-                                          ScaffoldMessenger.of(context);
-                                      final moved = await cubit.moveItem(
-                                        target,
-                                      );
-                                      if (moved) {
-                                        navigator.pop(UpdateValue<T>(
-                                          UpdateEnum.updated,
-                                          cubit.item,
-                                        ));
-                                      } else {
-                                        messenger.showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              AppLocalizations.of(context)!
-                                                  .error,
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                  );
-                                },
-                              ),
-                            if (widget.item is ShoppinglistItem)
-                              ListTile(
-                                contentPadding: EdgeInsets.zero,
-                                title: Text(
-                                  AppLocalizations.of(context)!.addedBy(context
-                                          .read<HouseholdCubit>()
-                                          .state
-                                          .household
-                                          .member
-                                          ?.firstWhereOrNull(
-                                            (e) =>
-                                                e.id ==
-                                                (widget.item
-                                                        as ShoppinglistItem)
-                                                    .createdById,
-                                          )
-                                          ?.name ??
-                                      AppLocalizations.of(context)!.other),
+                                    onChanged: !App.isOffline
+                                        ? cubit.setCategory
+                                        : null,
+                                  ),
                                 ),
-                                trailing: (widget.item as ShoppinglistItem)
-                                            .createdAt !=
-                                        null
-                                    ? Text(
-                                        DateFormat.yMMMEd().add_jm().format(
-                                              (widget.item as ShoppinglistItem)
-                                                  .createdAt!,
-                                            ),
-                                      )
-                                    : null,
                               ),
-                          ],
-                        ),
+                            ],
+                          ),
+                          if (widget.shoppingList != null)
+                            BlocBuilder<ShoppinglistCubit,
+                                ShoppinglistCubitState>(
+                              bloc: context.readOrNull<ShoppinglistCubit>(),
+                              builder: (context, listState) {
+                                // Moving only makes sense with another
+                                // list to move to. Recipe ingredients are
+                                // not tied to a list, so they never see
+                                // this (widget.shoppingList is null).
+                                final otherLists = listState
+                                    .shoppinglists.values
+                                    .where(
+                                        (e) => e.id != widget.shoppingList!.id)
+                                    .toList();
+                                if (otherLists.isEmpty) {
+                                  return const SizedBox.shrink();
+                                }
+                                return DropdownButtonFormField<ShoppingList>(
+                                  decoration: InputDecoration(
+                                    labelText: AppLocalizations.of(context)!
+                                        .shoppingLists,
+                                  ),
+                                  items: [
+                                    for (final e in otherLists)
+                                      DropdownMenuItem(
+                                        value: e,
+                                        child: Text(e.name),
+                                      ),
+                                  ],
+                                  onChanged: (target) async {
+                                    if (target == null) return;
+                                    final navigator = Navigator.of(context);
+                                    final messenger =
+                                        ScaffoldMessenger.of(context);
+                                    final moved = await cubit.moveItem(
+                                      target,
+                                    );
+                                    if (moved) {
+                                      navigator.pop(UpdateValue<T>(
+                                        UpdateEnum.updated,
+                                        cubit.item,
+                                      ));
+                                    } else {
+                                      messenger.showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            AppLocalizations.of(context)!.error,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                );
+                              },
+                            ),
+                          if (widget.item is ShoppinglistItem)
+                            ListTile(
+                              contentPadding: EdgeInsets.zero,
+                              title: Text(
+                                AppLocalizations.of(context)!.addedBy(context
+                                        .read<HouseholdCubit>()
+                                        .state
+                                        .household
+                                        .member
+                                        ?.firstWhereOrNull(
+                                          (e) =>
+                                              e.id ==
+                                              (widget.item as ShoppinglistItem)
+                                                  .createdById,
+                                        )
+                                        ?.name ??
+                                    AppLocalizations.of(context)!.other),
+                              ),
+                              trailing: (widget.item as ShoppinglistItem)
+                                          .createdAt !=
+                                      null
+                                  ? Text(
+                                      DateFormat.yMMMEd().add_jm().format(
+                                            (widget.item as ShoppinglistItem)
+                                                .createdAt!,
+                                          ),
+                                    )
+                                  : null,
+                            ),
+                        ],
                       ),
                     ),
+                  ),
                   if (widget.advancedView)
                     BlocBuilder<ItemEditCubit, ItemEditState>(
                       bloc: cubit,

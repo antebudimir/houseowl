@@ -586,6 +586,7 @@
   "income": "Income",
   "ingredients": "Ingredients",
   "ingredientsOptional": "Optional ingredients",
+  "itemAlreadyExists": "An item with this name already exists.",
   "itemDelete": "Delete item",
   "itemDeleteConfirmation": "Are you sure you want to delete {item}? This will remove the item from any recipe containing it.",
   "itemRemoveInteraction": "Remove item interaction",

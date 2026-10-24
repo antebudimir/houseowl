@@ -1,5 +1,6 @@
 import 'package:kitchenowl/app.dart';
 import 'package:kitchenowl/services/transaction.dart';
+import 'package:kitchenowl/services/transaction_conflict_exception.dart';
 import 'package:kitchenowl/services/api/api_service.dart';
 import 'package:kitchenowl/services/storage/transaction_storage.dart';
 
@@ -43,8 +44,14 @@ class TransactionHandler {
       await ApiService.getInstance().refresh();
     }
     if (!forceOffline && ApiService.getInstance().isConnected()) {
-      T? res = await t.runOnline();
-      if (res != null && (res is! bool || res)) return res;
+      try {
+        T? res = await t.runOnline();
+        if (res != null && (res is! bool || res)) return res;
+      } on TransactionConflictException {
+        // A conflicting transaction (e.g. duplicate item) must not be queued
+        // for offline retry; surface the conflict to the caller instead.
+        rethrow;
+      }
     }
     if (t.saveTransaction && saveTransaction) {
       await TransactionStorage.getInstance().addTransaction(t);
