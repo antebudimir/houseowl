@@ -137,14 +137,34 @@ class _PlannedBuyTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final subtitles = <String>[
       if (buy.category != null && buy.category!.isNotEmpty) buy.category!,
+      if (buy.targetDate != null)
+        MaterialLocalizations.of(context).formatMediumDate(buy.targetDate!),
       if (buy.assignee != null) buy.assignee!.name,
     ];
 
     return ListTile(
-      title: Text(
-        buy.name,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
+      title: Row(
+        children: [
+          Flexible(
+            child: Text(
+              buy.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondaryContainer,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(
+              buy.status.toLocalizedString(context),
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+          ),
+        ],
       ),
       subtitle: subtitles.isEmpty
           ? null
