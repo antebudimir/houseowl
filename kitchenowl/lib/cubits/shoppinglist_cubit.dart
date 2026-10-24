@@ -427,15 +427,14 @@ class ShoppinglistCubit extends Cubit<ShoppinglistCubitState> {
     // Get required information
     late ShoppinglistCubitState resState;
     final selectedShoppinglist = state.selectedShoppinglist;
-    // A refresh of an already known-empty list must not flash the loading
-    // skeleton; the current state is already correct.
-    final isKnownEmptyListRefresh = state.selectedShoppinglistId != null &&
-        selectedShoppinglist != null &&
-        selectedShoppinglist.items.isEmpty &&
-        selectedShoppinglist.recentItems.isEmpty &&
-        (query == null || query.isEmpty) &&
-        state is! LoadingShoppinglistCubitState;
-    if (state.selectedShoppinglistId == null || !isKnownEmptyListRefresh) {
+    // A background refresh of a list whose content is already on screen must
+    // not flash the loading skeletons; only show them when there is nothing
+    // to render yet (initial load, list switch to an unknown list) or when a
+    // search query is in flight (the search anchors surface that state).
+    final bool hasRenderableContent =
+        state is! LoadingShoppinglistCubitState && selectedShoppinglist != null;
+    final bool isSearchRefresh = query != null && query.isNotEmpty;
+    if (!hasRenderableContent || isSearchRefresh) {
       emit(LoadingShoppinglistCubitState(
         selectedShoppinglistId: state.selectedShoppinglistId,
         shoppinglists: state.shoppinglists,
