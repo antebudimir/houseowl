@@ -4,7 +4,7 @@ These are community provided and might need to be adapted to your specific setup
 
 ### HAProxy
 
-Assumes HAProxy is part of your KitchenOwl docker compose stack, and you use the multiservice setup method.
+Assumes HAProxy is part of your HouseOwl docker compose stack, and you use the multiservice setup method.
 
 ```
 global
@@ -94,7 +94,7 @@ volumes:
   kitchenowl_data:
 ```
 
-Traefik can add extra security headers to add a level of protection to your KitchenOwl instance. You can specify a middleware in your Traefik docker-compose.yml using labels.
+Traefik can add extra security headers to add a level of protection to your HouseOwl instance. You can specify a middleware in your Traefik docker-compose.yml using labels.
 
 ```yml
 labels:
@@ -241,7 +241,7 @@ Caddy will automatically set up an SSL certificate for the specified hostname.
 
 ```caddyfile
 kitchenowl.example.org {
-        reverse_proxy localhost:8080 # Set the address of your KitchenOwl frontend here
+        reverse_proxy localhost:8080 # Set the address of your HouseOwl frontend here
         encode gzip
         header {
                 X-Frame-Options "SAMEORIGIN"

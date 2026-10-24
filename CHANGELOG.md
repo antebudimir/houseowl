@@ -12,13 +12,41 @@ features, that's the same commit.
 
 ## [Unreleased]
 
+- **Rebrand: KitchenOwl → HouseOwl.** Dart package renamed
+  (`package:kitchenowl` → `package:houseowl`), backend API/branding, app
+  identifiers (`com.tombursch.kitchenowl` → `com.antebudimir.houseowl`),
+  Docker image names (`antebudimir/houseowl*`), docs, and user-facing strings.
+  **Breaking / user-visible:**
+  - Android: different application id — in-place upgrades from KitchenOwl are
+    not possible; install fresh.
+  - Images: compose files now pull `antebudimir/houseowl` /
+    `antebudimir/houseowl-backend` / `antebudimir/houseowl-web`; named volumes
+    renamed (`kitchenowl_*` → `houseowl_*`), so old volumes are not picked up
+    automatically — migrate data manually if needed.
+  - CI deploys build with **podman** (`podman build` + `podman manifest push`)
+    instead of `docker/build-push-action`; self-hosting docs now use
+    `podman compose up`. Compose file names are unchanged (`Dockerfile`,
+    `docker-compose.yml`).
+  - Env var: `HOUSEOWL_MCP_ENABLED` is the new name; the old
+    `KITCHENOWL_MCP_ENABLED` still works (deprecated fallback).
+  - OIDC: the custom-scheme flag is now `houseowl_scheme`; the backend still
+    accepts `kitchenowl_scheme` from older clients, but the redirect scheme is
+    now `houseowl:` — client apps must be updated together with the server.
+  - Intentionally kept: the Flutter source directory is still `kitchenowl/`
+    (renaming it would touch every path/CI reference for no user-visible
+    benefit); the gitignored `ephemeral/` platform dirs regenerate.
+- Marshmallow 4 silently ignores truthy-returning validators, so
+  `_not_blank`-style validators were inert and blank strings were accepted for
+  usernames, household names, item/task/note titles, etc.; validators now raise
+  `ValidationError` (regression tests added).
 - Fresh clones no longer fail to migrate an empty database: the
   remove-recipes-and-planner migration dropped `report.recipe_id` with a plain
   `DROP COLUMN`, which SQLite rejects because the column participates in a
   foreign key (and batch-reflection failed on the dangling FK to the
   just-dropped `recipe` table); the migration now rebuilds `report` without
   the column — this moves the fresh-clone migration chain from known
-  limitation to working
+  limitation to working. Verified: `flask db upgrade` from an empty database
+  passes the full chain (including this migration) and downgrade works.
 
 ### Fixed
 

@@ -7,7 +7,7 @@ docker exec -it BACKEND_CONTAINER_NAME python manage.py
 ```
 Which will prompt you for what you want to do:
 ```
-Manage KitchenOwl
+Manage HouseOwl
 ---
 What do you want to do?
 1.  Manage users

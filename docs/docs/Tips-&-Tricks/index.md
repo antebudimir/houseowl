@@ -21,4 +21,4 @@ Every card supports long presses to show details. So next time you look at your 
 
 ### Share to the App
 
-You can share recipe links to the KitchenOwl mobile app to directly add it to your recipe list.
+You can share recipe links to the HouseOwl mobile app to directly add it to your recipe list.

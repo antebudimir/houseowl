@@ -1,16 +1,16 @@
-Thanks for wanting to contribute to KitchenOwl!
+Thanks for wanting to contribute to HouseOwl!
 
 ### Where do I go from here?
 
-So you want to contribute to KitchenOwl? Great!
+So you want to contribute to HouseOwl? Great!
 
-If you have noticed a bug, please [create an issue](https://github.com/TomBursch/KitchenOwl/issues/new) before starting any work on a pull request or get in contact by joining our [Matrix space](https://matrix.to/#/#kitchenowl:matrix.org).
+If you have noticed a bug, please [create an issue](https://github.com/TomBursch/HouseOwl/issues/new) before starting any work on a pull request or get in contact by joining our [Matrix space](https://matrix.to/#/#kitchenowl:matrix.org).
 
 ### Fork & create a branch
 
 If there is something you want to fix or add, the first step is to fork the repository.
-[:fontawesome-brands-github: Frontend](https://github.com/TomBursch/KitchenOwl){ .md-button }
-[:fontawesome-brands-github: Website](https://github.com/TomBursch/KitchenOwl-website){ .md-button }
+[:fontawesome-brands-github: Frontend](https://github.com/TomBursch/HouseOwl){ .md-button }
+[:fontawesome-brands-github: Website](https://github.com/TomBursch/HouseOwl-website){ .md-button }
 
 Next is to create a new branch with an appropriate name. You can use the following format:
 
@@ -102,7 +102,7 @@ Here are some examples of configurations that work well with VS Code and allow y
     {
         "configurations": [
             {
-                "name": "Python Debugger: KitchenOwl",
+                "name": "Python Debugger: HouseOwl",
                 "type": "debugpy",
                 "request": "launch",
                 "program": "wsgi.py",

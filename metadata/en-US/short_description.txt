@@ -1,1 +1,1 @@
-KitchenOwl helps you organize your grocery life.
+HouseOwl is a smart self-hosted grocery list and household manager.

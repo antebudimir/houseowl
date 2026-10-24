@@ -19,7 +19,7 @@ Environment variables for `tombursch/kitchenowl` and `tombursch/kitchenowl-backe
 | `JWT_REFRESH_TOKEN_EXPIRES`                | `30`                       | Sets how long (in days) refresh tokens are valid for. Essentially, how long it takes until users are automatically logged out. Must be a number.      |
 | `JWT_SECRET_KEY`                           |                            |                                                                                                                                                       |
 | `JWT_SECRET_KEY_FILE`                      |                            | Reads the JWT secret from the specified file. Should be a path to a file (will override JWT_SECRET_KEY)                                               |
-| `FRONT_URL`                                |                            | Adds allow origin CORS header for the URL. If set, should exactly match KitchenOwl's URL including the schema (e.g. `https://app.kitchenowl.org`)     |
+| `FRONT_URL`                                |                            | Adds allow origin CORS header for the URL. If set, should exactly match HouseOwl's URL including the schema (e.g. `https://app.kitchenowl.org`)     |
 | `PRIVACY_POLICY_URL`                       |                            | Allows to set a custom privacy policy for your server instance                                                                                        |
 | `TERMS_URL`                                |                            | Allows to set a custom terms and conditions URL for your server instance                                                                              |
 | `DISABLE_USERNAME_PASSWORD_LOGIN`          | `false`                    | If set, allows login only through OpenID Connect (OIDC). Be aware: this automatically disables `OPEN_REGISTRATION`                                    |
@@ -63,7 +63,7 @@ Environment variables for `tombursch/kitchenowl` and `tombursch/kitchenowl-backe
 | `LLM_MODEL`                                |                            | Set a custom ingredient detection strategy for scraped recipes from the web. More at [Ingredient Parsing](./ingredient_parsing.md)                    |
 | `LLM_API_URL`                              |                            |                                                                                                                                                       |
 | `OPENAI_API_KEY`/`OPENROUTER_API_KEY`/etc. |                            | Depends on which provider you choose. See [LiteLLM docs](https://docs.litellm.ai/docs/providers)                                                      |
-| `BASE_HREF`                                |                            | Sets the subdirectory KitchenOwl is hosted at. Must begin and end with a slash `/`. Only applicable to `tombursch/kitchenowl`                         |
+| `BASE_HREF`                                |                            | Sets the subdirectory HouseOwl is hosted at. Must begin and end with a slash `/`. Only applicable to `tombursch/kitchenowl`                         |
 
 Additionally, to setting these environment variables you can also override the start command to scale the backend up.
 Add the following line or take a look at this exemplary [docker-compose.yml](https://github.com/TomBursch/kitchenowl/blob/main/docker-compose-postgres.yml) file:
@@ -84,7 +84,7 @@ Environment variables for `tombursch/kitchenowl-web`:
 | Variable    | Default     | Description                                                                                                                                                          |
 | ----------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `BACK_URL`  | `back:5000` | Allows to set a custom address for the backend. Needs to be an uWSGI protocol endpoint. Should correspond to the name or IP of the backend container and port `5000` |
-| `BASE_HREF` |             | Sets the subdirectory KitchenOwl is hosted at. Must begin and end with a slash `/`.                                                                                  |
+| `BASE_HREF` |             | Sets the subdirectory HouseOwl is hosted at. Must begin and end with a slash `/`.                                                                                  |
 
 ## Multiservice Setup
 

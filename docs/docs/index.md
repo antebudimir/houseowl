@@ -6,8 +6,8 @@ hide:
 
 # Welcome
 
-Welcome to the documentation of [KitchenOwl](https://kitchenowl.org). 
-If you want to contribute or set up a self-hosted instance of KitchenOwl you're at the right place. 
+Welcome to the documentation of [HouseOwl](https://kitchenowl.org). 
+If you want to contribute or set up a self-hosted instance of HouseOwl you're at the right place. 
 Otherwise, you can find general information and features on the [main website](https://kitchenowl.org).
 
 <div class="grid cards" markdown>
@@ -17,7 +17,7 @@ Otherwise, you can find general information and features on the [main website](h
 
     ---
 
-    Looking to set up your own a KitchenOwl instance?
+    Looking to set up your own a HouseOwl instance?
     
     ---
 
@@ -50,7 +50,7 @@ Otherwise, you can find general information and features on the [main website](h
 
     ---
 
-    KitchenOwl is Free Software: You can use, study share and improve it at your will.
+    HouseOwl is Free Software: You can use, study share and improve it at your will.
 
     ---
 
@@ -66,9 +66,9 @@ For a list of planned features check out the [Project Board](https://github.com/
 
 ## Found an issue?
 
-KitchenOwl is actively maintained.
+HouseOwl is actively maintained.
 
-There are multiple ways in which you can improve KitchenOwl to help you and others who might encounter the same issues in the future.
+There are multiple ways in which you can improve HouseOwl to help you and others who might encounter the same issues in the future.
 
 <div class="grid cards" markdown>
 

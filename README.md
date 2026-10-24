@@ -1,77 +1,52 @@
 <h1 align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./docs/docs/img/icon.png">
-    <img width="128" src="./docs/docs/img/logo.png" alt="KitchenOwl">
+    <img width="128" src="./docs/docs/img/logo.png" alt="HouseOwl">
   </picture>
 </h1>
 <p align="center">
-  <p align="center">A smart grocery list and recipe manager.</p>
+  <p align="center">A smart, self-hosted household manager.</p>
 </p>
 
 <h4 align="center">
-  <a href="https://kitchenowl.org">Website</a> |
-  <a href="https://docs.kitchenowl.org">Docs</a> |
-  <a href="https://docs.kitchenowl.org/latest/self-hosting/">Self-Hosting</a> |
-  <a href="https://matrix.to/#/#kitchenowl:matrix.org">Matrix</a>
+  <a href="https://github.com/antebudimir/houseowl">Source</a> |
+  <a href="https://github.com/antebudimir/houseowl/blob/main/CHANGELOG.md">Changelog</a>
 </h4>
 
 <h4 align="center">
-  <a href="https://github.com/TomBursch/kitchenowl">
-    <img alt="Stars" src="https://img.shields.io/github/stars/tombursch/kitchenowl" />
-  </a>
-  <a href="https://hosted.weblate.org/engage/kitchenowl/">
-    <img alt="Translation" src="https://hosted.weblate.org/widgets/kitchenowl/-/kitchenowl/svg-badge.svg" />
-  </a>
-  <a href="https://matrix.to/#/#kitchenowl:matrix.org">
-    <img alt="Matrix" src="https://img.shields.io/matrix/kitchenowl:matrix.org">
+  <a href="https://github.com/antebudimir/houseowl">
+    <img alt="Stars" src="https://img.shields.io/github/stars/antebudimir/houseowl" />
   </a>
   <a href="LICENSE">
-    <img alt="License" src="https://img.shields.io/github/license/TomBursch/kitchenowl" />
+    <img alt="License" src="https://img.shields.io/github/license/antebudimir/houseowl" />
   </a>
-  <a href="https://github.com/TomBursch/kitchenowl/releases">
-    <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/tombursch/kitchenowl">
+  <a href="https://github.com/antebudimir/houseowl/releases">
+    <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/antebudimir/houseowl">
   </a>
-  <a href="https://hub.docker.com/repository/docker/tombursch/kitchenowl">
-    <img alt="Docker pulls" src="https://img.shields.io/docker/pulls/tombursch/kitchenowl" />
+  <a href="https://hub.docker.com/repository/docker/antebudimir/houseowl">
+    <img alt="Docker pulls" src="https://img.shields.io/docker/pulls/antebudimir/houseowl" />
   </a>
 </h4>
 
-<div align="center">
-  <a href='https://play.google.com/store/apps/details?id=com.tombursch.kitchenowl'>
-    <img alt='Get it on Google Play' src='docs/docs/img/badges/playstore.png' height="50" />
-  </a>
-  <a href='https://f-droid.org/packages/com.tombursch.kitchenowl/'>
-    <img alt='Get it on F-Droid' src='docs/docs/img/badges/f-droid.png' height="50"/>
-  </a>
-  <a href='https://apps.apple.com/app/kitchenowl/id1557453670'>
-    <img alt='Get it on the AppStore' src='docs/docs/img/badges/appstore.png' height="50" />
-  </a>
-  <a href='https://my.home-assistant.io/redirect/hacs_repository/?owner=TomBursch&repository=kitchenowl-ha&category=integration'>
-    <img alt='Get it on the Home Assistant Community Store' src='docs/docs/img/badges/hacs_repository.svg' height="50" />
-  </a>
-</div>
-
 <h3 align="center">
- 🍫 🥘 🍽
+ 🏠 📝 🛒
 </h3>
 
-KitchenOwl is a smart self-hosted grocery list and recipe manager. Easily add items to your shopping list before you go shopping. You can also create recipes and get suggestions on what you want to cook. Track your expenses so you know how much you've spent.
+HouseOwl is a smart self-hosted household manager. Easily add items to your
+shopping list before you go shopping, manage tasks, notes, birthdays, events,
+and documents for everyone in your household.
 
 - Native Mobile/Web/Desktop apps with a great design
 - Add items to your shopping list and sync them in real-time with multiple users
 - Partial offline support, so you don't lose track of what to buy even when there is no signal
-- Manage recipes and add them to your shopping list
-- Share recipes with friends and family
-- Create a meal plan to always know what you'll be eating
-- Manage balances and track expenses of your household
+- Manage tasks, notes, persons (with birthdays and gift ideas), and documents
+- Share your household with friends and family
 
 Please keep in mind that this project is still in development.
 
-For a full list check out the [website](https://kitchenowl.org). For a list of planned features, take a look at the [Roadmap](https://github.com/users/TomBursch/projects/1)!
-
 ## 🍴 About this fork
 
-This is a hard fork of [KitchenOwl](https://github.com/TomBursch/kitchenowl),
+This is a hard fork of [KitchenOwl](https://github.com/kitchenowl/kitchenowl) (upstream: [TomBursch/kitchenowl](https://github.com/TomBursch/kitchenowl)),
 evolving it from a grocery list and recipe manager toward a broader household
 coordination app. Planned additions include tasks, a shared calendar,
 contacts, document storage, and planned purchases.
@@ -81,6 +56,9 @@ Landed so far:
 - Manage shopping lists directly from the main-view header: add, rename, and
   delete lists inline (long-press a list for its actions)
 - Shopping-list renames sync to all household members in real time
+- Tasks, notes, events, persons with birthdays and gift ideas, documents,
+  loyalty cards, planned buys
+- Full rebrand from KitchenOwl to HouseOwl (see [CHANGELOG.md](CHANGELOG.md))
 
 See [CHANGELOG.md](CHANGELOG.md) for the full history of fork changes.
 
@@ -97,26 +75,42 @@ See [CHANGELOG.md](CHANGELOG.md) for the full history of fork changes.
 
 ## 🤖 App Install
 
-Get it in your favorite store or find the current release for your operating system on the [releases page](https://github.com/TomBursch/kitchenowl/releases).
+There are no store builds of this fork. Run the web app via the docker images
+below, or build the mobile/desktop apps from source:
 
-## 🚀 Get started
+```sh
+git clone https://github.com/antebudimir/houseowl
+cd houseowl/kitchenowl
+flutter pub get
+flutter gen-l10n   # required on fresh clones before the first build
+flutter run
+```
 
-Please take a look at the [get started guide](https://docs.kitchenowl.org/latest/self-hosting/).
+> **Note (Android):** the app id changed from `com.tombursch.kitchenowl` to
+> `com.antebudimir.houseowl`. Android treats this as a different app —
+> in-place upgrades from KitchenOwl are not possible; install fresh.
+
+## 🚀 Get started (self-hosting)
+
+```sh
+mkdir houseowl && cd houseowl
+wget https://raw.githubusercontent.com/antebudimir/houseowl/main/docker-compose.yml
+podman compose up -d
+```
+
+For advanced setups see the [upstream self-hosting docs](https://docs.kitchenowl.org/latest/self-hosting/)
+(still accurate except for image names and `podman compose`).
 
 ## 🙌 Contributing
 
 From opening a bug report to creating a pull request: every contribution is appreciated and welcomed. If you're planning to implement a new feature or change the API please create an issue first. This way, we can ensure your work is not in vain.
-For more information see [Contributing](CONTRIBUTING.md) or get in contact by joining our [Matrix space](https://matrix.to/#/#kitchenowl:matrix.org).
+For more information see [Contributing](CONTRIBUTING.md).
 
 ### 🌍 Translations
 
-You can help translate the App into your language by using [Weblate](https://hosted.weblate.org/engage/kitchenowl/)!
+Translations live in `kitchenowl/lib/l10n/*.arb`. Add or edit strings there and
+run `flutter gen-l10n`.
 
-<p align="center">
-  <a href="https://hosted.weblate.org/engage/kitchenowl/">
-    <img src="https://hosted.weblate.org/widgets/kitchenowl/-/kitchenowl/multi-auto.svg" alt="Translation status" />
-  </a>
-</p>
 
 ## 🛎️ Stay Up-to-Date
 
