@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:kitchenowl/kitchenowl.dart';
 import 'package:kitchenowl/models/tag.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// The shared tag selection component used by notes.
 /// Renders the household's tags as selectable [FilterChip]s plus an

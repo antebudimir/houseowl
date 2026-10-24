@@ -37,7 +37,8 @@ void main() {
       await gesture.addPointer(location: Offset.zero);
       addTearDown(gesture.removePointer);
       await gesture.moveTo(tester.getCenter(find.ancestor(
-          of: find.byIcon(Icons.add), matching: find.byType(InkWell))));
+          of: find.byIcon(Icons.add),
+          matching: find.byType(mui.InkWell))));
       await tester.pumpAndSettle();
 
       expect(tester.takeException(), isNull);
