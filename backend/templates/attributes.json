@@ -323,7 +323,9 @@
     "chia_seeds": {
       "icon": "chia_seeds"
     },
-    "chicken": {},
+    "chicken": {
+      "icon": "chicken"
+    },
     "chicken_breast": {},
     "chicken_broth": {},
     "chicken_nuggets": {},
@@ -363,7 +365,9 @@
     },
     "chocolate_milk": {},
     "chocolate_pudding": {},
-    "chocolate_spread": {},
+    "chocolate_spread": {
+      "icon": "chocolate_spread"
+    },
     "chopped_tomatoes": {
       "category": "canned",
       "icon": "tomato"
@@ -423,7 +427,9 @@
     },
     "coconut_water": {},
     "coffee": {},
-    "coffee_beans": {},
+    "coffee_beans": {
+      "icon": "coffee_beans"
+    },
     "coffee_powder": {
       "category": "drinks",
       "icon": "coffee_beans"
@@ -623,7 +629,9 @@
       "icon": "eggs"
     },
     "emmental_cheese": {},
-    "energy_drink": {},
+    "energy_drink": {
+      "icon": "energy_drink"
+    },
     "enoki_mushrooms": {
       "category": "fruits_vegetables",
       "icon": "mushroom"
@@ -813,7 +821,9 @@
       "icon": "cheese"
     },
     "grill_sauce": {},
-    "guacamole": {},
+    "guacamole": {
+      "icon": "guacamole"
+    },
     "hair_gel": {
       "category": "hygiene",
       "icon": "banana"
@@ -1189,7 +1199,9 @@
       "category": "canned",
       "icon": "plastic_bottle"
     },
-    "noodles": {},
+    "noodles": {
+      "icon": "noodles"
+    },
     "nori_sheets": {
       "category": "canned",
       "icon": "sushi"
@@ -1422,7 +1434,9 @@
       "icon": "mushroom"
     },
     "porridge": {},
-    "potato_chips": {},
+    "potato_chips": {
+      "icon": "potato_chips"
+    },
     "potato_croquettes": {},
     "potato_dumpling_dough": {
       "category": "snacks",
@@ -1802,7 +1816,9 @@
       "category": "drinks",
       "icon": "plastic_bottle"
     },
-    "spatula": {},
+    "spatula": {
+      "icon": "spatula"
+    },
     "spelt": {
       "category": "grain",
       "icon": "barley"
@@ -1843,7 +1859,9 @@
       "category": "fruits_vegetables",
       "icon": "asparagus"
     },
-    "squash": {},
+    "squash": {
+      "icon": "squash"
+    },
     "sriracha": {
       "category": "canned",
       "icon": "soy_sauce"
@@ -1987,7 +2005,9 @@
       "category": "canned",
       "icon": "fish_food"
     },
-    "turkey": {},
+    "turkey": {
+      "icon": "turkey"
+    },
     "turmeric": {
       "category": "bread",
       "icon": "biscuits"
@@ -2079,7 +2099,9 @@
       "category": "hygiene",
       "icon": "spray"
     },
-    "wheat": {},
+    "wheat": {
+      "icon": "wheat"
+    },
     "wheat_flour": {
       "category": "bread",
       "icon": "flour"
@@ -2088,7 +2110,9 @@
       "category": "dairy",
       "icon": "whipped_cream"
     },
-    "white_beans": {},
+    "white_beans": {
+      "icon": "white_beans"
+    },
     "white_bread": {
       "icon": "bread_loaf"
     },
@@ -2120,7 +2144,9 @@
       "icon": "cocktail_shaker"
     },
     "wine": {},
-    "wipes": {},
+    "wipes": {
+      "icon": "wipes"
+    },
     "worcester_sauce": {
       "category": "canned",
       "icon": "worcestershire_sauce"
