@@ -208,6 +208,10 @@ class _CalendarAgendaState extends State<_CalendarAgenda> {
       if (event.location != null && event.location!.isNotEmpty) event.location!,
       if (event.attendees.isNotEmpty)
         event.attendees.map((p) => p.name).join(", "),
+      if (event.description != null && event.description!.isNotEmpty)
+        event.description!
+            .replaceAll(RegExp(r'\s+'), " ")
+            .replaceAll(RegExp(r'[#*_>`\[\]()]'), ""),
     ];
 
     return parts.join(" · ");
