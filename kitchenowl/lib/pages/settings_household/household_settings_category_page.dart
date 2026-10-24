@@ -1,10 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/household_add_update/household_update_cubit.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/category.dart';
-import 'package:kitchenowl/widgets/dismissible_card.dart';
+import 'package:houseowl/cubits/household_add_update/household_update_cubit.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/category.dart';
+import 'package:houseowl/widgets/dismissible_card.dart';
 import 'package:reorderables/reorderables.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 

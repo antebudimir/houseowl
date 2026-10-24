@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/models/user.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/models/user.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 class SettingsServerCubit extends Cubit<SettingsServerState> {
   SettingsServerCubit() : super(const LoadingSettingsServerState([])) {

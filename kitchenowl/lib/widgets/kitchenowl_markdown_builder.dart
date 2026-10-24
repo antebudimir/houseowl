@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
-import 'package:kitchenowl/helpers/url_launcher.dart';
+import 'package:houseowl/helpers/url_launcher.dart';
 import 'package:markdown/markdown.dart' as md;
-import 'package:kitchenowl/helpers/markdown_style_sheet_extension.dart';
+import 'package:houseowl/helpers/markdown_style_sheet_extension.dart';
 
 class KitchenOwlMarkdownBuilder extends StatefulWidget {
   /// Creates a widget that parses and displays Markdown.

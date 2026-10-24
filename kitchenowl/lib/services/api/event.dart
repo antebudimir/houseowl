@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:kitchenowl/models/event.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/models/event.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 extension EventApi on ApiService {
   String eventRoute({Household? household, Event? event}) =>

@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/person.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/services/transaction_handler.dart';
-import 'package:kitchenowl/services/transactions/person.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/person.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/transaction_handler.dart';
+import 'package:houseowl/services/transactions/person.dart';
 
 class PersonsCubit extends Cubit<PersonsCubitState> {
   final Household household;

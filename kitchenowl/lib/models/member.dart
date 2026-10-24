@@ -1,4 +1,4 @@
-import 'package:kitchenowl/models/user.dart';
+import 'package:houseowl/models/user.dart';
 
 class Member extends User {
   final bool owner;

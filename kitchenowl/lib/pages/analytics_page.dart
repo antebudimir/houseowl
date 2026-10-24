@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:material_ui/material_ui.dart';
 import 'package:intl/intl.dart';
-import 'package:kitchenowl/services/api/analytics.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/services/api/analytics.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 class AnalyticsPage extends StatelessWidget {
   const AnalyticsPage({super.key});

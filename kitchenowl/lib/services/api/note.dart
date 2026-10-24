@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/note.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/note.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 extension NoteApi on ApiService {
   String noteRoute({Household? household, Note? note}) =>

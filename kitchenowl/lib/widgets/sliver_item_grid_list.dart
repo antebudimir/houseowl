@@ -1,17 +1,17 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/household_cubit.dart';
-import 'package:kitchenowl/cubits/shoppinglist_cubit.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
-import 'package:kitchenowl/helpers/build_context_extension.dart';
-import 'package:kitchenowl/helpers/url_launcher.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/category.dart';
-import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
-import 'package:kitchenowl/models/update_value.dart';
-import 'package:kitchenowl/pages/item_page.dart';
-import 'package:kitchenowl/widgets/shopping_item.dart';
+import 'package:houseowl/cubits/household_cubit.dart';
+import 'package:houseowl/cubits/shoppinglist_cubit.dart';
+import 'package:houseowl/enums/update_enum.dart';
+import 'package:houseowl/helpers/build_context_extension.dart';
+import 'package:houseowl/helpers/url_launcher.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/category.dart';
+import 'package:houseowl/models/item.dart';
+import 'package:houseowl/models/shoppinglist.dart';
+import 'package:houseowl/models/update_value.dart';
+import 'package:houseowl/pages/item_page.dart';
+import 'package:houseowl/widgets/shopping_item.dart';
 
 /// A Sliver Grid or List depending on the shopping list style
 class SliverItemGridList<T extends Item> extends StatelessWidget {

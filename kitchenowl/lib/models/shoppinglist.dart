@@ -1,5 +1,5 @@
-import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/models/model.dart';
+import 'package:houseowl/models/item.dart';
+import 'package:houseowl/models/model.dart';
 
 class ShoppingList extends Model {
   final int? id;

@@ -1,5 +1,5 @@
-import 'package:kitchenowl/models/model.dart';
-import 'package:kitchenowl/models/person.dart';
+import 'package:houseowl/models/model.dart';
+import 'package:houseowl/models/person.dart';
 
 /// A household document with optional expiry date, attached file and linked
 /// contact. `expiresAt` and `filename` mirror the backend's epoch-ms /

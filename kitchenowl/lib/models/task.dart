@@ -1,8 +1,8 @@
-import 'package:kitchenowl/enums/task_recurrence_enum.dart';
-import 'package:kitchenowl/models/model.dart';
-import 'package:kitchenowl/models/person.dart';
-import 'package:kitchenowl/models/planned_buy.dart';
-import 'package:kitchenowl/models/tag.dart';
+import 'package:houseowl/enums/task_recurrence_enum.dart';
+import 'package:houseowl/models/model.dart';
+import 'package:houseowl/models/person.dart';
+import 'package:houseowl/models/planned_buy.dart';
+import 'package:houseowl/models/tag.dart';
 
 class Task extends Model {
   final int? id;

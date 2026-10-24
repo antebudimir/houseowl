@@ -1,9 +1,9 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/category.dart';
-import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
-import 'package:kitchenowl/widgets/sliver_expansion_tile.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/category.dart';
+import 'package:houseowl/models/item.dart';
+import 'package:houseowl/models/shoppinglist.dart';
+import 'package:houseowl/widgets/sliver_expansion_tile.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class SliverCategoryItemGridList<T extends Item> extends StatefulWidget {

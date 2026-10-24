@@ -3,16 +3,16 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/enums/shoppinglist_sorting.dart';
-import 'package:kitchenowl/models/category.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/services/storage/storage.dart';
-import 'package:kitchenowl/services/transactions/category.dart';
-import 'package:kitchenowl/services/transactions/shoppinglist.dart';
-import 'package:kitchenowl/services/transaction_handler.dart';
+import 'package:houseowl/enums/shoppinglist_sorting.dart';
+import 'package:houseowl/models/category.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/item.dart';
+import 'package:houseowl/models/shoppinglist.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/storage/storage.dart';
+import 'package:houseowl/services/transactions/category.dart';
+import 'package:houseowl/services/transactions/shoppinglist.dart';
+import 'package:houseowl/services/transaction_handler.dart';
 
 class ShoppinglistCubit extends Cubit<ShoppinglistCubitState> {
   final Household household;

@@ -1,9 +1,9 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/settings_server_cubit.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/widgets/create_user_form_fields.dart';
+import 'package:houseowl/cubits/settings_server_cubit.dart';
+import 'package:houseowl/enums/update_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/widgets/create_user_form_fields.dart';
 
 class CreateUserPage extends StatefulWidget {
   const CreateUserPage({super.key});

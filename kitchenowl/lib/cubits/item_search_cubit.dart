@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/item.dart';
+import 'package:houseowl/services/api/api_service.dart';
 import 'package:collection/collection.dart';
 
 class ItemSearchCubit extends Cubit<ItemSearchState> {

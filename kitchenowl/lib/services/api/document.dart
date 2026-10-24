@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:kitchenowl/models/document.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/models/document.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 extension DocumentApi on ApiService {
   String documentRoute({Household? household, Document? document}) =>

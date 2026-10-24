@@ -1,15 +1,15 @@
 import 'package:collection/collection.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/auth_cubit.dart';
-import 'package:kitchenowl/cubits/household_member_cubit.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/member.dart';
-import 'package:kitchenowl/models/user.dart';
-import 'package:kitchenowl/pages/user_search_page.dart';
-import 'package:kitchenowl/widgets/settings_household/update_member_bottom_sheet.dart';
-import 'package:kitchenowl/widgets/user_list_tile.dart';
+import 'package:houseowl/cubits/auth_cubit.dart';
+import 'package:houseowl/cubits/household_member_cubit.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/member.dart';
+import 'package:houseowl/models/user.dart';
+import 'package:houseowl/pages/user_search_page.dart';
+import 'package:houseowl/widgets/settings_household/update_member_bottom_sheet.dart';
+import 'package:houseowl/widgets/user_list_tile.dart';
 
 class HouseholdMemberPage extends StatefulWidget {
   final Household household;

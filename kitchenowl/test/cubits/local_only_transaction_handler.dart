@@ -1,5 +1,5 @@
-import 'package:kitchenowl/services/transaction.dart';
-import 'package:kitchenowl/services/transaction_handler.dart';
+import 'package:houseowl/services/transaction.dart';
+import 'package:houseowl/services/transaction_handler.dart';
 
 class LocalOnlyTransactionHandler extends TransactionHandler {
   LocalOnlyTransactionHandler() : super.internal();

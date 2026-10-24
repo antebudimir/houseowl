@@ -1,6 +1,6 @@
-import 'package:kitchenowl/enums/buy_status.dart';
-import 'package:kitchenowl/models/model.dart';
-import 'package:kitchenowl/models/person.dart';
+import 'package:houseowl/enums/buy_status.dart';
+import 'package:houseowl/models/model.dart';
+import 'package:houseowl/models/person.dart';
 
 class PlannedBuy extends Model {
   final int? id;

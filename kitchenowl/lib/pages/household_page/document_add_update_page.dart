@@ -1,14 +1,14 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/document_add_update_cubit.dart';
-import 'package:kitchenowl/cubits/documents_cubit.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
-import 'package:kitchenowl/helpers/named_bytearray.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/document.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/cubits/document_add_update_cubit.dart';
+import 'package:houseowl/cubits/documents_cubit.dart';
+import 'package:houseowl/enums/update_enum.dart';
+import 'package:houseowl/helpers/named_bytearray.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/document.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 class DocumentAddUpdatePage extends StatefulWidget {
   final Household household;

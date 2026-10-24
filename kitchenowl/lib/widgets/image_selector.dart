@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/helpers/named_bytearray.dart';
-import 'package:kitchenowl/kitchenowl.dart';
+import 'package:houseowl/helpers/named_bytearray.dart';
+import 'package:houseowl/kitchenowl.dart';
 
 class ImageSelector extends StatelessWidget {
   final NamedByteArray? image;

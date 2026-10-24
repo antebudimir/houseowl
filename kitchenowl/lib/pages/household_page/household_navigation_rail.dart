@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/enums/views_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
+import 'package:houseowl/enums/views_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
 
 import 'household_drawer.dart';
 

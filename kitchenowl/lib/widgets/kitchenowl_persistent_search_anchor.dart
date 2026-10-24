@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/helpers/debouncer.dart';
-import 'package:kitchenowl/kitchenowl.dart';
+import 'package:houseowl/helpers/debouncer.dart';
+import 'package:houseowl/kitchenowl.dart';
 
 class KitchenowlPersistentSearchAnchor extends StatefulWidget {
   final FutureOr<Iterable<String>> Function(BuildContext, SearchController)

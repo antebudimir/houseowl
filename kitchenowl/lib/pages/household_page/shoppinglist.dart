@@ -1,16 +1,16 @@
 import 'package:animations/animations.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/app.dart';
-import 'package:kitchenowl/cubits/settings_cubit.dart';
-import 'package:kitchenowl/cubits/shoppinglist_cubit.dart';
-import 'package:kitchenowl/enums/shoppinglist_sorting.dart';
-import 'package:kitchenowl/models/category.dart';
-import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/pages/item_search_page.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/widgets/shopping_list/shoppinglist_header.dart';
-import 'package:kitchenowl/widgets/shopping_list/sliver_shopinglist_item_view.dart';
+import 'package:houseowl/app.dart';
+import 'package:houseowl/cubits/settings_cubit.dart';
+import 'package:houseowl/cubits/shoppinglist_cubit.dart';
+import 'package:houseowl/enums/shoppinglist_sorting.dart';
+import 'package:houseowl/models/category.dart';
+import 'package:houseowl/models/item.dart';
+import 'package:houseowl/pages/item_search_page.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/widgets/shopping_list/shoppinglist_header.dart';
+import 'package:houseowl/widgets/shopping_list/sliver_shopinglist_item_view.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class ShoppinglistPage extends StatefulWidget {

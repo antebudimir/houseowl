@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/kitchenowl.dart';
+import 'package:houseowl/kitchenowl.dart';
 
 /// Expiry-window filter chips shown on the documents page.
 enum DocumentsFilter {

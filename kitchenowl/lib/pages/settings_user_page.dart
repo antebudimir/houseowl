@@ -1,17 +1,17 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/app.dart';
-import 'package:kitchenowl/cubits/auth_cubit.dart';
-import 'package:kitchenowl/cubits/server_info_cubit.dart';
-import 'package:kitchenowl/cubits/settings_user_cubit.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/user.dart';
-import 'package:kitchenowl/pages/settings_user_email_page.dart';
-import 'package:kitchenowl/pages/settings_user_linked_accounts_page.dart';
-import 'package:kitchenowl/pages/settings_user_password_page.dart';
-import 'package:kitchenowl/pages/settings_user_sessions_page.dart';
-import 'package:kitchenowl/widgets/user_image_selector.dart';
+import 'package:houseowl/app.dart';
+import 'package:houseowl/cubits/auth_cubit.dart';
+import 'package:houseowl/cubits/server_info_cubit.dart';
+import 'package:houseowl/cubits/settings_user_cubit.dart';
+import 'package:houseowl/enums/update_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/user.dart';
+import 'package:houseowl/pages/settings_user_email_page.dart';
+import 'package:houseowl/pages/settings_user_linked_accounts_page.dart';
+import 'package:houseowl/pages/settings_user_password_page.dart';
+import 'package:houseowl/pages/settings_user_sessions_page.dart';
+import 'package:houseowl/widgets/user_image_selector.dart';
 
 class SettingsUserPage extends StatefulWidget {
   final User? user;

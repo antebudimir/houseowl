@@ -5,16 +5,16 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kitchenowl/app.dart';
-import 'package:kitchenowl/cubits/auth_cubit.dart';
-import 'package:kitchenowl/cubits/server_info_cubit.dart';
-import 'package:kitchenowl/enums/oidc_provider.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/styles/color_mapper.dart';
+import 'package:houseowl/app.dart';
+import 'package:houseowl/cubits/auth_cubit.dart';
+import 'package:houseowl/cubits/server_info_cubit.dart';
+import 'package:houseowl/enums/oidc_provider.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/styles/color_mapper.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:sliver_tools/sliver_tools.dart';
-import 'package:kitchenowl/pages/splash_page.dart';
+import 'package:houseowl/pages/splash_page.dart';
 
 class LoginPage extends StatefulWidget {
   final String? launch;

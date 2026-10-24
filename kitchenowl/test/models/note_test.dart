@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kitchenowl/models/note.dart';
-import 'package:kitchenowl/models/tag.dart';
+import 'package:houseowl/models/note.dart';
+import 'package:houseowl/models/tag.dart';
 
 void main() {
   test("Note json roundtrip", () {

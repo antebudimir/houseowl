@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/styles/dynamic.dart';
+import 'package:houseowl/styles/dynamic.dart';
 
 class SelectableButtonListTile extends StatefulWidget {
   final String title;

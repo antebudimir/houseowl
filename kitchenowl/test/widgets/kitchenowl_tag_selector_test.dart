@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide MaterialApp, Scaffold;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/tag.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/tag.dart';
 import 'package:material_ui/material_ui.dart' as mui;
 
 void main() {

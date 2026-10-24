@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart' hide MaterialApp, Scaffold;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/documents_cubit.dart';
-import 'package:kitchenowl/models/document.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/pages/household_page/documents_page.dart';
+import 'package:houseowl/cubits/documents_cubit.dart';
+import 'package:houseowl/models/document.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/pages/household_page/documents_page.dart';
 import 'package:material_ui/material_ui.dart' as mui;
 
 import '../cubits/local_only_transaction_handler.dart';
-import 'package:kitchenowl/services/transaction.dart';
-import 'package:kitchenowl/services/transactions/document.dart';
+import 'package:houseowl/services/transaction.dart';
+import 'package:houseowl/services/transactions/document.dart';
 
 class StubTransactionHandler extends LocalOnlyTransactionHandler {
   final List<Document> documents;

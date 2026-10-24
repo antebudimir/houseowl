@@ -3,12 +3,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/auth_cubit.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
-import 'package:kitchenowl/helpers/named_bytearray.dart';
-import 'package:kitchenowl/models/token.dart';
-import 'package:kitchenowl/models/user.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/cubits/auth_cubit.dart';
+import 'package:houseowl/enums/update_enum.dart';
+import 'package:houseowl/helpers/named_bytearray.dart';
+import 'package:houseowl/models/token.dart';
+import 'package:houseowl/models/user.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 class SettingsUserCubit extends Cubit<SettingsUserState> {
   final int? userId;

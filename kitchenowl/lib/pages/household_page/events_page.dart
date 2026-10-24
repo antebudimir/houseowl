@@ -1,11 +1,11 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/events_cubit.dart';
-import 'package:kitchenowl/cubits/household_cubit.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/event.dart';
-import 'package:kitchenowl/pages/household_page/event_add_update_page.dart';
+import 'package:houseowl/cubits/events_cubit.dart';
+import 'package:houseowl/cubits/household_cubit.dart';
+import 'package:houseowl/enums/update_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/event.dart';
+import 'package:houseowl/pages/household_page/event_add_update_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class EventsPage extends StatelessWidget {

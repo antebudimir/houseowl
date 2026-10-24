@@ -1,10 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/auth_cubit.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/router.dart';
-import 'package:kitchenowl/widgets/create_user_form_fields.dart';
+import 'package:houseowl/cubits/auth_cubit.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/router.dart';
+import 'package:houseowl/widgets/create_user_form_fields.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});

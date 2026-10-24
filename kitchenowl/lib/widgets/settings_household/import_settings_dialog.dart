@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/import_settings.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/import_settings.dart';
 
 Future<ImportSettings?> askForImportSettings({
   required BuildContext context,

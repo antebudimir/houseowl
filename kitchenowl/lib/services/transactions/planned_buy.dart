@@ -1,7 +1,7 @@
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/planned_buy.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/services/transaction.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/planned_buy.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/transaction.dart';
 
 /// Planned buys are online-only: there is no offline cache, mirroring the
 /// former expense transactions.

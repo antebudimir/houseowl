@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
-import 'package:kitchenowl/helpers/named_bytearray.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/helpers/named_bytearray.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 extension UploadApi on ApiService {
   static const baseRoute = '/upload';

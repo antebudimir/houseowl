@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kitchenowl/models/person.dart';
+import 'package:houseowl/models/person.dart';
 
 void main() {
   test("Person json roundtrip", () {

@@ -1,8 +1,8 @@
-import 'package:kitchenowl/cubits/auth_cubit.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/services/storage/storage.dart';
-import 'package:kitchenowl/services/transaction_handler.dart';
-import 'package:kitchenowl/services/transactions/shoppinglist.dart';
+import 'package:houseowl/cubits/auth_cubit.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/services/storage/storage.dart';
+import 'package:houseowl/services/transaction_handler.dart';
+import 'package:houseowl/services/transactions/shoppinglist.dart';
 
 class BackgroundTask {
   static Future<void> run(AuthCubit authCubit) async {

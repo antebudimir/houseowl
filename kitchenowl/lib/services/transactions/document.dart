@@ -1,7 +1,7 @@
-import 'package:kitchenowl/models/document.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/services/transaction.dart';
+import 'package:houseowl/models/document.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/transaction.dart';
 
 /// Documents are online-only: there is no offline cache, mirroring task
 /// transactions.

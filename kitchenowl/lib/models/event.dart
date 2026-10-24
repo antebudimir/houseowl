@@ -1,5 +1,5 @@
-import 'package:kitchenowl/models/model.dart';
-import 'package:kitchenowl/models/person.dart';
+import 'package:houseowl/models/model.dart';
+import 'package:houseowl/models/person.dart';
 
 /// An event with optional attendees.
 ///

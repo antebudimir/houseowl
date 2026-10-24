@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart' hide MaterialApp, Scaffold;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/notes_cubit.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/note.dart';
-import 'package:kitchenowl/models/tag.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/pages/household_page/notes_page.dart';
-import 'package:kitchenowl/services/storage/mem_storage.dart';
+import 'package:houseowl/cubits/notes_cubit.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/note.dart';
+import 'package:houseowl/models/tag.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/pages/household_page/notes_page.dart';
+import 'package:houseowl/services/storage/mem_storage.dart';
 import 'package:material_ui/material_ui.dart' as mui;
 
 import '../cubits/local_only_transaction_handler.dart';

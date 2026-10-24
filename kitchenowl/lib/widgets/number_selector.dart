@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/kitchenowl.dart';
+import 'package:houseowl/kitchenowl.dart';
 
 class NumberSelector extends StatelessWidget {
   /// If non-null, the lower (inclusive) bound for this number.

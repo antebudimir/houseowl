@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kitchenowl/enums/shoppinglist_sorting.dart';
-import 'package:kitchenowl/models/item.dart';
+import 'package:houseowl/enums/shoppinglist_sorting.dart';
+import 'package:houseowl/models/item.dart';
 
 List<String> sortedNames(List<String> names, ShoppinglistSorting sorting) {
   final items = names.map((e) => Item(name: e)).toList();

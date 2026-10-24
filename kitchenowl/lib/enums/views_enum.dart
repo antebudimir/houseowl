@@ -1,26 +1,26 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/app.dart';
-import 'package:kitchenowl/cubits/auth_cubit.dart';
-import 'package:kitchenowl/cubits/household_cubit.dart';
-import 'package:kitchenowl/cubits/persons_cubit.dart';
-import 'package:kitchenowl/cubits/planned_buys_cubit.dart';
-import 'package:kitchenowl/cubits/notes_cubit.dart';
-import 'package:kitchenowl/cubits/documents_cubit.dart';
-import 'package:kitchenowl/cubits/loyalty_cards_cubit.dart';
-import 'package:kitchenowl/cubits/tasks_cubit.dart';
-import 'package:kitchenowl/cubits/events_cubit.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/pages/household_page/document_add_update_page.dart';
-import 'package:kitchenowl/pages/household_page/loyalty_card_add_update_page.dart';
-import 'package:kitchenowl/pages/household_page/note_add_update_page.dart';
-import 'package:kitchenowl/pages/household_page/person_add_update_page.dart';
-import 'package:kitchenowl/pages/household_page/planned_buy_add_update_page.dart';
-import 'package:kitchenowl/pages/household_page/event_add_update_page.dart';
-import 'package:kitchenowl/pages/household_page/task_add_update_page.dart';
-import 'package:kitchenowl/widgets/shoppinglist_confirm_remove_fab.dart';
+import 'package:houseowl/app.dart';
+import 'package:houseowl/cubits/auth_cubit.dart';
+import 'package:houseowl/cubits/household_cubit.dart';
+import 'package:houseowl/cubits/persons_cubit.dart';
+import 'package:houseowl/cubits/planned_buys_cubit.dart';
+import 'package:houseowl/cubits/notes_cubit.dart';
+import 'package:houseowl/cubits/documents_cubit.dart';
+import 'package:houseowl/cubits/loyalty_cards_cubit.dart';
+import 'package:houseowl/cubits/tasks_cubit.dart';
+import 'package:houseowl/cubits/events_cubit.dart';
+import 'package:houseowl/enums/update_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/pages/household_page/document_add_update_page.dart';
+import 'package:houseowl/pages/household_page/loyalty_card_add_update_page.dart';
+import 'package:houseowl/pages/household_page/note_add_update_page.dart';
+import 'package:houseowl/pages/household_page/person_add_update_page.dart';
+import 'package:houseowl/pages/household_page/planned_buy_add_update_page.dart';
+import 'package:houseowl/pages/household_page/event_add_update_page.dart';
+import 'package:houseowl/pages/household_page/task_add_update_page.dart';
+import 'package:houseowl/widgets/shoppinglist_confirm_remove_fab.dart';
 
 enum ViewsEnum {
   items,

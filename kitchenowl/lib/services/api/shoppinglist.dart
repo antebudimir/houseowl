@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:kitchenowl/enums/shoppinglist_sorting.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/enums/shoppinglist_sorting.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/item.dart';
+import 'package:houseowl/models/shoppinglist.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 extension ShoppinglistApi on ApiService {
   static const baseRoute = '/shoppinglist';

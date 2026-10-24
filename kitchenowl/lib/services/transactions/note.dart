@@ -1,8 +1,8 @@
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/note.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/services/storage/mem_storage.dart';
-import 'package:kitchenowl/services/transaction.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/note.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/storage/mem_storage.dart';
+import 'package:houseowl/services/transaction.dart';
 
 /// Lists notes. When [query] is set the list is resolved by the server
 /// (`?search=` ILIKE over title and body); offline it falls back to a local

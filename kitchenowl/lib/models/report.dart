@@ -1,5 +1,5 @@
-import 'package:kitchenowl/models/model.dart';
-import 'package:kitchenowl/models/user.dart';
+import 'package:houseowl/models/model.dart';
+import 'package:houseowl/models/user.dart';
 
 class Report extends Model {
   final int? id;

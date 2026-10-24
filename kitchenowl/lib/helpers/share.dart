@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:kitchenowl/kitchenowl.dart';
+import 'package:houseowl/kitchenowl.dart';
 import 'package:universal_html/html.dart' as html;
 
 import 'package:file_picker/file_picker.dart';

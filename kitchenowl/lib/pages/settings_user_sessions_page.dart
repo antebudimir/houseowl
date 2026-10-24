@@ -1,10 +1,10 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/settings_user_cubit.dart';
-import 'package:kitchenowl/enums/token_type_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/widgets/settings/token_card.dart';
+import 'package:houseowl/cubits/settings_user_cubit.dart';
+import 'package:houseowl/enums/token_type_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/widgets/settings/token_card.dart';
 
 class SettingsUserSessionsPage extends StatelessWidget {
   final SettingsUserCubit cubit;

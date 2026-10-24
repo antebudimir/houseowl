@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kitchenowl/models/item.dart';
+import 'package:houseowl/models/item.dart';
 
 void main() {
   test("Item should be equal", () {

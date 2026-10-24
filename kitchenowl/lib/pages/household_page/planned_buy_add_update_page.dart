@@ -1,14 +1,14 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:kitchenowl/cubits/planned_buys_cubit.dart';
-import 'package:kitchenowl/enums/buy_status.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/person.dart';
-import 'package:kitchenowl/models/planned_buy.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/cubits/planned_buys_cubit.dart';
+import 'package:houseowl/enums/buy_status.dart';
+import 'package:houseowl/enums/update_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/person.dart';
+import 'package:houseowl/models/planned_buy.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 class PlannedBuyAddUpdatePage extends StatefulWidget {
   final Household household;

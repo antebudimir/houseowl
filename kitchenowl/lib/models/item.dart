@@ -1,5 +1,5 @@
-import 'package:kitchenowl/models/category.dart';
-import 'package:kitchenowl/models/model.dart';
+import 'package:houseowl/models/category.dart';
+import 'package:houseowl/models/model.dart';
 
 import 'nullable.dart';
 

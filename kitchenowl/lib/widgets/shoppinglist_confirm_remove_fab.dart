@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/shoppinglist_cubit.dart';
+import 'package:houseowl/cubits/shoppinglist_cubit.dart';
 
 class ShoppingListConfirmRememoveFab extends StatelessWidget {
   const ShoppingListConfirmRememoveFab({super.key});

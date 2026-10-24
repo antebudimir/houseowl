@@ -1,7 +1,7 @@
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/loyalty_card.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/services/transaction.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/loyalty_card.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/transaction.dart';
 
 /// Loyalty cards are online-only: there is no offline cache, mirroring
 /// document transactions.

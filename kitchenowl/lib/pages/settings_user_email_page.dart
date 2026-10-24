@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
-import 'package:kitchenowl/kitchenowl.dart';
+import 'package:houseowl/kitchenowl.dart';
 
 class SettingsUserEmailPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();

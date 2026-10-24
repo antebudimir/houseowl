@@ -1,12 +1,12 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/household_cubit.dart';
-import 'package:kitchenowl/cubits/tasks_cubit.dart';
-import 'package:kitchenowl/enums/task_recurrence_enum.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/task.dart';
-import 'package:kitchenowl/pages/household_page/task_add_update_page.dart';
+import 'package:houseowl/cubits/household_cubit.dart';
+import 'package:houseowl/cubits/tasks_cubit.dart';
+import 'package:houseowl/enums/task_recurrence_enum.dart';
+import 'package:houseowl/enums/update_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/task.dart';
+import 'package:houseowl/pages/household_page/task_add_update_page.dart';
 
 class TasksPage extends StatelessWidget {
   const TasksPage({super.key});

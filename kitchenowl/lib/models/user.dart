@@ -1,6 +1,6 @@
-import 'package:kitchenowl/enums/oidc_provider.dart';
-import 'package:kitchenowl/models/model.dart';
-import 'package:kitchenowl/models/token.dart';
+import 'package:houseowl/enums/oidc_provider.dart';
+import 'package:houseowl/models/model.dart';
+import 'package:houseowl/models/token.dart';
 
 class User extends Model {
   final int id;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart' hide MaterialApp, Scaffold;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kitchenowl/gen/l10n/app_localizations.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
-import 'package:kitchenowl/widgets/shopping_list/shoppinglist_header.dart';
+import 'package:houseowl/gen/l10n/app_localizations.dart';
+import 'package:houseowl/models/shoppinglist.dart';
+import 'package:houseowl/widgets/shopping_list/shoppinglist_header.dart';
 import 'package:material_ui/material_ui.dart' as mui
     show AlertDialog, MaterialApp, Scaffold, TextField;
 

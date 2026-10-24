@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/category.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/services/transaction_handler.dart';
-import 'package:kitchenowl/services/transactions/item.dart';
-import 'package:kitchenowl/services/transactions/shoppinglist.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/category.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/item.dart';
+import 'package:houseowl/models/shoppinglist.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/transaction_handler.dart';
+import 'package:houseowl/services/transactions/item.dart';
+import 'package:houseowl/services/transactions/shoppinglist.dart';
 
 class ItemEditCubit<T extends Item> extends Cubit<ItemEditState> {
   final Household? household;

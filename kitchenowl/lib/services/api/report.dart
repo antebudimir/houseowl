@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:kitchenowl/models/report.dart';
-import 'package:kitchenowl/models/user.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/models/report.dart';
+import 'package:houseowl/models/user.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 extension ReportApi on ApiService {
   static const baseRoute = '/report';

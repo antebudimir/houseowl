@@ -1,9 +1,9 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/household_about_cubit.dart';
-import 'package:kitchenowl/helpers/url_launcher.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/household.dart';
+import 'package:houseowl/cubits/household_about_cubit.dart';
+import 'package:houseowl/helpers/url_launcher.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/household.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class HouseholdAboutPage extends StatefulWidget {

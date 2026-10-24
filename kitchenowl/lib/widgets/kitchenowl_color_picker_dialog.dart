@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:kitchenowl/kitchenowl.dart';
+import 'package:houseowl/kitchenowl.dart';
 
 class KitchenOwlColorPickerDialog extends StatefulWidget {
   final Color? initialColor;

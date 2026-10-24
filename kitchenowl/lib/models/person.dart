@@ -1,4 +1,4 @@
-import 'package:kitchenowl/models/model.dart';
+import 'package:houseowl/models/model.dart';
 
 /// The backend stores birthdays without a meaningful year as 1990-01-01
 /// (epoch-ms 631152000000). This year must never be displayed.

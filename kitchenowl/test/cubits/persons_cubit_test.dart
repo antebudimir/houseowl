@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kitchenowl/cubits/persons_cubit.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/person.dart';
-import 'package:kitchenowl/services/transaction.dart';
+import 'package:houseowl/cubits/persons_cubit.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/person.dart';
+import 'package:houseowl/services/transaction.dart';
 
 import 'local_only_transaction_handler.dart';
 

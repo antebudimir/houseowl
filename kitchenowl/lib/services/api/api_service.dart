@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
-import 'package:kitchenowl/config.dart';
-import 'package:kitchenowl/helpers/named_bytearray.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/token.dart';
+import 'package:houseowl/config.dart';
+import 'package:houseowl/helpers/named_bytearray.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/token.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
 // Export extensions

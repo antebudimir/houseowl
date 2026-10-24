@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/person.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/person.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 /// State for the document editor. It loads the household's members/contacts
 /// for the person selector, mirroring the task assignee dropdown.

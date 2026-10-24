@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/item_icons.dart';
-import 'package:kitchenowl/models/item.dart';
+import 'package:houseowl/item_icons.dart';
+import 'package:houseowl/models/item.dart';
 
 class ItemChip extends StatelessWidget {
   final Item item;

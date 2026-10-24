@@ -1,11 +1,11 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:intl/intl.dart';
-import 'package:kitchenowl/gen/l10n/app_localizations.dart';
-import 'package:kitchenowl/models/report.dart';
-import 'package:kitchenowl/pages/settings_user_page.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/services/api/report.dart';
-import 'package:kitchenowl/widgets/confirmation_dialog.dart';
+import 'package:houseowl/gen/l10n/app_localizations.dart';
+import 'package:houseowl/models/report.dart';
+import 'package:houseowl/pages/settings_user_page.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/api/report.dart';
+import 'package:houseowl/widgets/confirmation_dialog.dart';
 
 class ReportsListPage extends StatelessWidget {
   const ReportsListPage({super.key});

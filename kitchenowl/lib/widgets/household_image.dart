@@ -1,9 +1,9 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_blurhash/flutter_blurhash.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/pages/household_member_page.dart';
-import 'package:kitchenowl/widgets/avatar_list.dart';
-import 'package:kitchenowl/widgets/image_provider.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/pages/household_member_page.dart';
+import 'package:houseowl/widgets/avatar_list.dart';
+import 'package:houseowl/widgets/image_provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class HouseholdImage extends StatelessWidget {

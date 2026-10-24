@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart' as foundation;
-import 'package:kitchenowl/models/category.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/note.dart';
-import 'package:kitchenowl/models/person.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
-import 'package:kitchenowl/models/tag.dart';
-import 'package:kitchenowl/models/user.dart';
+import 'package:houseowl/models/category.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/note.dart';
+import 'package:houseowl/models/person.dart';
+import 'package:houseowl/models/shoppinglist.dart';
+import 'package:houseowl/models/tag.dart';
+import 'package:houseowl/models/user.dart';
 import 'package:path_provider/path_provider.dart' as pathProvider;
 
 class TempStorage {

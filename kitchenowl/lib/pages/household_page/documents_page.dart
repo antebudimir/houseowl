@@ -1,10 +1,10 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/documents_cubit.dart';
-import 'package:kitchenowl/enums/documents_filter_enum.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/document.dart';
+import 'package:houseowl/cubits/documents_cubit.dart';
+import 'package:houseowl/enums/documents_filter_enum.dart';
+import 'package:houseowl/enums/update_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/document.dart';
 
 import 'document_page.dart';
 

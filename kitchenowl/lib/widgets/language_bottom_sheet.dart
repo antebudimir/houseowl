@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
-import 'package:kitchenowl/kitchenowl.dart';
+import 'package:houseowl/kitchenowl.dart';
 
 class LanguageBottomSheet extends StatefulWidget {
   final String title;

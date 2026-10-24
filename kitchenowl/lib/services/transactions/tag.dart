@@ -1,8 +1,8 @@
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/tag.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/services/storage/mem_storage.dart';
-import 'package:kitchenowl/services/transaction.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/tag.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/storage/mem_storage.dart';
+import 'package:houseowl/services/transaction.dart';
 
 class TransactionTagGetAll extends Transaction<Set<Tag>> {
   final Household household;

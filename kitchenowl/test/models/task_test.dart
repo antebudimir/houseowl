@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kitchenowl/enums/task_recurrence_enum.dart';
-import 'package:kitchenowl/models/planned_buy.dart';
-import 'package:kitchenowl/models/task.dart';
-import 'package:kitchenowl/models/tag.dart';
+import 'package:houseowl/enums/task_recurrence_enum.dart';
+import 'package:houseowl/models/planned_buy.dart';
+import 'package:houseowl/models/task.dart';
+import 'package:houseowl/models/tag.dart';
 
 void main() {
   test("Task should be equal", () {

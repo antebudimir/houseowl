@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/loyalty_cards_cubit.dart';
-import 'package:kitchenowl/enums/barcode_format_enum.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/loyalty_card.dart';
-import 'package:kitchenowl/models/household.dart';
+import 'package:houseowl/cubits/loyalty_cards_cubit.dart';
+import 'package:houseowl/enums/barcode_format_enum.dart';
+import 'package:houseowl/enums/update_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/loyalty_card.dart';
+import 'package:houseowl/models/household.dart';
 
 import 'loyalty_card_scanner_page.dart';
 import 'loyalty_card_page.dart' show scannerSupported;

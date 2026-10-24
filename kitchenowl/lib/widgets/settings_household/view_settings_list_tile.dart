@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/household_add_update/household_add_update_cubit.dart';
-import 'package:kitchenowl/enums/views_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
+import 'package:houseowl/cubits/household_add_update/household_add_update_cubit.dart';
+import 'package:houseowl/enums/views_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
 
 class ViewSettingsListTile<Cubit extends HouseholdAddUpdateCubit<State>,
     State extends HouseholdAddUpdateState> extends StatelessWidget {

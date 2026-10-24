@@ -1,5 +1,5 @@
-import 'package:kitchenowl/enums/token_type_enum.dart';
-import 'package:kitchenowl/models/model.dart';
+import 'package:houseowl/enums/token_type_enum.dart';
+import 'package:houseowl/models/model.dart';
 
 class Token extends Model {
   final int id;

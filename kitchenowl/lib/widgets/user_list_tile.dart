@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/auth_cubit.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/user.dart';
+import 'package:houseowl/cubits/auth_cubit.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/user.dart';
 
 class UserListTile extends StatelessWidget {
   final User user;

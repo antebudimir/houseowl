@@ -1,9 +1,9 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/gen/l10n/app_localizations.dart';
-import 'package:kitchenowl/models/user.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/services/api/report.dart';
-import 'package:kitchenowl/widgets/text_dialog.dart';
+import 'package:houseowl/gen/l10n/app_localizations.dart';
+import 'package:houseowl/models/user.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/api/report.dart';
+import 'package:houseowl/widgets/text_dialog.dart';
 
 class ReportDialog extends StatelessWidget {
   final User? user;

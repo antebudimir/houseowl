@@ -1,12 +1,12 @@
-import 'package:kitchenowl/app.dart';
-import 'package:kitchenowl/enums/shoppinglist_sorting.dart';
-import 'package:kitchenowl/helpers/item_name.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
-import 'package:kitchenowl/services/storage/mem_storage.dart';
-import 'package:kitchenowl/services/transaction.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/app.dart';
+import 'package:houseowl/enums/shoppinglist_sorting.dart';
+import 'package:houseowl/helpers/item_name.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/item.dart';
+import 'package:houseowl/models/shoppinglist.dart';
+import 'package:houseowl/services/storage/mem_storage.dart';
+import 'package:houseowl/services/transaction.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 class TransactionShoppingListGet extends Transaction<List<ShoppingList>> {
   final Household household;

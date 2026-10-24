@@ -6,9 +6,9 @@ import 'package:material_ui/material_ui.dart';
 import 'package:intl/intl_standalone.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_web_plugins/url_strategy.dart';
-import 'package:kitchenowl/cubits/auth_cubit.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/services/background_task.dart';
+import 'package:houseowl/cubits/auth_cubit.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/background_task.dart';
 import 'app.dart';
 
 Future main() async {

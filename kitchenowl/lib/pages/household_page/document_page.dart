@@ -1,12 +1,12 @@
 import 'package:flutter_blurhash/flutter_blurhash.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/documents_cubit.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/document.dart';
-import 'package:kitchenowl/helpers/share.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/cubits/documents_cubit.dart';
+import 'package:houseowl/enums/update_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/document.dart';
+import 'package:houseowl/helpers/share.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 import '../photo_view_page.dart';
 import 'document_add_update_page.dart';

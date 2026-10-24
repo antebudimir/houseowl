@@ -1,16 +1,16 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/task_add_update_cubit.dart';
-import 'package:kitchenowl/cubits/tasks_cubit.dart';
-import 'package:kitchenowl/enums/task_recurrence_enum.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/person.dart';
-import 'package:kitchenowl/models/planned_buy.dart';
-import 'package:kitchenowl/models/tag.dart';
-import 'package:kitchenowl/models/task.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/cubits/task_add_update_cubit.dart';
+import 'package:houseowl/cubits/tasks_cubit.dart';
+import 'package:houseowl/enums/task_recurrence_enum.dart';
+import 'package:houseowl/enums/update_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/person.dart';
+import 'package:houseowl/models/planned_buy.dart';
+import 'package:houseowl/models/tag.dart';
+import 'package:houseowl/models/task.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 class TaskAddUpdatePage extends StatefulWidget {
   final Household household;

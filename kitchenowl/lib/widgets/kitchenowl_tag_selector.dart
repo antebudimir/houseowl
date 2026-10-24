@@ -1,5 +1,5 @@
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/tag.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/tag.dart';
 import 'package:material_ui/material_ui.dart';
 
 /// The shared tag selection component used by notes.

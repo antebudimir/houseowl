@@ -1,4 +1,4 @@
-import 'package:kitchenowl/models/model.dart';
+import 'package:houseowl/models/model.dart';
 
 class Tag extends Model {
   final int? id;

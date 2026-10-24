@@ -1,15 +1,15 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/household_add_update/household_update_cubit.dart';
-import 'package:kitchenowl/helpers/debouncer.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/pages/settings_household/household_settings_category_page.dart';
-import 'package:kitchenowl/pages/settings_household/household_settings_items_page.dart';
-import 'package:kitchenowl/widgets/settings_household/sliver_household_danger_zone.dart';
-import 'package:kitchenowl/widgets/settings_household/sliver_household_feature_settings.dart';
-import 'package:kitchenowl/pages/settings_household/household_settings_shoppinglist_page.dart';
-import 'package:kitchenowl/pages/settings_household/household_settings_tags_page.dart';
+import 'package:houseowl/cubits/household_add_update/household_update_cubit.dart';
+import 'package:houseowl/helpers/debouncer.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/pages/settings_household/household_settings_category_page.dart';
+import 'package:houseowl/pages/settings_household/household_settings_items_page.dart';
+import 'package:houseowl/widgets/settings_household/sliver_household_danger_zone.dart';
+import 'package:houseowl/widgets/settings_household/sliver_household_feature_settings.dart';
+import 'package:houseowl/pages/settings_household/household_settings_shoppinglist_page.dart';
+import 'package:houseowl/pages/settings_household/household_settings_tags_page.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 class HouseholdUpdatePage extends StatefulWidget {

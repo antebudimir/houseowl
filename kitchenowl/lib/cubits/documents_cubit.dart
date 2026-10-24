@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/enums/documents_filter_enum.dart';
-import 'package:kitchenowl/models/document.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/services/transaction_handler.dart';
-import 'package:kitchenowl/services/transactions/document.dart';
+import 'package:houseowl/enums/documents_filter_enum.dart';
+import 'package:houseowl/models/document.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/transaction_handler.dart';
+import 'package:houseowl/services/transactions/document.dart';
 
 class DocumentsCubit extends Cubit<DocumentsCubitState> {
   final Household household;

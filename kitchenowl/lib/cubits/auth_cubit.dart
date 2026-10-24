@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/config.dart';
-import 'package:kitchenowl/models/user.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/services/storage/mem_storage.dart';
-import 'package:kitchenowl/services/storage/storage.dart';
-import 'package:kitchenowl/services/transaction_handler.dart';
-import 'package:kitchenowl/platform/dart_html/dart_html.dart' as html;
+import 'package:houseowl/config.dart';
+import 'package:houseowl/models/user.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/storage/mem_storage.dart';
+import 'package:houseowl/services/storage/storage.dart';
+import 'package:houseowl/services/transaction_handler.dart';
+import 'package:houseowl/platform/dart_html/dart_html.dart' as html;
 
 class AuthCubit extends Cubit<AuthState> {
   bool _forcedOfflineMode = false;

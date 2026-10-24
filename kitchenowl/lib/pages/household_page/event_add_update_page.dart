@@ -1,12 +1,12 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/event_add_update_cubit.dart';
-import 'package:kitchenowl/cubits/events_cubit.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/event.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/person.dart';
+import 'package:houseowl/cubits/event_add_update_cubit.dart';
+import 'package:houseowl/cubits/events_cubit.dart';
+import 'package:houseowl/enums/update_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/event.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/person.dart';
 
 class EventAddUpdatePage extends StatefulWidget {
   final Household household;

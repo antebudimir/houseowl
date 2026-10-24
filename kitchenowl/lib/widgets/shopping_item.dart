@@ -1,9 +1,9 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/item_icons.dart';
-import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/styles/dynamic.dart';
-import 'package:kitchenowl/widgets/selectable_button_card.dart';
-import 'package:kitchenowl/widgets/selectable_button_list_tile.dart';
+import 'package:houseowl/item_icons.dart';
+import 'package:houseowl/models/item.dart';
+import 'package:houseowl/styles/dynamic.dart';
+import 'package:houseowl/widgets/selectable_button_card.dart';
+import 'package:houseowl/widgets/selectable_button_list_tile.dart';
 
 class ShoppingItemWidget<T extends Item> extends StatelessWidget {
   final T item;

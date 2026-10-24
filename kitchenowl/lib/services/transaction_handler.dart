@@ -1,8 +1,8 @@
-import 'package:kitchenowl/app.dart';
-import 'package:kitchenowl/services/transaction.dart';
-import 'package:kitchenowl/services/transaction_conflict_exception.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/services/storage/transaction_storage.dart';
+import 'package:houseowl/app.dart';
+import 'package:houseowl/services/transaction.dart';
+import 'package:houseowl/services/transaction_conflict_exception.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/storage/transaction_storage.dart';
 
 class TransactionHandler {
   static TransactionHandler? _instance;

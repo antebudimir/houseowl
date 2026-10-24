@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 extension AnalyticsApi on ApiService {
   static const baseRoute = '/analytics';

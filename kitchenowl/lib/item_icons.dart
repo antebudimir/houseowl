@@ -1,8 +1,8 @@
 /* generated code, do not edit */
 // ignore_for_file: constant_identifier_names
 import 'package:flutter/widgets.dart';
-import 'package:kitchenowl/item_icons_material.dart';
-import 'package:kitchenowl/models/item.dart';
+import 'package:houseowl/item_icons_material.dart';
+import 'package:houseowl/models/item.dart';
 
 class ItemIcons {
   ItemIcons._();

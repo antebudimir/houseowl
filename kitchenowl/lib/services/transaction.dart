@@ -1,7 +1,7 @@
-import 'package:kitchenowl/models/model.dart';
-import 'package:kitchenowl/services/transactions/note.dart';
-import 'package:kitchenowl/services/transactions/person.dart';
-import 'package:kitchenowl/services/transactions/shoppinglist.dart';
+import 'package:houseowl/models/model.dart';
+import 'package:houseowl/services/transactions/note.dart';
+import 'package:houseowl/services/transactions/person.dart';
+import 'package:houseowl/services/transactions/shoppinglist.dart';
 
 abstract class Transaction<T> extends Model {
   static final Map<String, Transaction Function(Map<String, dynamic>, DateTime)>

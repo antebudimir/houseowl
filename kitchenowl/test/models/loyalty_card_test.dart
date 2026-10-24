@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kitchenowl/enums/barcode_format_enum.dart';
-import 'package:kitchenowl/models/loyalty_card.dart';
+import 'package:houseowl/enums/barcode_format_enum.dart';
+import 'package:houseowl/models/loyalty_card.dart';
 
 void main() {
   test("fromJson / toJson roundtrip", () {

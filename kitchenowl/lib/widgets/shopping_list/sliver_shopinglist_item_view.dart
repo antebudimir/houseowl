@@ -1,11 +1,11 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/app.dart';
-import 'package:kitchenowl/enums/shoppinglist_sorting.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/category.dart';
-import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
-import 'package:kitchenowl/widgets/home_page/sliver_category_item_grid_list.dart';
+import 'package:houseowl/app.dart';
+import 'package:houseowl/enums/shoppinglist_sorting.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/category.dart';
+import 'package:houseowl/models/item.dart';
+import 'package:houseowl/models/shoppinglist.dart';
+import 'package:houseowl/widgets/home_page/sliver_category_item_grid_list.dart';
 
 class SliverShopinglistItemView extends StatelessWidget {
   final ShoppingList? shoppingList;

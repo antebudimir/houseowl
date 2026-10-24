@@ -1,5 +1,5 @@
-import 'package:kitchenowl/models/model.dart';
-import 'package:kitchenowl/models/tag.dart';
+import 'package:houseowl/models/model.dart';
+import 'package:houseowl/models/tag.dart';
 
 class Note extends Model {
   final int? id;

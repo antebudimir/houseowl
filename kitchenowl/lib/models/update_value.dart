@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
+import 'package:houseowl/enums/update_enum.dart';
 
 class UpdateValue<T> extends Equatable {
   final UpdateEnum state;

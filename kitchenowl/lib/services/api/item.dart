@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
-import 'package:kitchenowl/services/transaction_conflict_exception.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/item.dart';
+import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/transaction_conflict_exception.dart';
 
 extension ItemApi on ApiService {
   static const baseRoute = '/item';

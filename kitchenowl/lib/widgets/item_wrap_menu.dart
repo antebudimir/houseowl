@@ -1,9 +1,9 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/pages/icon_selection_page.dart';
-import 'package:kitchenowl/pages/item_search_page.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/item.dart';
+import 'package:houseowl/pages/icon_selection_page.dart';
+import 'package:houseowl/pages/item_search_page.dart';
 
 enum _ItemAction {
   changeIcon,

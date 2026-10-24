@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/user.dart';
-import 'package:kitchenowl/widgets/user_circle_avatar.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/user.dart';
+import 'package:houseowl/widgets/user_circle_avatar.dart';
 
 class AvatarList extends StatelessWidget {
   final List<User> users;

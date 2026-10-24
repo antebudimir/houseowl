@@ -1,5 +1,5 @@
-import 'package:kitchenowl/enums/barcode_format_enum.dart';
-import 'package:kitchenowl/models/model.dart';
+import 'package:houseowl/enums/barcode_format_enum.dart';
+import 'package:houseowl/models/model.dart';
 
 /// A store loyalty card: a card number plus the barcode format used to
 /// render it. `barcodeFormat` is the server's format identifier and is

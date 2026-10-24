@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/item.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
-import 'package:kitchenowl/services/storage/mem_storage.dart';
-import 'package:kitchenowl/services/transactions/shoppinglist.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/item.dart';
+import 'package:houseowl/models/shoppinglist.dart';
+import 'package:houseowl/services/storage/mem_storage.dart';
+import 'package:houseowl/services/transactions/shoppinglist.dart';
 
 const household = Household(id: 1);
 

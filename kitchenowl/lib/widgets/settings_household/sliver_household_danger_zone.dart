@@ -4,10 +4,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kitchenowl/cubits/household_add_update/household_update_cubit.dart';
-import 'package:kitchenowl/helpers/share.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/import_settings.dart';
+import 'package:houseowl/cubits/household_add_update/household_update_cubit.dart';
+import 'package:houseowl/helpers/share.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/import_settings.dart';
 
 import 'import_settings_dialog.dart';
 

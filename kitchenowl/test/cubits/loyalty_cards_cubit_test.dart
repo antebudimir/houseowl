@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kitchenowl/cubits/loyalty_cards_cubit.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/loyalty_card.dart';
-import 'package:kitchenowl/services/transaction.dart';
-import 'package:kitchenowl/services/transaction_handler.dart';
-import 'package:kitchenowl/services/transactions/loyalty_card.dart';
+import 'package:houseowl/cubits/loyalty_cards_cubit.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/loyalty_card.dart';
+import 'package:houseowl/services/transaction.dart';
+import 'package:houseowl/services/transaction_handler.dart';
+import 'package:houseowl/services/transactions/loyalty_card.dart';
 
 Household household = Household(id: 1, name: "Test");
 

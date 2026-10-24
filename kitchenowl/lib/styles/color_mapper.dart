@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:kitchenowl/styles/colors.dart';
+import 'package:houseowl/styles/colors.dart';
 
 class KitchenOwlColorMapper extends ColorMapper {
   const KitchenOwlColorMapper({

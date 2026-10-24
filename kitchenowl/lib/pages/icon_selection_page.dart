@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/item_icons.dart';
-import 'package:kitchenowl/item_icons_material.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/item.dart';
+import 'package:houseowl/item_icons.dart';
+import 'package:houseowl/item_icons_material.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/item.dart';
 
 class IconSelectionPage extends StatefulWidget {
   final String? oldIcon;

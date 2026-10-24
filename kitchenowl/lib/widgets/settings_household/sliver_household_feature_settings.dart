@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
-import 'package:kitchenowl/cubits/household_add_update/household_add_update_cubit.dart';
-import 'package:kitchenowl/enums/views_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/widgets/language_bottom_sheet.dart';
+import 'package:houseowl/cubits/household_add_update/household_add_update_cubit.dart';
+import 'package:houseowl/enums/views_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/widgets/language_bottom_sheet.dart';
 import 'package:reorderables/reorderables.dart';
 
 import 'view_settings_list_tile.dart';

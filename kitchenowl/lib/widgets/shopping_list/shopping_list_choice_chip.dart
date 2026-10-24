@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
+import 'package:houseowl/models/shoppinglist.dart';
 
 class ShoppingListChoiceChip extends StatelessWidget {
   final ShoppingList shoppingList;

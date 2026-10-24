@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
+import 'package:houseowl/models/shoppinglist.dart';
 
 void main() {
   test("ShoppingList should be equal", () {

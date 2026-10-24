@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/models/user.dart';
-import 'package:kitchenowl/widgets/image_provider.dart';
+import 'package:houseowl/models/user.dart';
+import 'package:houseowl/widgets/image_provider.dart';
 
 class UserCircleAvatar extends StatelessWidget {
   final User user;

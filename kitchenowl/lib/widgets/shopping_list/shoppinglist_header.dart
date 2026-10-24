@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
-import 'package:kitchenowl/widgets/choice_scroll.dart';
-import 'package:kitchenowl/widgets/shopping_list/shopping_list_choice_chip.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/shoppinglist.dart';
+import 'package:houseowl/widgets/choice_scroll.dart';
+import 'package:houseowl/widgets/shopping_list/shopping_list_choice_chip.dart';
 
 enum _ShoppinglistHeaderAction {
   rename,

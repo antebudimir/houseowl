@@ -1,9 +1,9 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/auth_cubit.dart';
-import 'package:kitchenowl/helpers/url_launcher.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/cubits/auth_cubit.dart';
+import 'package:houseowl/helpers/url_launcher.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/services/api/api_service.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 enum OIDCProivder {

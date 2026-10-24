@@ -1,10 +1,10 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/settings_server_cubit.dart';
-import 'package:kitchenowl/enums/update_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/pages/settings/create_user_page.dart';
-import 'package:kitchenowl/widgets/settings/server_user_card.dart';
+import 'package:houseowl/cubits/settings_server_cubit.dart';
+import 'package:houseowl/enums/update_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/pages/settings/create_user_page.dart';
+import 'package:houseowl/widgets/settings/server_user_card.dart';
 
 class SettingsServerUserPage extends StatefulWidget {
   const SettingsServerUserPage({super.key});

@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
-import 'package:kitchenowl/kitchenowl.dart';
-import 'package:kitchenowl/pages/settings_user_email_page.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/pages/settings_user_email_page.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 class PasswordForgotPage extends StatefulWidget {
   const PasswordForgotPage({super.key});

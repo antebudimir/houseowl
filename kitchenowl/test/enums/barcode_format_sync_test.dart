@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kitchenowl/enums/barcode_format_enum.dart';
+import 'package:houseowl/enums/barcode_format_enum.dart';
 
 /// The client enum must mirror the server's barcode-format whitelist
 /// exactly: the backend `BARCODE_FORMATS` frozenset lives in

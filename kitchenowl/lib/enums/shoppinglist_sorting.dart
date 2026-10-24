@@ -1,5 +1,5 @@
-import 'package:kitchenowl/helpers/item_name.dart';
-import 'package:kitchenowl/models/item.dart';
+import 'package:houseowl/helpers/item_name.dart';
+import 'package:houseowl/models/item.dart';
 
 enum ShoppinglistSorting {
   alphabetical,

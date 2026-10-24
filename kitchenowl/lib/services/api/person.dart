@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/person.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/person.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 extension PersonApi on ApiService {
   String personRoute({Household? household, Person? person}) =>

@@ -1,11 +1,11 @@
-import 'package:kitchenowl/models/category.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/note.dart';
-import 'package:kitchenowl/models/person.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
-import 'package:kitchenowl/models/tag.dart';
-import 'package:kitchenowl/models/user.dart';
-import 'package:kitchenowl/services/storage/temp_storage.dart';
+import 'package:houseowl/models/category.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/note.dart';
+import 'package:houseowl/models/person.dart';
+import 'package:houseowl/models/shoppinglist.dart';
+import 'package:houseowl/models/tag.dart';
+import 'package:houseowl/models/user.dart';
+import 'package:houseowl/services/storage/temp_storage.dart';
 
 /// An in memory storage for cached households.
 /// Optionally, can write and read (on initial load) the data from a persistent storage.

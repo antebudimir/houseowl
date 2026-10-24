@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/cubits/planned_buys_cubit.dart';
-import 'package:kitchenowl/gen/l10n/app_localizations.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/pages/household_page/planned_buy_add_update_page.dart';
+import 'package:houseowl/cubits/planned_buys_cubit.dart';
+import 'package:houseowl/gen/l10n/app_localizations.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/pages/household_page/planned_buy_add_update_page.dart';
 
 import 'package:material_ui/material_ui.dart' as mui;
 

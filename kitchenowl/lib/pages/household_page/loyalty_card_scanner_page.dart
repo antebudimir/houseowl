@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:kitchenowl/enums/barcode_format_enum.dart';
-import 'package:kitchenowl/kitchenowl.dart';
+import 'package:houseowl/enums/barcode_format_enum.dart';
+import 'package:houseowl/kitchenowl.dart';
 import 'package:mobile_scanner/mobile_scanner.dart' as scanner;
 
 /// Full-screen camera scanner. Formats are auto-detected: the first

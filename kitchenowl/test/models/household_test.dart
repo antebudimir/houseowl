@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kitchenowl/enums/views_enum.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/member.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
+import 'package:houseowl/enums/views_enum.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/member.dart';
+import 'package:houseowl/models/shoppinglist.dart';
 
 void main() {
   test("Household should be equal", () {

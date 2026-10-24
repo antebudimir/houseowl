@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/member.dart';
-import 'package:kitchenowl/models/user.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/member.dart';
+import 'package:houseowl/models/user.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 extension HouseholdApi on ApiService {
   static const baseRoute = '/household';

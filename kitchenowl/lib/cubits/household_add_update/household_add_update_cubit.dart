@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/enums/views_enum.dart';
-import 'package:kitchenowl/helpers/named_bytearray.dart';
+import 'package:houseowl/enums/views_enum.dart';
+import 'package:houseowl/helpers/named_bytearray.dart';
 
 abstract class HouseholdAddUpdateCubit<State extends HouseholdAddUpdateState>
     extends Cubit<State> {

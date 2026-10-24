@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kitchenowl/models/document.dart';
-import 'package:kitchenowl/models/person.dart';
+import 'package:houseowl/models/document.dart';
+import 'package:houseowl/models/person.dart';
 
 void main() {
   test("Document json roundtrip", () {

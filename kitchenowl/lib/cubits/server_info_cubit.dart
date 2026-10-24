@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kitchenowl/enums/oidc_provider.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/enums/oidc_provider.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 class ServerInfoCubit extends Cubit<ServerInfoState> {
   ServerInfoCubit() : super(const DisconnectedServerInfoState()) {

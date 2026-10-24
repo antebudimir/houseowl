@@ -1,12 +1,12 @@
-import 'package:kitchenowl/enums/views_enum.dart';
-import 'package:kitchenowl/helpers/named_bytearray.dart';
-import 'package:kitchenowl/models/category.dart';
-import 'package:kitchenowl/models/household.dart';
-import 'package:kitchenowl/models/import_settings.dart';
-import 'package:kitchenowl/models/member.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
-import 'package:kitchenowl/models/tag.dart';
-import 'package:kitchenowl/services/api/api_service.dart';
+import 'package:houseowl/enums/views_enum.dart';
+import 'package:houseowl/helpers/named_bytearray.dart';
+import 'package:houseowl/models/category.dart';
+import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/import_settings.dart';
+import 'package:houseowl/models/member.dart';
+import 'package:houseowl/models/shoppinglist.dart';
+import 'package:houseowl/models/tag.dart';
+import 'package:houseowl/services/api/api_service.dart';
 
 import 'household_add_update_cubit.dart';
 

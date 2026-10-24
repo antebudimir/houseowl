@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart';
-import 'package:kitchenowl/enums/views_enum.dart';
-import 'package:kitchenowl/models/member.dart';
-import 'package:kitchenowl/models/model.dart';
-import 'package:kitchenowl/models/shoppinglist.dart';
-import 'package:kitchenowl/models/user.dart';
+import 'package:houseowl/enums/views_enum.dart';
+import 'package:houseowl/models/member.dart';
+import 'package:houseowl/models/model.dart';
+import 'package:houseowl/models/shoppinglist.dart';
+import 'package:houseowl/models/user.dart';
 
 class Household extends Model {
   final int id;
