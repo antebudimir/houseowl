@@ -31,6 +31,11 @@ jobs:
       - uses: leancodepl/dart-problem-matcher@main
         with:
           working-directory: kitchenowl
+
+      # Guard: pages/widgets must import material_ui, not flutter/material
+      # (Theme.of falls back to light otherwise, breaking dark mode)
+      - run: bash scripts/check_theme_imports.sh
+        working-directory: kitchenowl
   test:
     name: Tests
     runs-on: ubuntu-latest
