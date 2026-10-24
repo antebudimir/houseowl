@@ -71,6 +71,32 @@ class ItemEditCubit<T extends Item> extends Cubit<ItemEditState> {
     }
   }
 
+  /// Adds the item to [targetList] and removes it from the item's current
+  /// shopping list. The add runs before the remove so the item is never lost
+  /// if the flow is interrupted. Offline-safe: both transactions queue in
+  /// TransactionStorage and apply locally via runLocal.
+  Future<bool> moveItem(ShoppingList targetList) async {
+    final sourceList = shoppingList;
+    if (sourceList == null ||
+        targetList.id == null ||
+        targetList.id == sourceList.id) {
+      return false;
+    }
+    final handler = TransactionHandler.getInstance();
+    final added = await handler.runTransaction(TransactionShoppingListAddItem(
+      household: household!,
+      shoppinglist: targetList,
+      item: _item,
+    ));
+    if (!added) return false;
+
+    return handler.runTransaction(TransactionShoppingListRemoveItem(
+      household: household!,
+      shoppinglist: sourceList,
+      item: ShoppinglistItem.fromItem(item: _item),
+    ));
+  }
+
   Future<bool> deleteItem() async {
     if (_item.id != null) {
       return ApiService.getInstance().deleteItem(_item);

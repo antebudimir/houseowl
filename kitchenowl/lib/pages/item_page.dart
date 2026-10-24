@@ -5,7 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:kitchenowl/app.dart';
 import 'package:kitchenowl/cubits/household_cubit.dart';
 import 'package:kitchenowl/cubits/item_edit_cubit.dart';
+import 'package:kitchenowl/cubits/shoppinglist_cubit.dart';
 import 'package:kitchenowl/enums/update_enum.dart';
+import 'package:kitchenowl/helpers/build_context_extension.dart';
 import 'package:kitchenowl/helpers/item_description_parser.dart';
 import 'package:kitchenowl/models/category.dart';
 import 'package:kitchenowl/models/item.dart';
@@ -217,6 +219,62 @@ class _ItemPageState<T extends Item> extends State<ItemPage<T>> {
                                 ),
                               ],
                             ),
+                            if (widget.shoppingList != null)
+                              BlocBuilder<ShoppinglistCubit,
+                                  ShoppinglistCubitState>(
+                                bloc: context.readOrNull<ShoppinglistCubit>(),
+                                builder: (context, listState) {
+                                  // Moving only makes sense with another
+                                  // list to move to. Recipe ingredients are
+                                  // not tied to a list, so they never see
+                                  // this (widget.shoppingList is null).
+                                  final otherLists = listState.shoppinglists
+                                      .values
+                                      .where((e) =>
+                                          e.id != widget.shoppingList!.id)
+                                      .toList();
+                                  if (otherLists.isEmpty) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  return DropdownButtonFormField<ShoppingList>(
+                                    decoration: InputDecoration(
+                                      labelText: AppLocalizations.of(context)!
+                                          .shoppingLists,
+                                    ),
+                                    items: [
+                                      for (final e in otherLists)
+                                        DropdownMenuItem(
+                                          value: e,
+                                          child: Text(e.name),
+                                        ),
+                                    ],
+                                    onChanged: (target) async {
+                                      if (target == null) return;
+                                      final navigator = Navigator.of(context);
+                                      final messenger =
+                                          ScaffoldMessenger.of(context);
+                                      final moved = await cubit.moveItem(
+                                        target,
+                                      );
+                                      if (moved) {
+                                        navigator.pop(UpdateValue<T>(
+                                          UpdateEnum.updated,
+                                          cubit.item,
+                                        ));
+                                      } else {
+                                        messenger.showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              AppLocalizations.of(context)!
+                                                  .error,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  );
+                                },
+                              ),
                             if (widget.item is ShoppinglistItem)
                               ListTile(
                                 contentPadding: EdgeInsets.zero,
