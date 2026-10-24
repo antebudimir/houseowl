@@ -7,6 +7,7 @@ enum GridSize {
 enum ListStyle {
   minimalist,
   cards,
+  checkbox,
 }
 
 class DynamicStyling {

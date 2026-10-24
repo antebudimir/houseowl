@@ -517,6 +517,7 @@
   "categoryDeleteConfirmation": "Are you sure you want to delete {category}? This will remove the category from all items.",
   "categoryEdit": "Edit category",
   "changeIcon": "Change icon",
+  "checkbox": "Checkbox",
   "clear": "Clear",
   "colorSelect": "Select a color",
   "compact": "Compact",

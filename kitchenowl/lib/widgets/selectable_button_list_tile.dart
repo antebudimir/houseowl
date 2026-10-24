@@ -47,7 +47,13 @@ class _SelectableButtonListTileState extends State<SelectableButtonListTile> {
         });
       },
       child: ListTile(
-        leading: widget.selected
+        leading: (widget.listStyle == ListStyle.checkbox)
+            ? Checkbox(
+                value: widget.selected,
+                onChanged:
+                    widget.onPressed != null ? (_) => widget.onPressed!() : null,
+              )
+            : widget.selected
             ? const Icon(Icons.check_rounded)
             : widget.icon != null
                 ? Icon(widget.icon,
@@ -66,7 +72,11 @@ class _SelectableButtonListTileState extends State<SelectableButtonListTile> {
                       .textTheme
                       .bodyMedium!
                       .color!
-                      .withAlpha(170)),
+                      .withAlpha(170),
+              decoration: (widget.listStyle == ListStyle.checkbox &&
+                      widget.selected)
+                  ? TextDecoration.lineThrough
+                  : null),
         ),
         selected: widget.selected,
         subtitle: (widget.description?.isNotEmpty ?? false)

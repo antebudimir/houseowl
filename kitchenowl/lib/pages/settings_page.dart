@@ -276,6 +276,11 @@ class _SettingsPageState extends State<SettingsPage> {
                             icon: const Icon(Icons.density_small_rounded),
                             label: Text(AppLocalizations.of(context)!.compact),
                           ),
+                          ButtonSegment(
+                            value: ListStyle.checkbox,
+                            icon: const Icon(Icons.checklist_rounded),
+                            label: Text(AppLocalizations.of(context)!.checkbox),
+                          ),
                         ],
                         onSelectionChanged: (Set<ListStyle> value) {
                           BlocProvider.of<SettingsCubit>(context)
