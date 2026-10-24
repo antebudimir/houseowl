@@ -12,6 +12,11 @@ features, that's the same commit.
 
 ## [Unreleased]
 
+- The loyalty card barcode rendered black-on-black in dark mode (it inherited
+  ambient theme colors); it now always renders black bars on a white
+  container so it stays scannable in both themes
+
+### Fixed
 ### Fixed
 
 - Planned buy, task, and event add/edit pages (plus their list pages and the
