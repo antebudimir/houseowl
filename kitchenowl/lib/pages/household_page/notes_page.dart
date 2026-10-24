@@ -21,13 +21,11 @@ class NotesPage extends StatelessWidget {
           if (state is LoadingNotesCubitState) {
             body = const Center(child: CircularProgressIndicator());
           } else if (state.notes.isEmpty) {
-            body = Center(
-              child: Text(
-                state is SearchNotesCubitState
-                    ? AppLocalizations.of(context)!.noResults
-                    : AppLocalizations.of(context)!.emptyNoteList,
-                textAlign: TextAlign.center,
-              ),
+            body = EmptyState(
+              icon: Icons.sticky_note_2_outlined,
+              message: state is SearchNotesCubitState
+                  ? AppLocalizations.of(context)!.noResults
+                  : AppLocalizations.of(context)!.emptyNoteList,
             );
           } else {
             body = ListView.builder(

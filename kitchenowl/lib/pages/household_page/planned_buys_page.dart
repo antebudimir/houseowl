@@ -22,11 +22,9 @@ class PlannedBuysPage extends StatelessWidget {
           if (state is LoadingPlannedBuysCubitState) {
             body = const Center(child: CircularProgressIndicator());
           } else if (state.buys.isEmpty) {
-            body = Center(
-              child: Text(
-                AppLocalizations.of(context)!.plannedBuyEmpty,
-                textAlign: TextAlign.center,
-              ),
+            body = EmptyState(
+              icon: Icons.shopping_cart_outlined,
+              message: AppLocalizations.of(context)!.plannedBuyEmpty,
             );
           } else {
             final sections = <BuyStatus, List<PlannedBuy>>{};

@@ -22,8 +22,9 @@ class EventsPage extends StatelessWidget {
           if (state is LoadingEventsCubitState) {
             body = const Center(child: CircularProgressIndicator());
           } else if (state.events.isEmpty) {
-            body = Center(
-              child: Text(AppLocalizations.of(context)!.noEvents),
+            body = EmptyState(
+              icon: Icons.event_rounded,
+              message: AppLocalizations.of(context)!.noEvents,
             );
           } else {
             body = _CalendarAgenda(
@@ -172,11 +173,9 @@ class _CalendarAgendaState extends State<_CalendarAgenda> {
         if (agenda.isEmpty)
           Padding(
             padding: const EdgeInsets.all(24),
-            child: Center(
-              child: Text(
-                loc.noEvents,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+            child: EmptyState(
+              icon: Icons.event_rounded,
+              message: loc.noEvents,
             ),
           )
         else

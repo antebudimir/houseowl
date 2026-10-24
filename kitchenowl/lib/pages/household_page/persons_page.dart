@@ -21,11 +21,9 @@ class PersonsPage extends StatelessWidget {
           if (state is LoadingPersonsCubitState) {
             body = const Center(child: CircularProgressIndicator());
           } else if (state.persons.isEmpty) {
-            body = Center(
-              child: Text(
-                AppLocalizations.of(context)!.emptyPersonList,
-                textAlign: TextAlign.center,
-              ),
+            body = EmptyState(
+              icon: Icons.people_outline_rounded,
+              message: AppLocalizations.of(context)!.emptyPersonList,
             );
           } else {
             body = ListView.builder(

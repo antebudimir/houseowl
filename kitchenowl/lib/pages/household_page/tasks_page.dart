@@ -22,8 +22,9 @@ class TasksPage extends StatelessWidget {
           if (state is LoadingTasksCubitState) {
             body = const Center(child: CircularProgressIndicator());
           } else if (state.tasks.isEmpty) {
-            body = Center(
-              child: Text(AppLocalizations.of(context)!.noTasks),
+            body = EmptyState(
+              icon: Icons.checklist_rounded,
+              message: AppLocalizations.of(context)!.noTasks,
             );
           } else {
             final open = state.tasks.where((t) => !t.isDone).toList();
@@ -34,11 +35,9 @@ class TasksPage extends StatelessWidget {
                 if (open.isEmpty)
                   Padding(
                     padding: const EdgeInsets.all(24),
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.noTasks,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
+                    child: EmptyState(
+                      icon: Icons.checklist_rounded,
+                      message: AppLocalizations.of(context)!.noTasks,
                     ),
                   )
                 else

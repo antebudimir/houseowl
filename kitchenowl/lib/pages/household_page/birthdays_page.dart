@@ -25,11 +25,9 @@ class BirthdaysPage extends StatelessWidget {
                 .toList()
               ..sort((a, b) => a.next.compareTo(b.next));
             if (birthdays.isEmpty) {
-              body = Center(
-                child: Text(
-                  AppLocalizations.of(context)!.emptyBirthdayList,
-                  textAlign: TextAlign.center,
-                ),
+              body = EmptyState(
+                icon: Icons.cake_outlined,
+                message: AppLocalizations.of(context)!.emptyBirthdayList,
               );
             } else {
               final today = DateTime.now();
