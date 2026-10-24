@@ -1,40 +1,57 @@
-from marshmallow import fields, Schema
+from marshmallow import ValidationError, fields, Schema
 
 from app.config import EMAIL_MANDATORY
 
+def _not_blank(a):
+    # marshmallow only fails on raised errors, not on a falsy return value.
+    if not a or a.isspace():
+        raise ValidationError("Not a valid string.")
+
+
+def _no_at(a):
+    # marshmallow only fails on raised errors, not on a falsy return value.
+    if not a or a.isspace() or "@" in a:
+        raise ValidationError("Not a valid string.")
+
+
+def _has_at(a):
+    # marshmallow only fails on raised errors, not on a falsy return value.
+    if not a or a.isspace() or "@" not in a:
+        raise ValidationError("Not a valid string.")
+
 
 class Login(Schema):
-    username = fields.String(required=True, validate=lambda a: a and not a.isspace())
+    username = fields.String(required=True, validate=_not_blank)
     password = fields.String(
         required=True,
-        validate=lambda a: a and not a.isspace(),
+        validate=_not_blank,
         load_only=True,
     )
     device = fields.String(
         required=False,
-        validate=lambda a: a and not a.isspace(),
+        validate=_not_blank,
         load_only=True,
     )
 
 
 class Signup(Schema):
     username = fields.String(
-        required=True, validate=lambda a: a and not a.isspace() and "@" not in a
+        required=True, validate=_no_at
     )
     email = fields.String(
         required=EMAIL_MANDATORY,
-        validate=lambda a: a and not a.isspace() and "@" in a,
+        validate=_has_at,
         load_only=True,
     )
-    name = fields.String(required=True, validate=lambda a: a and not a.isspace())
+    name = fields.String(required=True, validate=_not_blank)
     password = fields.String(
         required=True,
-        validate=lambda a: a and not a.isspace(),
+        validate=_not_blank,
         load_only=True,
     )
     device = fields.String(
         required=False,
-        validate=lambda a: a and not a.isspace(),
+        validate=_not_blank,
         load_only=True,
     )
 
@@ -42,14 +59,14 @@ class Signup(Schema):
 class CreateLongLivedToken(Schema):
     device = fields.String(
         required=True,
-        validate=lambda a: a and not a.isspace(),
+        validate=_not_blank,
         load_only=True,
     )
 
 
 class GetOIDCLoginUrl(Schema):
     provider = fields.String(
-        validate=lambda a: a and not a.isspace(),
+        validate=_not_blank,
         load_only=True,
     )
     houseowl_scheme = fields.Boolean(
@@ -67,17 +84,17 @@ class GetOIDCLoginUrl(Schema):
 
 class LoginOIDC(Schema):
     state = fields.String(
-        validate=lambda a: a and not a.isspace(),
+        validate=_not_blank,
         required=True,
         load_only=True,
     )
     code = fields.String(
-        validate=lambda a: a and not a.isspace(),
+        validate=_not_blank,
         required=True,
         load_only=True,
     )
     device = fields.String(
-        validate=lambda a: a and not a.isspace(),
+        validate=_not_blank,
         required=False,
         load_only=True,
     )

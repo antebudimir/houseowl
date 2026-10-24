@@ -127,3 +127,30 @@ def test_get_note_unauthorized(client, household_id):
     unauthenticated = client.application.test_client()
     response = unauthenticated.get(f"/api/household/{household_id}/note")
     assert response.status_code == 401
+
+@pytest.mark.parametrize("bad_title", ["", "   ", "\t\n"])
+def test_add_note_rejects_blank_title(
+    user_client_with_household, household_id, bad_title
+):
+    response = user_client_with_household.post(
+        f"/api/household/{household_id}/note",
+        json={"title": bad_title},
+    )
+    assert response.status_code == 400
+
+
+@pytest.mark.parametrize("bad_title", ["", "   ", "\t\n"])
+def test_update_note_rejects_blank_title(
+    user_client_with_household, household_id, bad_title
+):
+    response = user_client_with_household.post(
+        f"/api/household/{household_id}/note",
+        json={"title": "Original", "body": "x"},
+    )
+    assert response.status_code == 200
+    note_id = response.get_json()["id"]
+    response = user_client_with_household.post(
+        f"/api/note/{note_id}",
+        json={"title": bad_title},
+    )
+    assert response.status_code == 400

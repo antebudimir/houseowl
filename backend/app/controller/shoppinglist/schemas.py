@@ -1,4 +1,9 @@
-from marshmallow import fields, Schema, EXCLUDE
+from marshmallow import ValidationError, fields, Schema, EXCLUDE
+
+def _not_blank(a):
+    # marshmallow only fails on raised errors, not on a falsy return value.
+    if not a or a.isspace():
+        raise ValidationError("Not a valid string.")
 
 
 class GetShoppingLists(Schema):
@@ -12,11 +17,11 @@ class AddItemByName(Schema):
 
 
 class CreateList(Schema):
-    name = fields.String(required=True, validate=lambda a: a and not a.isspace())
+    name = fields.String(required=True, validate=_not_blank)
 
 
 class UpdateList(Schema):
-    name = fields.String(validate=lambda a: a and not a.isspace())
+    name = fields.String(validate=_not_blank)
 
 
 class GetItems(Schema):

@@ -1,6 +1,11 @@
-from marshmallow import EXCLUDE, fields, Schema, validate
+from marshmallow import ValidationError, EXCLUDE, fields, Schema, validate
 
 from app.models import BARCODE_FORMATS
+
+def _not_blank(a):
+    # marshmallow only fails on raised errors, not on a falsy return value.
+    if not a or a.isspace():
+        raise ValidationError("Not a valid string.")
 
 
 class ImportSchema(Schema):
@@ -8,8 +13,8 @@ class ImportSchema(Schema):
         unknown = EXCLUDE
 
     class Item(Schema):
-        name = fields.String(required=True, validate=lambda a: a and not a.isspace())
-        category = fields.String(validate=lambda a: a and not a.isspace())
+        name = fields.String(required=True, validate=_not_blank)
+        category = fields.String(validate=_not_blank)
         icon = fields.String()
 
     items = fields.List(fields.Nested(Item))
@@ -21,7 +26,7 @@ class ImportSchema(Schema):
         data = fields.String()
 
     class Document(Schema):
-        title = fields.String(required=True, validate=lambda a: a and not a.isspace())
+        title = fields.String(required=True, validate=_not_blank)
         notes = fields.String(allow_none=True)
         expires_at = fields.String(allow_none=True)
         contact = fields.String(allow_none=True)
@@ -31,10 +36,10 @@ class ImportSchema(Schema):
 
     class LoyaltyCard(Schema):
         store_name = fields.String(
-            required=True, validate=lambda a: a and not a.isspace()
+            required=True, validate=_not_blank
         )
         card_number = fields.String(
-            required=True, validate=lambda a: a and not a.isspace()
+            required=True, validate=_not_blank
         )
         barcode_format = fields.String(
             required=True,

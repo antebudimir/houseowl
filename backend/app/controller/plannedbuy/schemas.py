@@ -1,10 +1,12 @@
-from marshmallow import EXCLUDE, fields, Schema, validate
+from marshmallow import ValidationError, EXCLUDE, fields, Schema, validate
 
 from app.models.planned_buy import PlannedBuy
 
 
 def _not_blank(a):
-    return a and not a.isspace()
+    # marshmallow only fails on raised errors, not on a falsy return value.
+    if not a or a.isspace():
+        raise ValidationError("Not a valid string.")
 
 
 class AddPlannedBuy(Schema):
