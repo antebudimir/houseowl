@@ -230,10 +230,7 @@ class _HouseholdPageState extends State<HouseholdPage>
           if (state is NotFoundHouseholdState && mounted) {
             return context.go("/household");
           }
-          List<ViewsEnum> pages =
-              (state.household.viewOrdering ?? ViewsEnum.values)
-                  .where((e) => e.isViewActive(state.household))
-                  .toList();
+          List<ViewsEnum> pages = _orderedViews(state.household);
 
           int _selectedIndex = pages.indexWhere(
             (e) => GoRouterState.of(context).uri.path.contains(e.toString()),
@@ -246,10 +243,7 @@ class _HouseholdPageState extends State<HouseholdPage>
           }
         },
         builder: (context, state) {
-          List<ViewsEnum> pages =
-              (state.household.viewOrdering ?? ViewsEnum.values)
-                  .where((e) => e.isViewActive(state.household))
-                  .toList();
+          List<ViewsEnum> pages = _orderedViews(state.household);
 
           int _selectedIndex = pages.indexWhere(
             (e) => GoRouterState.of(context).uri.path.contains(e.toString()),
