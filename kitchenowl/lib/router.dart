@@ -290,6 +290,14 @@ final router = GoRouter(
               ),
             ),
             GoRoute(
+              path: "loyaltyCards",
+              pageBuilder: (context, state) => FadeThroughTransitionPage(
+                key: state.pageKey,
+                name: state.name,
+                child: const LoyaltyCardsPage(),
+              ),
+            ),
+            GoRoute(
               path: "planned",
               pageBuilder: (context, state) => FadeThroughTransitionPage(
                 key: state.pageKey,

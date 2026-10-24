@@ -7,6 +7,7 @@ import 'package:kitchenowl/cubits/household_cubit.dart';
 import 'package:kitchenowl/cubits/persons_cubit.dart';
 import 'package:kitchenowl/cubits/notes_cubit.dart';
 import 'package:kitchenowl/cubits/documents_cubit.dart';
+import 'package:kitchenowl/cubits/loyalty_cards_cubit.dart';
 import 'package:kitchenowl/cubits/tasks_cubit.dart';
 import 'package:kitchenowl/cubits/events_cubit.dart';
 import 'package:kitchenowl/cubits/shoppinglist_cubit.dart';
@@ -37,12 +38,28 @@ class _HouseholdPageState extends State<HouseholdPage>
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   RouteObserver? routeObserver;
 
+  /// The household's stored `view_ordering` may be empty or predate newer
+  /// views; fall back to the default ordering and append any views the stored
+  /// ordering does not know about yet so they stay navigable.
+  static List<ViewsEnum> _orderedViews(Household household) {
+    final List<ViewsEnum>? stored = household.viewOrdering;
+    final List<ViewsEnum> ordering =
+        (stored == null || stored.isEmpty)
+            ? ViewsEnum.values
+            : [
+                ...stored,
+                ...ViewsEnum.values.where((e) => !stored.contains(e)),
+              ];
+    return ordering.where((e) => e.isViewActive(household)).toList();
+  }
+
   late final HouseholdCubit householdCubit;
   late final ShoppinglistCubit shoppingListCubit;
   late final PlannedBuysCubit plannedBuysCubit;
   late final PersonsCubit personsCubit;
   late final NotesCubit notesCubit;
   late final DocumentsCubit documentsCubit;
+  late final LoyaltyCardsCubit loyaltyCardsCubit;
   late final TasksCubit tasksCubit;
   late final EventsCubit eventsCubit;
 
@@ -55,6 +72,7 @@ class _HouseholdPageState extends State<HouseholdPage>
     personsCubit = PersonsCubit(widget.household);
     notesCubit = NotesCubit(widget.household);
     documentsCubit = DocumentsCubit(widget.household);
+    loyaltyCardsCubit = LoyaltyCardsCubit(widget.household);
     tasksCubit = TasksCubit(widget.household);
     eventsCubit = EventsCubit(widget.household);
     WidgetsBinding.instance.addObserver(this);
@@ -78,6 +96,9 @@ class _HouseholdPageState extends State<HouseholdPage>
     }
     if (router.state.uri.path.contains("documents")) {
       documentsCubit.refresh();
+    }
+    if (router.state.uri.path.contains("loyaltyCards")) {
+      loyaltyCardsCubit.refresh();
     }
   }
 
@@ -103,6 +124,7 @@ class _HouseholdPageState extends State<HouseholdPage>
     personsCubit.close();
     notesCubit.close();
     documentsCubit.close();
+    loyaltyCardsCubit.close();
     tasksCubit.close();
     eventsCubit.close();
     super.dispose();
@@ -171,6 +193,9 @@ class _HouseholdPageState extends State<HouseholdPage>
       case ViewsEnum.documents:
         documentsCubit.refresh();
         break;
+      case ViewsEnum.loyaltyCards:
+        loyaltyCardsCubit.refresh();
+        break;
       case ViewsEnum.more:
         showModalBottomSheet(
           context: context,
@@ -196,6 +221,7 @@ class _HouseholdPageState extends State<HouseholdPage>
         BlocProvider.value(value: personsCubit),
         BlocProvider.value(value: notesCubit),
         BlocProvider.value(value: documentsCubit),
+        BlocProvider.value(value: loyaltyCardsCubit),
         BlocProvider.value(value: tasksCubit),
         BlocProvider.value(value: eventsCubit),
       ],
