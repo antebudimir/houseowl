@@ -76,7 +76,7 @@ class _NoteTile extends StatelessWidget {
       subtitle: note.body.isNotEmpty
           ? Text(
               note.body.replaceAll(RegExp(r'[#*_>`\[\]()]'), ''),
-              maxLines: 1,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
             )
           : null,
