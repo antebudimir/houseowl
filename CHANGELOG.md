@@ -163,7 +163,48 @@ features, that's the same commit.
   `create_event` (conflicts surfaced as a `reason: conflict` result),
   `delete_event`
 
+- Loyalty cards: a new "Loyalty Cards" view lists cards (name, note, barcode
+  number) with a rendered barcode on the card page (`barcode_widget`, offline
+  — no image fetch) and camera scanning of supported 1D/2D formats
+  (`mobile_scanner`) on the add page. Barcode values are stored as strings
+  alongside a format enum kept in sync with the backend's. Local offline
+  cache + offline-queue transactions mirroring the other views; real-time
+  updates via the `loyalty_card:update` Socket.IO event. Backend
+  `LoyaltyCard` model, `/api/household/<id>/loyalty_card` +
+  `/api/loyalty_card/<id>` endpoints, MCP tools, and export/import landed in
+  commit `bf60e7db`
+- Shopping list suggestions: the client fetches the backend's statistical
+  suggestions (`GET /shoppinglist/<id>/suggested-items`, association rules +
+  item frequency) concurrently with the list refresh, filters out items
+  already on the list, caps at 6, and shows a "Suggestions" section above
+  Recent (hidden while loading or empty); best-effort — offline it is simply
+  absent
+- Birthdays list rows show an "In {count} days" subtitle so entries outside
+  the current year are meaningful at a glance
+
+### Fixed
+
+- Households whose stored `view_ordering` predates a newer view (or is empty)
+  dropped the new view from the navigation, so opening it 404ed (first hit
+  with loyalty cards): the nav now appends any views missing from the stored
+  ordering, and the loyalty-card route uses the backend's camelCase
+  `loyaltyCards` path
+- Document attachment downloads now use `<title>.<original-extension>` as
+  the filename (path separators sanitized, falling back to the stored
+  filename when the title is empty) instead of the raw UUID blob name
+
 ### Known limitations
+- Birthdays are list-only: there are no reminders/notifications for
+  upcoming birthdays (backlog — a reminder pass would also want tasks/events
+  integration)
+- The checked-in `backend/database.db` is a stale development fixture, not
+  the live database used by the dev stack (`/tmp/kowl-dev/database.db` per
+  the dev `Makefile`/config); do not "fix" data issues against the fixture
+  (a fresh clone from it also cannot replay the full migration chain — see
+  the `remove_recipes` note below)
+- SQLite is run with WAL enabled; a WAL/SHM sidecar can hold recently
+  committed data until a checkpoint runs, so copying only `database.db` can
+  lose the last transactions — checkpoint or copy all three files
 - Note creation does not reject whitespace-only titles: the marshmallow
   `_not_blank` validator attached in the note schema is **inert** (it is never
   invoked by `validate_args`), so empty-titled notes can be stored. Deferred —
