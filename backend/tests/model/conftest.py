@@ -1,6 +1,6 @@
 import os
 
-os.environ["KITCHENOWL_MCP_ENABLED"] = "true"
+os.environ["HOUSEOWL_MCP_ENABLED"] = "true"
 
 import pytest
 from sqlalchemy import event

@@ -3,7 +3,7 @@ from flask.json.provider import DefaultJSONProvider
 from datetime import date, datetime, timezone
 
 
-class KitchenOwlJSONProvider(DefaultJSONProvider):
+class HouseOwlJSONProvider(DefaultJSONProvider):
     def default(self, o):  # type: ignore[assignment]
         # NOTE: datetime must be checked first, it is a subclass of date and
         # date.replace() does not accept tzinfo.

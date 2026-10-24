@@ -72,7 +72,7 @@ Hi {name} (@{username}),
 Verify your email so we know it's really you, and you don't lose access to your account.
 Verify email address: {link}
 
-Have any questions? Check out https://kitchenowl.org/privacy/""".format(
+Have any questions? Check out https://github.com/antebudimir/houseowl""".format(
             name=user.name, username=user.username, link=verifyLink
         )
         html = """\
@@ -83,7 +83,7 @@ Have any questions? Check out https://kitchenowl.org/privacy/""".format(
     Verify your email so we know it's really you, and you don't lose access to your account.<br>
     <a href="{link}">Verify email address</a><br><br>
 
-    Have any questions? Check out our <a href="https://kitchenowl.org/privacy/">Privacy Policy</a>
+    Have any questions? Check out our <a href="https://github.com/antebudimir/houseowl">Privacy Policy</a>
     </p>
 </body>
 </html>
@@ -110,7 +110,7 @@ Reset password: {link}
 
 If you didn't request a password reset, you can ignore this message and continue to use your current password.
 
-Have any questions? Check out https://kitchenowl.org/privacy/""".format(
+Have any questions? Check out https://github.com/antebudimir/houseowl""".format(
         name=user.name, username=user.username, link=resetLink
     )
     html = """\
@@ -123,7 +123,7 @@ Have any questions? Check out https://kitchenowl.org/privacy/""".format(
 
     If you didn't request a password reset, you can ignore this message and continue to use your current password.<br><br>
 
-    Have any questions? Check out our <a href="https://kitchenowl.org/privacy/">Privacy Policy</a>
+    Have any questions? Check out our <a href="https://github.com/antebudimir/houseowl">Privacy Policy</a>
     </p>
 </body>
 </html>

@@ -53,7 +53,7 @@ def test_initialize_falls_back_to_latest_for_unknown_version(user_client_with_ho
 
 def test_initialize_reports_server_info_and_instructions(user_client_with_household):
     result = _rpc(user_client_with_household, "initialize", {}).get_json()["result"]
-    assert result["serverInfo"]["name"] == "kitchenowl-mcp"
+    assert result["serverInfo"]["name"] == "houseowl-mcp"
     assert result["capabilities"]["tools"] is not None
     assert result["instructions"]
 

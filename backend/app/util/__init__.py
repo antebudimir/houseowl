@@ -1,2 +1,2 @@
-from .kitchenowl_json_provider import KitchenOwlJSONProvider
+from .houseowl_json_provider import HouseOwlJSONProvider
 from .multi_dict_list import MultiDictList

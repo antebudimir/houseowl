@@ -17,7 +17,7 @@ from app.errors import (
     ForbiddenRequest,
     InvalidUsage,
 )
-from app.util import KitchenOwlJSONProvider
+from app.util import HouseOwlJSONProvider
 from app.helpers.db_model_base import DbModelBase
 from oic.oic import Client
 from oic.oic.message import RegistrationResponse
@@ -148,7 +148,7 @@ SUPPORTED_LANGUAGES = {
     "zh_Hant": "繁體字",
 }
 
-Flask.json_provider_class = KitchenOwlJSONProvider
+Flask.json_provider_class = HouseOwlJSONProvider
 
 app = Flask(__name__)
 
@@ -171,7 +171,7 @@ app.config["JWT_REFRESH_TOKEN_EXPIRES"] = JWT_REFRESH_TOKEN_EXPIRES
 app.config["JWT_VERIFY_SUB"] = False
 if COLLECT_METRICS:
     # BASIC_AUTH
-    app.config["BASIC_AUTH_USERNAME"] = os.getenv("METRICS_USER", "kitchenowl")
+    app.config["BASIC_AUTH_USERNAME"] = os.getenv("METRICS_USER", "houseowl")
     app.config["BASIC_AUTH_PASSWORD"] = get_secret("METRICS_PASSWORD", "ZqQtidgC5n3YXb")
 
 convention = {
@@ -215,31 +215,30 @@ socketio = SocketIO(
     message_queue=MESSAGE_BROKER,
 )
 api_spec = APISpec(
-    title="KitchenOwl",
+    title="HouseOwl",
     version="v" + str(BACKEND_VERSION),
     openapi_version="3.0.2",
     info={
-        "description": "WIP KitchenOwl API documentation",
-        "termsOfService": "https://kitchenowl.org/privacy/",
+        "description": "WIP HouseOwl API documentation",
+        "termsOfService": "https://github.com/antebudimir/houseowl",
         "contact": {
             "name": "API Support",
-            "url": "https://kitchenowl.org/imprint/",
-            "email": "support@kitchenowl.org",
+            "url": "https://github.com/antebudimir/houseowl",
         },
         "license": {
             "name": "AGPL 3.0",
-            "url": "https://github.com/TomBursch/kitchenowl/blob/main/LICENSE",
+            "url": "https://github.com/antebudimir/houseowl/blob/main/LICENSE",
         },
     },
     servers=[
         {
-            "url": "https://app.kitchenowl.org/api",
-            "description": "Official KitchenOwl server instance",
+            "url": "/api",
+            "description": "This HouseOwl server instance",
         }
     ],
     externalDocs={
-        "description": "Find more info at the official documentation",
-        "url": "https://docs.kitchenowl.org",
+        "description": "Find more info in the repository",
+        "url": "https://github.com/antebudimir/houseowl",
     },
     plugins=[FlaskPlugin(), MarshmallowPlugin()],
 )

@@ -30,7 +30,7 @@ def socketioEnviron(host, scheme="http", forwardedProto=None, forwardedHost=None
         (
             "https://app.example.com",
             socketioEnviron(
-                "kitchenowl-backend:5000",
+                "houseowl-backend:5000",
                 forwardedProto="https",
                 forwardedHost="app.example.com",
             ),
@@ -43,7 +43,7 @@ def socketioEnviron(host, scheme="http", forwardedProto=None, forwardedHost=None
         ("https://evil.example.com", socketioEnviron("192.168.1.10:8099"), False),
         (
             "https://evil.example.com",
-            socketioEnviron("kitchenowl-backend:5000", forwardedProto="https"),
+            socketioEnviron("houseowl-backend:5000", forwardedProto="https"),
             False,
         ),
         (None, socketioEnviron("192.168.1.10:8099"), False),
@@ -90,7 +90,7 @@ def testSocketioPollingFrontUrlOrigin(client, monkeypatch):
     monkeypatch.setattr(config, "FRONT_URL", FRONT_URL_ORIGIN)
     response = client.get(
         "/socket.io/?EIO=4&transport=polling",
-        base_url="http://kitchenowl-backend:5000",
+        base_url="http://houseowl-backend:5000",
         headers={"Origin": FRONT_URL_ORIGIN},
     )
     assert response.status_code == 200

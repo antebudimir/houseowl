@@ -638,7 +638,7 @@ SUPPORTED_PROTOCOL_VERSIONS = ("2025-06-18", "2025-03-26", "2024-11-05")
 LATEST_PROTOCOL_VERSION = SUPPORTED_PROTOCOL_VERSIONS[0]
 
 SERVER_INSTRUCTIONS = (
-    "KitchenOwl manages households, each of which owns shopping lists, items, "
+    "HouseOwl manages households, each of which owns shopping lists, items, "
     "tags, tasks and events. Nearly every tool is scoped to a "
     "household, so call list_households first and reuse the id you get back."
 )
@@ -677,7 +677,7 @@ def _dispatch(body: Any) -> Any:
                 "protocolVersion": version,
                 "capabilities": {"tools": {"listChanged": False}},
                 "serverInfo": {
-                    "name": "kitchenowl-mcp",
+                    "name": "houseowl-mcp",
                     "version": str(BACKEND_VERSION),
                 },
                 "instructions": SERVER_INSTRUCTIONS,
@@ -691,7 +691,7 @@ def _dispatch(body: Any) -> Any:
                 "tools": [
                     {
                         "name": name,
-                        "description": f"KitchenOwl tool: {name}",
+                        "description": f"HouseOwl tool: {name}",
                         "inputSchema": schema,
                     }
                     for name, (schema, _) in TOOLS.items()

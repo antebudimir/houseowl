@@ -1,7 +1,7 @@
 import os
 import tempfile
 
-os.environ["KITCHENOWL_MCP_ENABLED"] = "true"
+os.environ["HOUSEOWL_MCP_ENABLED"] = "true"
 # Isolate pytest from the developer database: app config reads DB_NAME at
 # import time, so point it at a throwaway file before importing the app.
 # Test fixtures end with db.drop_all(), which would wipe a shared DB.

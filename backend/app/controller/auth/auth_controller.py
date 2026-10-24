@@ -391,7 +391,7 @@ if FRONT_URL and len(oidc_clients) > 0:
               required: false
               description: OIDC provider name
             - in: query
-              name: kitchenowl_scheme
+              name: houseowl_scheme
               schema:
                 type: string
               required: false
@@ -429,8 +429,10 @@ if FRONT_URL and len(oidc_clients) > 0:
         state = rndstr()
         nonce = rndstr()
         redirect_uri = (
-            ("kitchenowl:" + ("" if OIDC_RFC_COMPLIANT_REDIRECT else "//"))
-            if "kitchenowl_scheme" in args and args["kitchenowl_scheme"]
+            ("houseowl:" + ("" if OIDC_RFC_COMPLIANT_REDIRECT else "//"))
+            if (
+                args.get("houseowl_scheme") or args.get("kitchenowl_scheme", False)
+            )
             else FRONT_URL
         ) + "/signin/redirect"
         args = {
@@ -555,7 +557,7 @@ if FRONT_URL and len(oidc_clients) > 0:
         if current_user:
             if oidcLink and oidcLink.user_id != current_user.id:
                 return (
-                    "Request invalid: oidc account already linked with other kitchenowl account",
+                    "Request invalid: oidc account already linked with other HouseOwl account",
                     400,
                 )
             if oidcLink:
