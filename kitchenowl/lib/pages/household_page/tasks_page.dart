@@ -174,9 +174,33 @@ class _TaskTile extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-      trailing: task.priority > 0
-          ? const Icon(Icons.flag_rounded, size: 20)
-          : null,
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (task.assignee != null) ...[
+            CircleAvatar(
+              radius: 10,
+              child: Text(
+                task.assignee!.name.isNotEmpty
+                    ? task.assignee!.name[0].toUpperCase()
+                    : "?",
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+            ),
+            const SizedBox(width: 4),
+          ],
+          if (task.priority > 0)
+            Icon(
+              Icons.flag_rounded,
+              size: 20,
+              color: switch (task.priority) {
+                3 => Theme.of(context).colorScheme.error,
+                2 => Theme.of(context).colorScheme.tertiary,
+                _ => Theme.of(context).colorScheme.primary,
+              },
+            ),
+        ],
+      ),
       onTap: onEdit,
       onLongPress: onDelete,
     );
