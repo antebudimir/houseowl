@@ -14,6 +14,11 @@ features, that's the same commit.
 
 ### Fixed
 
+- Planned buy, task, and event add/edit pages (plus their list pages and the
+  tag selector) rendered light in dark mode: they imported
+  `package:flutter/material.dart`, whose `Theme.of` silently falls back to a
+  light default under the material_ui-forked app; they now use the
+  `material_ui` import like the document/note/loyalty/person pages
 - Households created without a language silently ended up with zero default
   items (and therefore no item icons in search/suggestions): `importLanguage`
   raised "language not supported" for a null language; it now falls back to
