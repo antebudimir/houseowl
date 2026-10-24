@@ -39,23 +39,18 @@ features, that's the same commit.
   `_not_blank`-style validators were inert and blank strings were accepted for
   usernames, household names, item/task/note titles, etc.; validators now raise
   `ValidationError` (regression tests added).
-- Fresh clones no longer fail to migrate an empty database: the
-  remove-recipes-and-planner migration dropped `report.recipe_id` with a plain
-  `DROP COLUMN`, which SQLite rejects because the column participates in a
-  foreign key (and batch-reflection failed on the dangling FK to the
-  just-dropped `recipe` table); the migration now rebuilds `report` without
-  the column — this moves the fresh-clone migration chain from known
-  limitation to working. Verified: `flask db upgrade` from an empty database
-  passes the full chain (including this migration) and downgrade works.
+- Verified the fresh-clone migration chain end to end: `flask db upgrade` on
+  an empty database passes the full chain and downgrade works. (The SQLite FK
+  issue in the remove-recipes-and-planner migration was already fixed in
+  `c8d9e0a12b34`, which rebuilds `report` without `recipe_id` instead of a
+  plain `DROP COLUMN`; no additional code change was needed — this moves the
+  fresh-clone migration chain from known limitation to confirmed working.)
 
 ### Fixed
 
 - The loyalty card barcode rendered black-on-black in dark mode (it inherited
   ambient theme colors); it now always renders black bars on a white
   container so it stays scannable in both themes
-
-### Fixed
-### Fixed
 
 - Planned buy, task, and event add/edit pages (plus their list pages and the
   tag selector) rendered light in dark mode: they imported
@@ -342,8 +337,6 @@ features, that's the same commit.
   deletion is gated on it, falling back to treating the first list as the
   default when the server does not send the flag
 - Error snackbar when shopping-list deletion fails
-
-### Changed
 
 - Shopping-list renames now propagate in real time: the backend emits a
   `shoppinglist:update` Socket.IO event to the household room, and clients
