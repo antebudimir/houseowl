@@ -5,7 +5,9 @@ import 'package:kitchenowl/app.dart';
 import 'package:kitchenowl/cubits/settings_cubit.dart';
 import 'package:kitchenowl/cubits/shoppinglist_cubit.dart';
 import 'package:kitchenowl/enums/shoppinglist_sorting.dart';
+import 'package:kitchenowl/models/category.dart';
 import 'package:kitchenowl/models/item.dart';
+import 'package:kitchenowl/pages/item_search_page.dart';
 import 'package:kitchenowl/kitchenowl.dart';
 import 'package:kitchenowl/widgets/shopping_list/shoppinglist_header.dart';
 import 'package:kitchenowl/widgets/shopping_list/sliver_shopinglist_item_view.dart';
@@ -35,6 +37,24 @@ class _ShoppinglistPageState extends State<ShoppinglistPage> {
     WakelockPlus.disable();
     searchController.dispose();
     super.dispose();
+  }
+
+  Future<void> addItemsFromCategory(
+      BuildContext context, Category category) async {
+    final cubit = BlocProvider.of<ShoppinglistCubit>(context);
+    final items = await Navigator.of(context, rootNavigator: true)
+            .push<List<Item>>(MaterialPageRoute(
+          builder: (context) => ItemSearchPage(
+            household: cubit.household,
+            title: category.name,
+          ),
+        )) ??
+        [];
+    for (final item in items) {
+      await cubit.add(
+        item.id == null ? item.copyWith(category: Nullable(category)) : item,
+      );
+    }
   }
 
   @override
@@ -238,6 +258,10 @@ class _ShoppinglistPageState extends State<ShoppinglistPage> {
                                       suggestedItems: state.suggestedItems,
                                       onSuggestedPressed: Nullable(cubit.add),
                                       onRefresh: cubit.refresh,
+                                      onAddCategory: Nullable(
+                                          (Category category) =>
+                                              addItemsFromCategory(
+                                                  context, category)),
                                     ),
                                   ],
                                 ),

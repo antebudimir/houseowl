@@ -19,6 +19,7 @@ class SliverShopinglistItemView extends StatelessWidget {
   final bool isLoading;
   final List<ShoppinglistItem> selectedListItems;
   final ShoppingListStyle shoppingListStyle;
+  final Nullable<void Function(Category)>? onAddCategory;
 
   const SliverShopinglistItemView({
     super.key,
@@ -33,6 +34,7 @@ class SliverShopinglistItemView extends StatelessWidget {
     required this.isLoading,
     required this.selectedListItems,
     this.shoppingListStyle = const ShoppingListStyle(),
+    this.onAddCategory,
   });
 
   @override
@@ -80,6 +82,9 @@ class SliverShopinglistItemView extends StatelessWidget {
           onRefresh: onRefresh,
           onPressed: onPressed,
           shoppingListStyle: shoppingListStyle,
+          onAdd: (onAddCategory != null && category != null)
+              ? () => onAddCategory!.value!(category)
+              : null,
         ));
       }
       main = grids;

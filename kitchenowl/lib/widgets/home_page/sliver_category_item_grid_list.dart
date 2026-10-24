@@ -22,6 +22,7 @@ class SliverCategoryItemGridList<T extends Item> extends StatefulWidget {
   final bool isSubTitle;
   final bool splitByCategories;
   final ShoppingListStyle shoppingListStyle;
+  final VoidCallback? onAdd;
 
   const SliverCategoryItemGridList({
     super.key,
@@ -38,6 +39,7 @@ class SliverCategoryItemGridList<T extends Item> extends StatefulWidget {
     this.isSubTitle = false,
     this.splitByCategories = false,
     this.shoppingListStyle = const ShoppingListStyle(),
+    this.onAdd,
   });
 
   @override
@@ -95,9 +97,20 @@ class _SliverCategoryItemGridListState<T extends Item>
     return SliverExpansionTile(
       title: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Text(
-          widget.name,
-          style: titleTextStyle,
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                widget.name,
+                style: titleTextStyle,
+              ),
+            ),
+            if (widget.onAdd != null)
+              IconButton(
+                onPressed: widget.onAdd,
+                icon: const Icon(Icons.add_circle_outline_rounded),
+              ),
+          ],
         ),
       ),
       sliver: MultiSliver(children: list),
