@@ -4,6 +4,10 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
+// Deliberate mixed import: this file builds the material_ui
+// MaterialApp.router, but the m.-prefixed flutter/material import is needed
+// for widgets/classes material_ui does not re-export. Do NOT blanket-swap;
+// this file is the only allowlisted exception (see scripts/check_theme_imports.sh).
 import 'package:flutter/material.dart' as m;
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';

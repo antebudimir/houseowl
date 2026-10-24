@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:kitchenowl/kitchenowl.dart';
 
 /// Expiry-window filter chips shown on the documents page.
