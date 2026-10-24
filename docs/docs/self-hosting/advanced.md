@@ -12,7 +12,7 @@ Additionally, the releases are tagged, so you can always choose a specific versi
 - Set up with OpenID Connect: [OIDC](./oidc.md)
 - Set up with a PostgreSQL database: [docker-compose.yml](https://github.com/TomBursch/kitchenowl/blob/main/docker-compose-postgres.yml)
 
-Environment variables for `tombursch/kitchenowl` and `tombursch/kitchenowl-backend`:
+Environment variables for `antebudimir/houseowl` and `antebudimir/houseowl-backend`:
 
 | Variable                                   | Default                    | Description                                                                                                                                           |
 | ------------------------------------------ | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -27,7 +27,7 @@ Environment variables for `tombursch/kitchenowl` and `tombursch/kitchenowl-backe
 | `OPEN_REGISTRATION`                        | `false`                    | If set, allows anyone to create an account on your server                                                                                             |
 | `EMAIL_MANDATORY`                          | `false`                    | Makes the email a mandatory field when registering (Only relevant if `OPEN_REGISTRATION` is set)                                                      |
 | `COLLECT_METRICS`                          | `false`                    | Enables a Prometheus metrics endpoint at `/metrics/`. If enabled can be reached over the frontend container on port 9100 (e.g. `front:9100/metrics/`) |
-| `METRICS_USER`                             | `kitchenowl`               | Metrics basic auth username                                                                                                                           |
+| `METRICS_USER`                             | `houseowl`               | Metrics basic auth username                                                                                                                           |
 | `METRICS_PASSWORD`                         | `ZqQtidgC5n3YXb`           | Metrics basic auth password                                                                                                                           |
 | `METRICS_PASSWORD_FILE`                    |                            | Allows setting METRICS_PASSWORD from a file path, will override METRICS_PASSWORD                                                                      |
 | `SKIP_UPGRADE_DEFAULT_ITEMS`               | `false`                    | On every restart all default items are imported and updated in every household                                                                        |
@@ -63,7 +63,7 @@ Environment variables for `tombursch/kitchenowl` and `tombursch/kitchenowl-backe
 | `LLM_MODEL`                                |                            | Set a custom ingredient detection strategy for scraped recipes from the web. More at [Ingredient Parsing](./ingredient_parsing.md)                    |
 | `LLM_API_URL`                              |                            |                                                                                                                                                       |
 | `OPENAI_API_KEY`/`OPENROUTER_API_KEY`/etc. |                            | Depends on which provider you choose. See [LiteLLM docs](https://docs.litellm.ai/docs/providers)                                                      |
-| `BASE_HREF`                                |                            | Sets the subdirectory HouseOwl is hosted at. Must begin and end with a slash `/`. Only applicable to `tombursch/kitchenowl`                         |
+| `BASE_HREF`                                |                            | Sets the subdirectory HouseOwl is hosted at. Must begin and end with a slash `/`. Only applicable to `antebudimir/houseowl`                         |
 
 Additionally, to setting these environment variables you can also override the start command to scale the backend up.
 Add the following line or take a look at this exemplary [docker-compose.yml](https://github.com/TomBursch/kitchenowl/blob/main/docker-compose-postgres.yml) file:
@@ -79,7 +79,7 @@ Overriding the command is not recommended as we might change the underlying proc
 
 ### Frontend
 
-Environment variables for `tombursch/kitchenowl-web`:
+Environment variables for `antebudimir/houseowl-web`:
 
 | Variable    | Default     | Description                                                                                                                                                          |
 | ----------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -96,20 +96,20 @@ See [docker-compose.yml](https://github.com/TomBursch/kitchenowl/blob/main/docke
 version: "3"
 services:
   front:
-    image: tombursch/kitchenowl-web:latest
+    image: antebudimir/houseowl-web:latest
     restart: unless-stopped
     ports:
       - "80:80"
     depends_on:
       - back
   back:
-    image: tombursch/kitchenowl-backend:latest
+    image: antebudimir/houseowl-backend:latest
     restart: unless-stopped
     environment:
       - JWT_SECRET_KEY=PLEASE_CHANGE_ME
     volumes:
-      - kitchenowl_data:/data
+      - houseowl_data:/data
 
 volumes:
-  kitchenowl_data:
+  houseowl_data:
 ```

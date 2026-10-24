@@ -145,7 +145,7 @@ def update_attributes(saveToTemplate: bool = False):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="python manage_default_items.py",
-        description="This programms queries the current kitchenowl installation for updated template items (names & icon & category)",
+        description="This programms queries the current HouseOwl installation for updated template items (names & icon & category)",
     )
     parser.add_argument(
         "-s",

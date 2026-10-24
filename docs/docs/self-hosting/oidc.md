@@ -9,7 +9,7 @@ Inside your OIDC you need to configure a new client, with the following to redir
 
 <div class="annotate" markdown>
 - `FRONT_URL(1)/signin/redirect` 
-- `kitchenowl:/signin/redirect`
+- `houseowl:/signin/redirect`
 </div>
 
 1. FRONT_URL is the environment variable that exactly matches HouseOwl's URL including the schema (e.g. `https://app.kitchenowl.org`)
@@ -58,7 +58,7 @@ back:
 which will result in an alternative mobile redirect URI for mobiles:
 
 <div class="annotate" markdown>
-- `kitchenowl:///signin/redirect`
+- `houseowl:///signin/redirect`
 </div>
 
 ### Limitations
@@ -89,7 +89,7 @@ back:
 Place this in your Authelia [configuration.yaml](https://www.authelia.com/configuration/prologue/introduction/) to allow HouseOwl to use Authelia as an OIDC provider.
 
 ```yml
-- id: kitchenowl
+- id: houseowl
     description: HouseOwl
     secret: # Same as OIDC_CLIENT_SECRET
     public: false
@@ -102,7 +102,7 @@ Place this in your Authelia [configuration.yaml](https://www.authelia.com/config
         - profile
     redirect_uris:
         - https://your.domain.here/signin/redirect # The redirect URI should match ${FRONT_URL}/signin/redirect
-        - kitchenowl:/signin/redirect
+        - houseowl:/signin/redirect
     response_modes:
     userinfo_signing_algorithm: none
     token_endpoint_auth_method: client_secret_post

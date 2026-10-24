@@ -3,7 +3,7 @@ import pytest
 from app import app, config
 from app.config import is_allowed_socketio_origin
 
-FRONT_URL_ORIGIN = "https://kitchenowl.example.com"
+FRONT_URL_ORIGIN = "https://houseowl.example.com"
 LAN_ORIGIN = "http://192.168.1.10:8099"
 
 

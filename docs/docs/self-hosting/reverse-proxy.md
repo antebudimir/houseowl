@@ -41,10 +41,10 @@ frontend efeu-http
   # 16000000 seconds is a bit more than 6 months
   http-response set-header Strict-Transport-Security "max-age=16000000; includeSubDomains; preload;"
 
-  default_backend kitchenowl
+  default_backend houseowl
 
-backend kitchenowl
-  server kitchenowl front:80 resolvers docker
+backend houseowl
+  server houseowl front:80 resolvers docker
 
 ```
 
@@ -61,7 +61,7 @@ version: "3"
 
 services:
   front:
-    image: tombursch/kitchenowl-web:latest
+    image: antebudimir/houseowl-web:latest
     networks:
       - default
       - web
@@ -71,12 +71,12 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=web"
-      - "traefik.http.routers.kitchenowl.rule=Host(`your.domain.here`)"
-      - "traefik.http.routers.kitchenowl.entrypoints=websecure"
-      - "traefik.http.routers.kitchenowl.middlewares=security@docker" # Use to apply security middlewares
+      - "traefik.http.routers.houseowl.rule=Host(`your.domain.here`)"
+      - "traefik.http.routers.houseowl.entrypoints=websecure"
+      - "traefik.http.routers.houseowl.middlewares=security@docker" # Use to apply security middlewares
 
   back:
-    image: tombursch/kitchenowl:latest
+    image: antebudimir/houseowl:latest
     networks:
       - default
     restart: unless-stopped
@@ -84,14 +84,14 @@ services:
       - FRONT_URL=https://your.domain.here
       - JWT_SECRET_KEY=PLEASE_CHANGE_ME
     volumes:
-      - kitchenowl_data:/data
+      - houseowl_data:/data
 
 networks:
   web:
     external: true
 
 volumes:
-  kitchenowl_data:
+  houseowl_data:
 ```
 
 Traefik can add extra security headers to add a level of protection to your HouseOwl instance. You can specify a middleware in your Traefik docker-compose.yml using labels.
@@ -114,15 +114,15 @@ labels:
 
 This example configuration assumes that you are:
 
-- running kitchenowl in a kubernetes environment where traefik is your ingress controller
+- running HouseOwl in a kubernetes environment where traefik is your ingress controller
 - you have set up traefik CRDs according to [https://doc.traefik.io/traefik/reference/install-configuration/providers/kubernetes/kubernetes-crd/](https://doc.traefik.io/traefik/reference/install-configuration/providers/kubernetes/kubernetes-crd/) (in particular you intend to use the `IngressRoute` resource instead of the kubernetes-native `Ingress`.)
-- kitchenowl is deployed using a service named `kitchenowl-web` in the `default` namespace.
+- HouseOwl is deployed using a service named `houseowl-web` in the `default` namespace.
 
 ```yml
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-  name: kitchenowl-ingressroute
+  name: houseowl-ingressroute
 
 spec:
   entryPoints:
@@ -130,10 +130,10 @@ spec:
   routes:
   - match: Host(`<your.domain.here>`)
     middlewares:
-      - name: kitchenowl
+      - name: houseowl
     kind: Rule
     services:
-    - name: kitchenowl-web
+    - name: houseowl-web
       port: 8080
 
   tls:
@@ -142,7 +142,7 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
-  name: kitchenowl
+  name: houseowl
 spec:
   headers:
     customRequestHeaders:
@@ -157,24 +157,24 @@ In this setup a new middleware is added to enable websocket support on this ingr
 
 The following assumptions are made by this config:
 
-- You have a (sub)domain for your kitchenowl instance. eg: kitchenowl.example.org
+- You have a (sub)domain for your HouseOwl instance. eg: houseowl.example.org
 - You are running the docker images from the given docker-compose.yml with the "ports" changed from "80:80" to "8080:80"
 - You have certbot (or some other letsencrypt client) installed and running on your host system
 - You have apache running on your host with the default ports for http/https (80/443)
 
 ```
 <VirtualHost *:80>
-        ServerName kitchenowl.example.org
+        ServerName houseowl.example.org
         ServerAdmin webmaster@example.org
 
-        ErrorLog ${APACHE_LOG_DIR}/kitchenowl_error.log
-        CustomLog ${APACHE_LOG_DIR}/kitchenowl_access.log combined
+        ErrorLog ${APACHE_LOG_DIR}/houseowl_error.log
+        CustomLog ${APACHE_LOG_DIR}/houseowl_access.log combined
 
-        Redirect permanent / https://kitchenowl.example.org
+        Redirect permanent / https://houseowl.example.org
 </VirtualHost>
 
 <VirtualHost *:443>
-        ServerName kitchenowl.example.org
+        ServerName houseowl.example.org
         ServerAdmin webmaster@example.org
 
         <IfModule mod_headers.c>
@@ -182,14 +182,14 @@ The following assumptions are made by this config:
         </IfModule>
 
 
-        ErrorLog ${APACHE_LOG_DIR}/kitchenowl_error.log
-        CustomLog ${APACHE_LOG_DIR}/kitchenowl_access.log combined
+        ErrorLog ${APACHE_LOG_DIR}/houseowl_error.log
+        CustomLog ${APACHE_LOG_DIR}/houseowl_access.log combined
 
         ProxyPass / http://localhost:8080/
         ProxyPassReverse / http://localhost:8080/
 
-SSLCertificateFile /etc/letsencrypt/live/kitchenowl.exaample.org/fullchain.pem
-SSLCertificateKeyFile /etc/letsencrypt/live/kitchenowl.example.org/privkey.pem
+SSLCertificateFile /etc/letsencrypt/live/houseowl.example.org/fullchain.pem
+SSLCertificateKeyFile /etc/letsencrypt/live/houseowl.example.org/privkey.pem
 Include /etc/letsencrypt/options-ssl-apache.conf
 </VirtualHost>
 ```
@@ -198,14 +198,14 @@ Include /etc/letsencrypt/options-ssl-apache.conf
 
 The following assumptions are made by this config:
 
-- You have a (sub)domain for your kitchenowl instance. eg: kitchenowl.example.org
+- You have a (sub)domain for your HouseOwl instance. eg: houseowl.example.org
 - You are running the docker images from the given docker-compose.yml with the "ports" changed from "80:80" to "8080:80"
 - You have certbot (or some other letsencrypt client) installed and running on your host system
 - You have nginx running on your host with the default ports for http/https (80/443)
 
 ```
 server {
-    server_name kitchenowl.example.org;
+    server_name houseowl.example.org;
     listen [::]:443 ssl ipv6only=on; # managed by Certbot
     listen 443 ssl; # managed by Certbot
 
@@ -216,19 +216,19 @@ server {
         proxy_pass http://localhost:8080;
     }
 
-    ssl_certificate /etc/letsencrypt/live/kitchenowl.example.org/fullchain.pem; # managed by
+    ssl_certificate /etc/letsencrypt/live/houseowl.example.org/fullchain.pem; # managed by
  Certbot
-    ssl_certificate_key /etc/letsencrypt/live/kitchenowl.example.org/privkey.pem; # managed
+    ssl_certificate_key /etc/letsencrypt/live/houseowl.example.org/privkey.pem; # managed
 by Certbot
     include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
     ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
 }
 server {
-    if ($host = kitchenowl.example.org) {
+    if ($host = houseowl.example.org) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
 
-    server_name kitchenowl.example.org;
+    server_name houseowl.example.org;
     listen 80;
     listen [::]:80;
     return 404; # managed by Certbot
@@ -240,7 +240,7 @@ server {
 Caddy will automatically set up an SSL certificate for the specified hostname.
 
 ```caddyfile
-kitchenowl.example.org {
+houseowl.example.org {
         reverse_proxy localhost:8080 # Set the address of your HouseOwl frontend here
         encode gzip
         header {

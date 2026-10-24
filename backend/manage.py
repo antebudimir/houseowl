@@ -172,7 +172,7 @@ What next?
 if __name__ == "__main__":
     while True:
         print("""
-Manage KitchenOwl\n---\nWhat do you want to do?
+Manage HouseOwl\n---\nWhat do you want to do?
 1.  Manage users
 2.  Manage households
 3.  Manage images/files

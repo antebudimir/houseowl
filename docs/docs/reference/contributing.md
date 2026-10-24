@@ -4,7 +4,7 @@ Thanks for wanting to contribute to HouseOwl!
 
 So you want to contribute to HouseOwl? Great!
 
-If you have noticed a bug, please [create an issue](https://github.com/TomBursch/HouseOwl/issues/new) before starting any work on a pull request or get in contact by joining our [Matrix space](https://matrix.to/#/#kitchenowl:matrix.org).
+If you have noticed a bug, please [create an issue](https://github.com/TomBursch/HouseOwl/issues/new) before starting any work on a pull request or get in contact by joining our [Matrix space](https://matrix.to/#/#houseowl:matrix.org).
 
 ### Fork & create a branch
 
@@ -82,12 +82,12 @@ Here are some examples of configurations that work well with VS Code and allow y
     {
         "configurations": [
             {
-                "name": "kitchenowl",
+                "name": "houseowl",
                 "request": "launch",
                 "type": "dart"
             },
             {
-                "name": "kitchenowl (profile mode)",
+                "name": "houseowl (profile mode)",
                 "request": "launch",
                 "type": "dart",
                 "flutterMode": "profile"

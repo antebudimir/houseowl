@@ -12,7 +12,7 @@ The official installation method is using [Docker](https://docs.docker.com/engin
     version: "3"
     services:
       front:
-        image: tombursch/kitchenowl-web:latest
+        image: antebudimir/houseowl-web:latest
         restart: unless-stopped
         # environment:
         #   - BACK_URL=back:5000 # Change this if you rename the containers
@@ -21,23 +21,23 @@ The official installation method is using [Docker](https://docs.docker.com/engin
         depends_on:
           - back
       back:
-        image: tombursch/kitchenowl-backend:latest
+        image: antebudimir/houseowl-backend:latest
         restart: unless-stopped
         environment:
           - JWT_SECRET_KEY=PLEASE_CHANGE_ME
         volumes:
-          - kitchenowl_data:/data
+          - houseowl_data:/data
 
     volumes:
-      kitchenowl_data:
+      houseowl_data:
     ```
     2. Change the default value for `JWT_SECRET_KEY`
     3. If you want to use PostgreSQL, change the container names, or want to set other settings take a look at the [advanced](advanced.md) options
     4. Run `podman compose up -d`
 
 === "Docker (All-in-one)"
-    1. Create a volume `docker volume create kitchenowl_data`
-    2. Run `docker run -d -p 8080:8080 -e "JWT_SECRET_KEY=PLEASE_CHANGE_ME" -v kitchenowl_data:/data tombursch/kitchenowl:latest`
+    1. Create a volume `docker volume create houseowl_data`
+    2. Run `docker run -d -p 8080:8080 -e "JWT_SECRET_KEY=PLEASE_CHANGE_ME" -v houseowl_data:/data antebudimir/houseowl:latest`
 
 === "Docker compose (All-in-one)"
     1. Download [docker-compose.yml](https://github.com/TomBursch/kitchenowl/blob/main/docker-compose-single.yml)
@@ -45,17 +45,17 @@ The official installation method is using [Docker](https://docs.docker.com/engin
     version: "3"
     services:
       back:
-        image: tombursch/kitchenowl:latest
+        image: antebudimir/houseowl:latest
         restart: unless-stopped
         ports:
           - "80:8080"
         environment:
           - JWT_SECRET_KEY=PLEASE_CHANGE_ME
         volumes:
-          - kitchenowl_data:/data
+          - houseowl_data:/data
 
     volumes:
-      kitchenowl_data:
+      houseowl_data:
     ```
     2. Change the default value for `JWT_SECRET_KEY`
     3. If you want to use PostgreSQL, use separate containers for front and backend, or want to set other settings take a look at the [advanced](advanced.md) options
