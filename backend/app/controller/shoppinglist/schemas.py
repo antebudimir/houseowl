@@ -29,7 +29,7 @@ class GetRecentItems(Schema):
 
 
 class UpdateDescription(Schema):
-    description = fields.String(required=True)
+    description = fields.String(load_default="")
 
 
 class RemoveItem(Schema):

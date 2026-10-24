@@ -78,13 +78,13 @@ extension ShoppinglistApi on ApiService {
     ShoppingList shoppinglist,
     Item item,
   ) async {
-    final Map<String, dynamic> data = {};
-    if (item is ItemWithDescription) {
-      data['description'] = item.description;
-    }
+    // The backend requires a description on this route; send an empty
+    // string for plain items without one.
+    final String description =
+        item is ItemWithDescription ? item.description : '';
     final res = await put(
       '${route(shoppinglist: shoppinglist)}/item/${item.id}',
-      jsonEncode(data),
+      jsonEncode({'description': description}),
     );
 
     return res.statusCode == 200;
