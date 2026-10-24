@@ -116,13 +116,22 @@ class _LoyaltyCardPageState extends State<LoyaltyCardPage> {
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: Center(
-                child: BarcodeWidget(
-                  barcode: format.toBarcode(),
-                  data: widget.card.cardNumber,
-                  width: 300,
-                  height: 120,
-                  // 2D codes would be distorted by the fixed height.
-                  margin: const EdgeInsets.symmetric(vertical: 8),
+                child: Container(
+                  // A barcode must always be black on white, regardless of
+                  // the app theme, so store scanners get full contrast. The
+                  // white container also provides the quiet-zone margin.
+                  color: Colors.white,
+                  padding: const EdgeInsets.all(8),
+                  child: BarcodeWidget(
+                    barcode: format.toBarcode(),
+                    data: widget.card.cardNumber,
+                    color: Colors.black,
+                    backgroundColor: Colors.white,
+                    width: 300,
+                    height: 120,
+                    // 2D codes would be distorted by the fixed height.
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                  ),
                 ),
               ),
             ),
