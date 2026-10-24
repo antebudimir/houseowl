@@ -5,7 +5,9 @@
 # the wrong variable silently points flask at the dev database.
 smoke-migration:
 	rm -rf /tmp/kowl-smoke && mkdir -p /tmp/kowl-smoke
-	cp $(DB_SOURCE) /tmp/kowl-smoke/database.db
+	# cp alone misses WAL contents (checkpointed data lives in -wal until
+	# checkpointed); sqlite3 .backup produces a complete, consistent copy.
+	sqlite3 $(DB_SOURCE) ".backup '/tmp/kowl-smoke/database.db'"
 	DB_NAME=/tmp/kowl-smoke/database.db uv run flask db upgrade
 	DB_NAME=/tmp/kowl-smoke/database.db uv run flask db downgrade e5b1c8d3f7a2
 	rm -rf /tmp/kowl-smoke

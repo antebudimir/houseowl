@@ -12,6 +12,16 @@ features, that's the same commit.
 
 ## [Unreleased]
 
+- Fresh clones no longer fail to migrate an empty database: the
+  remove-recipes-and-planner migration dropped `report.recipe_id` with a plain
+  `DROP COLUMN`, which SQLite rejects because the column participates in a
+  foreign key (and batch-reflection failed on the dangling FK to the
+  just-dropped `recipe` table); the migration now rebuilds `report` without
+  the column — this moves the fresh-clone migration chain from known
+  limitation to working
+
+### Fixed
+
 - The loyalty card barcode rendered black-on-black in dark mode (it inherited
   ambient theme colors); it now always renders black bars on a white
   container so it stays scannable in both themes
