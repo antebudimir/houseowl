@@ -126,9 +126,9 @@ class _BirthdayTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(subtitle),
-          if ((entry.person.notes ?? "").isNotEmpty)
+          if ((entry.person.giftIdea ?? "").isNotEmpty)
             Text(
-              AppLocalizations.of(context)!.giftIdea(entry.person.notes!),
+              AppLocalizations.of(context)!.giftIdea(entry.person.giftIdea!),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.bodySmall,

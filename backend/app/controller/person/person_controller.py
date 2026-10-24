@@ -43,6 +43,8 @@ def addPerson(args, household_id):
         person.email = args["email"]
     if "notes" in args:
         person.notes = args["notes"]
+    if "gift_idea" in args:
+        person.gift_idea = args["gift_idea"]
     if "birthday" in args:
         person.birthday = datetime.fromtimestamp(
             args["birthday"] / 1000, timezone.utc
@@ -80,6 +82,8 @@ def updatePerson(args, id):
         person.email = args["email"]
     if "notes" in args:
         person.notes = args["notes"]
+    if "gift_idea" in args:
+        person.gift_idea = args["gift_idea"]
     if "birthday" in args:
         if args["birthday"] is None:
             person.birthday = None

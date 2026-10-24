@@ -88,6 +88,21 @@ class PersonPage extends StatelessWidget {
                     title: Text(person.email!),
                     subtitle: Text(AppLocalizations.of(context)!.email),
                   ),
+                if ((person.giftIdea ?? "").isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.giftIdeaLabel,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(person.giftIdea!),
+                      ],
+                    ),
+                  ),
                 if ((person.notes ?? "").isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.all(16),

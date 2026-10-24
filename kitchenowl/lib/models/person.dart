@@ -11,6 +11,7 @@ class Person extends Model {
   final String? phone;
   final String? email;
   final String? notes;
+  final String? giftIdea;
 
   /// UTC midnight of the stored birthday date.
   final DateTime? birthday;
@@ -23,6 +24,7 @@ class Person extends Model {
     this.phone,
     this.email,
     this.notes,
+    this.giftIdea,
     this.birthday,
     this.userId,
   });
@@ -35,6 +37,7 @@ class Person extends Model {
       phone: map['phone'],
       email: map['email'],
       notes: map['notes'],
+      giftIdea: map['gift_idea'],
       birthday: map['birthday'] == null
           ? null
           : DateTime.fromMillisecondsSinceEpoch(
@@ -69,6 +72,7 @@ class Person extends Model {
     String? phone,
     String? email,
     String? notes,
+    String? giftIdea,
     DateTime? birthday,
     int? userId,
   }) =>
@@ -79,13 +83,14 @@ class Person extends Model {
         phone: phone ?? this.phone,
         email: email ?? this.email,
         notes: notes ?? this.notes,
+        giftIdea: giftIdea ?? this.giftIdea,
         birthday: birthday ?? this.birthday,
         userId: userId ?? this.userId,
       );
 
   @override
   List<Object?> get props =>
-      [id, name, role, phone, email, notes, birthday, userId];
+      [id, name, role, phone, email, notes, giftIdea, birthday, userId];
 
   @override
   Map<String, dynamic> toJson() => {
@@ -94,6 +99,7 @@ class Person extends Model {
         "phone": phone,
         "email": email,
         "notes": notes,
+        "gift_idea": giftIdea,
         "birthday": birthday?.millisecondsSinceEpoch,
         "user_id": userId,
       };

@@ -545,6 +545,7 @@
   "emailUsed": "The email is already associated with an account",
   "giftIdea": "Gift idea: {notes}",
     "@giftIdea": {"placeholders": {"notes": {"type": "String"}}},
+  "giftIdeaLabel": "Gift idea",
     "birthdaysUpcoming": "Upcoming in the next 30 days",
     "emptyBirthdayList": "No birthdays yet.\nAdd a birthday to a person to see it here.",
   "emptyDocumentList": "No documents yet.\nUse the plus button to add one.",

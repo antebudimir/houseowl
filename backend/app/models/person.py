@@ -21,6 +21,7 @@ class Person(Model, DbModelAuthorizeMixin):
     phone: Mapped[Optional[str]] = db.Column(db.String(64), nullable=True)
     email: Mapped[Optional[str]] = db.Column(db.String(255), nullable=True)
     notes: Mapped[Optional[str]] = db.Column(db.String, nullable=True)
+    gift_idea: Mapped[Optional[str]] = db.Column(db.String, nullable=True)
     birthday: Mapped[Optional[date]] = db.Column(db.Date, nullable=True)
     user_id: Mapped[Optional[int]] = db.Column(
         db.Integer, db.ForeignKey("user.id"), nullable=True

@@ -21,6 +21,7 @@ class _PersonAddUpdatePageState extends State<PersonAddUpdatePage> {
   late final TextEditingController _phoneController;
   late final TextEditingController _emailController;
   late final TextEditingController _notesController;
+  late final TextEditingController _giftIdeaController;
   DateTime? _birthday;
   bool _isLoading = false;
 
@@ -34,6 +35,8 @@ class _PersonAddUpdatePageState extends State<PersonAddUpdatePage> {
     _phoneController = TextEditingController(text: widget.person?.phone ?? "");
     _emailController = TextEditingController(text: widget.person?.email ?? "");
     _notesController = TextEditingController(text: widget.person?.notes ?? "");
+    _giftIdeaController =
+        TextEditingController(text: widget.person?.giftIdea ?? "");
     _birthday = widget.person?.birthday?.toLocal();
   }
 
@@ -44,6 +47,7 @@ class _PersonAddUpdatePageState extends State<PersonAddUpdatePage> {
     _phoneController.dispose();
     _emailController.dispose();
     _notesController.dispose();
+    _giftIdeaController.dispose();
     super.dispose();
   }
 
@@ -81,6 +85,9 @@ class _PersonAddUpdatePageState extends State<PersonAddUpdatePage> {
       notes: _notesController.text.trim().isEmpty
           ? null
           : _notesController.text.trim(),
+      giftIdea: _giftIdeaController.text.trim().isEmpty
+          ? null
+          : _giftIdeaController.text.trim(),
       birthday: _birthday?.toUtc(),
       userId: widget.person?.userId,
     );
@@ -173,6 +180,13 @@ class _PersonAddUpdatePageState extends State<PersonAddUpdatePage> {
               textCapitalization: TextCapitalization.sentences,
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context)!.notes,
+              ),
+            ),
+            TextFormField(
+              controller: _giftIdeaController,
+              textCapitalization: TextCapitalization.sentences,
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.giftIdeaLabel,
               ),
             ),
             const SizedBox(height: 16),
