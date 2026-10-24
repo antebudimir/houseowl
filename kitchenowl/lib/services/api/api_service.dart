@@ -20,6 +20,7 @@ export 'planned_buy.dart';
 export 'task.dart';
 export 'event.dart';
 export 'document.dart';
+export 'loyalty_card.dart';
 export 'tag.dart';
 export 'upload.dart';
 export 'category.dart';
