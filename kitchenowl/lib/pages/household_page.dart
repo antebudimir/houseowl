@@ -43,13 +43,12 @@ class _HouseholdPageState extends State<HouseholdPage>
   /// ordering does not know about yet so they stay navigable.
   static List<ViewsEnum> _orderedViews(Household household) {
     final List<ViewsEnum>? stored = household.viewOrdering;
-    final List<ViewsEnum> ordering =
-        (stored == null || stored.isEmpty)
-            ? ViewsEnum.values
-            : [
-                ...stored,
-                ...ViewsEnum.values.where((e) => !stored.contains(e)),
-              ];
+    final List<ViewsEnum> ordering = (stored == null || stored.isEmpty)
+        ? ViewsEnum.values
+        : [
+            ...stored,
+            ...ViewsEnum.values.where((e) => !stored.contains(e)),
+          ];
     return ordering.where((e) => e.isViewActive(household)).toList();
   }
 

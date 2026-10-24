@@ -41,10 +41,10 @@ class BirthdaysPage extends StatelessWidget {
                       entry.next.month == today.month &&
                       entry.next.day == today.day;
                   final daysUntil = DateTime(
-                        entry.next.year,
-                        entry.next.month,
-                        entry.next.day,
-                      )
+                    entry.next.year,
+                    entry.next.month,
+                    entry.next.day,
+                  )
                       .difference(DateTime(today.year, today.month, today.day))
                       .inDays;
                   final subtitle = isToday
@@ -62,7 +62,9 @@ class BirthdaysPage extends StatelessWidget {
                     subtitle: Text(subtitle),
                     leading: CircleAvatar(
                       child: Icon(
-                        isToday ? Icons.celebration_rounded : Icons.cake_rounded,
+                        isToday
+                            ? Icons.celebration_rounded
+                            : Icons.cake_rounded,
                       ),
                     ),
                   );
