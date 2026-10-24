@@ -235,6 +235,8 @@ class _ShoppinglistPageState extends State<ShoppinglistPage> {
                                         }
                                       }),
                                       onRecentPressed: Nullable(cubit.add),
+                                      suggestedItems: state.suggestedItems,
+                                      onSuggestedPressed: Nullable(cubit.add),
                                       onRefresh: cubit.refresh,
                                     ),
                                   ],

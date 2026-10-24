@@ -31,6 +31,18 @@ extension ShoppinglistApi on ApiService {
     return body.map((e) => ShoppingList.fromJson(e)).toList();
   }
 
+  Future<List<Item>> getSuggestedItems(ShoppingList shoppinglist) async {
+    final res =
+        await get('${route(shoppinglist: shoppinglist)}/suggested-items');
+    if (res.statusCode != 200) return const [];
+
+    final body = List.from(jsonDecode(res.body));
+
+    return body
+        .map((e) => Item.fromJson(Map<String, dynamic>.from(e)))
+        .toList();
+  }
+
   Future<bool> addShoppingList(
     Household household,
     ShoppingList shoppingList,

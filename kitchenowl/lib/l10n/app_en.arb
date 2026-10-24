@@ -183,6 +183,8 @@
   },
   "@itemsOptional": {},
   "@itemsRecent": {},
+  "itemsSuggested": "Suggestions",
+  "@itemsSuggested": {},
   "@language": {},
   "@languageSelect": {},
   "@larger": {},
