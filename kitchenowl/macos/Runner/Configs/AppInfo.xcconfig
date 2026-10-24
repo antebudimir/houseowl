@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = KitchenOwl
+PRODUCT_NAME = HouseOwl
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.tombursch.kitchenowl
+PRODUCT_BUNDLE_IDENTIFIER = com.antebudimir.houseowl
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2021 com.tombursch. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 anteBudimir. All rights reserved.

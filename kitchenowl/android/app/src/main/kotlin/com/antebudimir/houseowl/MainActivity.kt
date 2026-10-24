@@ -1,4 +1,4 @@
-package com.tombursch.kitchenowl
+package com.antebudimir.houseowl
 
 import io.flutter.embedding.android.FlutterActivity
 

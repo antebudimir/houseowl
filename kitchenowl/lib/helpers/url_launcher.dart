@@ -11,7 +11,7 @@ Future<void> openUrl(BuildContext context, String url,
   if (!isValidUrl(url)) return;
 
   Uri uri = Uri.parse(url);
-  if (uri.isScheme("kitchenowl")) return Future(() => router.push(uri.path));
+  if (uri.isScheme("houseowl")) return Future(() => router.push(uri.path));
   if (!uri.hasScheme) uri = uri.replace(scheme: "https");
 
   return (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
@@ -52,7 +52,7 @@ bool isValidUrl(String url) {
 
     return uri.isScheme("http") ||
         uri.isScheme("https") ||
-        uri.isScheme("kitchenowl");
+        uri.isScheme("houseowl");
   } catch (e) {
     return false;
   }

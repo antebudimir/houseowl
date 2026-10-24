@@ -581,7 +581,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 leading: const Icon(Icons.source_rounded),
                 onTap: () => openUrl(
                   context,
-                  "https://github.com/tombursch/kitchenowl",
+                  "https://github.com/antebudimir/houseowl",
                 ),
               ),
               ListTile(
@@ -589,7 +589,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 leading: const Icon(Icons.bug_report_rounded),
                 onTap: () => openUrl(
                   context,
-                  "https://github.com/TomBursch/kitchenowl/issues/new/choose",
+                  "https://github.com/antebudimir/houseowl/issues/new/choose",
                 ),
               ),
               ListTile(

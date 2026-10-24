@@ -1,11 +1,11 @@
 {
-    "name": "KitchenOwl",
-    "short_name": "KitchenOwl",
+    "name": "HouseOwl",
+    "short_name": "HouseOwl",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#20AC64",
     "theme_color": "#20AC64",
-    "description": "KitchenOwl helps you organize your grocery life.",
+    "description": "HouseOwl helps you organize your grocery life.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
