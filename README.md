@@ -23,8 +23,8 @@
   <a href="https://github.com/antebudimir/houseowl/releases">
     <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/antebudimir/houseowl">
   </a>
-  <a href="https://hub.docker.com/repository/docker/antebudimir/houseowl">
-    <img alt="Docker pulls" src="https://img.shields.io/docker/pulls/antebudimir/houseowl" />
+  <a href="https://ghcr.io/antebudimir/houseowl">
+    <img alt="Container image" src="https://img.shields.io/badge/ghcr.io-antebudimir%2Fhouseowl-blue" />
   </a>
 </h4>
 
@@ -63,6 +63,9 @@ Landed so far:
 See [CHANGELOG.md](CHANGELOG.md) for the full history of fork changes.
 
 ## 📱 Screenshots
+
+> **Note:** the screenshots below are inherited from upstream KitchenOwl and
+> show the Recipe and Expense pages, which have been removed in this fork.
 
 <table>
   <tr>
@@ -114,7 +117,7 @@ run `flutter gen-l10n`.
 
 ## 🛎️ Stay Up-to-Date
 
-KitchenOwl is moving fast, to stay updated consider starring and watching the releases of this repository.
+KitchenOwl upstream is moving fast; to stay updated on this fork, consider starring and watching the releases of this repository.
 
 ### 💬 Status
 
@@ -130,7 +133,7 @@ KitchenOwl is moving fast, to stay updated consider starring and watching the re
 - [KitchenOwl Website](https://github.com/TomBursch/kitchenowl-website) Repository
 - [KitchenOwl Python Client](https://github.com/TomBursch/kitchenowl-python) Repository
 - [KitchenOwl Home Assistant Integration](https://github.com/TomBursch/kitchenowl-ha) Repository
-- [DockerHub](https://hub.docker.com/r/tombursch/kitchenowl)
+- [DockerHub (upstream image)](https://hub.docker.com/r/tombursch/kitchenowl)
 - [Recipe scrapers](https://github.com/hhursev/recipe-scrapers) used for scraping recipes from the web
 - [Weblate](https://weblate.org/) is helping with continuous localization as part of their ongoing support for open-source software projects.
 
@@ -138,7 +141,7 @@ KitchenOwl is moving fast, to stay updated consider starring and watching the re
 
 - [Flask](https://flask.palletsprojects.com/)
 - [Flutter](https://flutter.dev/)
-- [Docker](https://docs.docker.com/)
+- [Podman](https://podman.io/)
 
 ## 🍀 Contributors
 
@@ -148,4 +151,4 @@ KitchenOwl is moving fast, to stay updated consider starring and watching the re
 
 ## 📜 License
 
-KitchenOwl is Free Software: You can use, study share and improve it at your will. Specifically you can redistribute and/or modify it under the terms of the AGPL-3.0 License.
+HouseOwl is Free Software: You can use, study share and improve it at your will. Specifically you can redistribute and/or modify it under the terms of the AGPL-3.0 License.

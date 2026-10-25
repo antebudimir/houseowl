@@ -1,16 +1,11 @@
+# This fork publishes a single combined image (backend serves the web app on
+# port 8080). The separate front/back split from upstream is not available.
 services:
-  front:
-    image: antebudimir/houseowl-web:latest
+  houseowl:
+    image: ghcr.io/antebudimir/houseowl:latest
     restart: unless-stopped
-    # environment:
-    #   - BACK_URL=back:5000 # Change this if you rename the containers
     ports:
-      - "80:80"
-    depends_on:
-      - back
-  back:
-    image: antebudimir/houseowl-backend:latest
-    restart: unless-stopped
+      - "80:8080"
     environment:
       - JWT_SECRET_KEY=PLEASE_CHANGE_ME
       # - HOUSEOWL_MCP_ENABLED=true # Optional: enable MCP endpoint at /mcp

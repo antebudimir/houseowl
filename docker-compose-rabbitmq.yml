@@ -1,4 +1,8 @@
 version: "3"
+# NOTE: not usable with this fork's published image. This fork ships a single
+# combined container (web + backend on port 8080); the separate
+# front/back/celery split that rabbitmq mode requires is not published.
+# Kept for reference only — see docker-compose.yml instead.
 services:
 # rabbitmq is only supported with a separate front & backend container
   front:
