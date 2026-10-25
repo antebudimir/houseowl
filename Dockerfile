@@ -20,6 +20,8 @@ RUN apt-get install -y --no-install-recommends \
   libstdc++6 \
   libglu1-mesa
 RUN apt-get clean
+# Flutter cache extraction runs tar as root; ignore archived ownership (fails under podman userns)
+ENV TAR_OPTIONS=--no-same-owner
 
 # Clone the flutter repo
 RUN git clone https://github.com/flutter/flutter.git -b stable /usr/local/src/flutter
