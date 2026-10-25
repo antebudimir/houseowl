@@ -11,6 +11,29 @@ For multi-commit features, that's the final commit. For single-commit
 features, that's the same commit.
 
 ## [Unreleased]
+## [Unreleased]
+
+- **Fix people without a birthday silently failing to save.** The Flutter
+  client sends explicit `null` for unset fields; the backend person add
+  endpoint still ran `args["birthday"] / 1000` for a present-but-null key
+  and failed with an HTTP 500. The transaction was queued as an offline
+  retry while the person only lived in the local cache, which the next
+  server refresh overwrote — so the person never appeared. The endpoint
+  now ignores `null` birthday/user_id values; covered by backend tests
+  and a widget test asserting a name-only person is listed.
+- **Assignee/Attendee/Person pickers now list household members only.**
+  The task and planned-buy assignee dropdowns and the document person
+  dropdown filter to persons linked to a user account, and the event
+  attendees picker was converted from filter chips over the whole People
+  directory to a member-only add dropdown with removable chips for
+  selected attendees.
+- **Remove the Role field from People.** The add/edit form no longer
+  shows or saves a role, and the people list tile shows only phone and
+  email as the secondary line. Existing role data is kept in the
+  database but no longer surfaces in the UI.
+- **New logo.** Redesigned logo committed and launcher icons / splash
+  screens regenerated from it.
+- **Fix the "More" sheet dismissing without navigating.** Tapping a view
 
 - **Fix the "More" sheet dismissing without navigating.** Tapping a view
   tile popped the sheet before invoking the callback, so navigation ran
