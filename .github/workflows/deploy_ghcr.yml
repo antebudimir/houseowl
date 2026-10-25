@@ -1,0 +1,36 @@
+name: CI deploy image (ghcr)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - backend/**
+      - kitchenowl/lib/**
+      - kitchenowl/pubspec.*
+      - kitchenowl/web/**
+      - kitchenowl/assets/**
+      - kitchenowl/fonts/**
+      - Dockerfile
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to ghcr.io (podman)
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | podman login ghcr.io \
+            --username ${{ github.actor }} --password-stdin
+
+      - name: Build and push
+        run: |
+          set -euo pipefail
+          IMAGE=ghcr.io/${{ github.repository }}:latest
+          podman build --platform linux/amd64 -t "$IMAGE" .
+          podman push "$IMAGE"
