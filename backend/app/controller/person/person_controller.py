@@ -45,11 +45,13 @@ def addPerson(args, household_id):
         person.notes = args["notes"]
     if "gift_idea" in args:
         person.gift_idea = args["gift_idea"]
-    if "birthday" in args:
+    # A person may legitimately have no birthday; the Flutter client sends
+    # explicit nulls, and marshmallow keeps those keys in args with None.
+    if args.get("birthday") is not None:
         person.birthday = datetime.fromtimestamp(
             args["birthday"] / 1000, timezone.utc
         ).date()
-    if "user_id" in args and args["user_id"] is not None:
+    if args.get("user_id") is not None:
         member = HouseholdMember.find_by_ids(household_id, args["user_id"])
         if not member:
             raise NotFoundRequest()

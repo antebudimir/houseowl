@@ -114,3 +114,63 @@ def test_get_person_unauthorized(client, household_id):
     unauthenticated = client.application.test_client()
     response = unauthenticated.get(f"/api/household/{household_id}/person")
     assert response.status_code == 401
+
+def test_add_person_with_explicit_null_fields(user_client_with_household, household_id):
+    # The Flutter client sends every optional field, with null for unset ones
+    # (Person.toJson). A name-only person must be accepted and listed.
+    response = user_client_with_household.post(
+        f"/api/household/{household_id}/person",
+        json={
+            "name": "Only Name",
+            "role": None,
+            "phone": None,
+            "email": None,
+            "notes": None,
+            "gift_idea": None,
+            "birthday": None,
+            "user_id": None,
+        },
+    )
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["name"] == "Only Name"
+    assert data["birthday"] is None
+
+    response = user_client_with_household.get(
+        f"/api/household/{household_id}/person",
+    )
+    assert response.status_code == 200
+    assert "Only Name" in [p["name"] for p in response.get_json()]
+
+
+def test_update_person_clear_birthday(user_client_with_household, household_id):
+    response = user_client_with_household.post(
+        f"/api/household/{household_id}/person",
+        json={
+            "name": "Dated",
+            "birthday": 631152000000,
+            "role": None,
+            "phone": None,
+            "email": None,
+            "notes": None,
+            "gift_idea": None,
+            "user_id": None,
+        },
+    )
+    assert response.status_code == 200
+    person_id = response.get_json()["id"]
+
+    response = user_client_with_household.post(
+        f"/api/person/{person_id}",
+        json={"name": "Dated", "birthday": None},
+    )
+    assert response.status_code == 200
+    assert response.get_json()["birthday"] is None
+
+
+def test_get_person_unauthorized(client, household_id):
+    # client fixtures share one Flask test client whose auth header is set by
+    # user_client_with_household, so use a fresh unauthenticated client
+    unauthenticated = client.application.test_client()
+    response = unauthenticated.get(f"/api/household/{household_id}/person")
+    assert response.status_code == 401
