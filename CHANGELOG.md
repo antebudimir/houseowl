@@ -11,6 +11,16 @@ For multi-commit features, that's the final commit. For single-commit
 features, that's the same commit.
 
 ## [Unreleased]
+## [Unreleased]
+
+- Mobile bottom navigation showed only the first five views (upstream
+  `take(5)`), hiding Tasks, Documents, Loyalty Cards, Events and anything
+  added later. The bar now always shows the four leading views plus a
+  "More" tab (house icon) that opens the More sheet listing every view;
+  the "More" tab highlights when a non-visible view is open, fixing the
+  out-of-range selected-index glitch when deep views were opened from the
+  drawer.
+
 
 - **Rebrand: KitchenOwl → HouseOwl.** Dart package renamed
   (`package:kitchenowl` → `package:houseowl`), backend API/branding, app

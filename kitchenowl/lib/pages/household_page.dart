@@ -307,26 +307,52 @@ class _HouseholdPageState extends State<HouseholdPage>
             drawerEnableOpenDragGesture: false,
             bottomNavigationBar: useBottomNavigationBar
                 ? BlocBuilder<AuthCubit, AuthState>(
-                    builder: (context, state) => NavigationBar(
-                      labelBehavior:
-                          NavigationDestinationLabelBehavior.onlyShowSelected,
-                      destinations: pages
-                          .map((e) => NavigationDestination(
-                                icon: e.toIconWidget(context) ??
-                                    Icon(e.toIcon(context)),
-                                selectedIcon: Icon(e.toSelectedIcon(context)),
-                                label: e.toLocalizedShortString(context),
-                                tooltip: e.toLocalizedString(context),
-                              ))
-                          .take(5)
-                          .toList(),
-                      selectedIndex: _selectedIndex,
-                      onDestinationSelected: (i) => _onItemTapped(
-                        context,
-                        pages[i],
-                        pages[_selectedIndex],
-                      ),
-                    ),
+                    builder: (context, state) {
+                      // On phones only four views fit alongside the "More"
+                      // tab; everything else stays reachable through it.
+                      final List<ViewsEnum> visiblePages = pages
+                          .where((e) => e != ViewsEnum.more)
+                          .take(4)
+                          .toList();
+                      final int selectedIndex =
+                          _selectedIndex < visiblePages.length
+                              ? _selectedIndex
+                              : visiblePages.length;
+                      return NavigationBar(
+                        labelBehavior:
+                            NavigationDestinationLabelBehavior.onlyShowSelected,
+                        destinations: [
+                          ...visiblePages.map(
+                            (e) => NavigationDestination(
+                              icon: e.toIconWidget(context) ??
+                                  Icon(e.toIcon(context)),
+                              selectedIcon:
+                                  Icon(e.toSelectedIcon(context)),
+                              label: e.toLocalizedShortString(context),
+                              tooltip: e.toLocalizedString(context),
+                            ),
+                          ),
+                          NavigationDestination(
+                            icon: ViewsEnum.more.toIconWidget(context) ??
+                                Icon(ViewsEnum.more.toIcon(context)),
+                            selectedIcon:
+                                Icon(ViewsEnum.more.toSelectedIcon(context)),
+                            label:
+                                ViewsEnum.more.toLocalizedShortString(context),
+                            tooltip:
+                                ViewsEnum.more.toLocalizedString(context),
+                          ),
+                        ],
+                        selectedIndex: selectedIndex,
+                        onDestinationSelected: (i) => _onItemTapped(
+                          context,
+                          i < visiblePages.length
+                              ? visiblePages[i]
+                              : ViewsEnum.more,
+                          pages[_selectedIndex],
+                        ),
+                      );
+                    },
                   )
                 : null,
           );
