@@ -285,6 +285,18 @@ enum ViewsEnum {
     return l;
   }
 
+  /// The household's full navigable view ordering: the stored `view_ordering`
+  /// (defaulting to the enum order), with any unknown views appended, minus
+  /// hidden views. 'more' is kept — callers decide whether to show it as a
+  /// tab (it never is) or as a sheet entry point.
+  static List<ViewsEnum> orderedViews(Household household) {
+    final List<ViewsEnum>? stored = household.viewOrdering;
+    final List<ViewsEnum> ordering = (stored == null || stored.isEmpty)
+        ? ViewsEnum.values
+        : addMissing(stored);
+    return ordering.where((e) => e.isViewActive(household)).toList();
+  }
+
   static ViewsEnum? parse(String str) {
     switch (str) {
       case 'items':

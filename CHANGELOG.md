@@ -13,6 +13,13 @@ features, that's the same commit.
 ## [Unreleased]
 ## [Unreleased]
 
+- **Fix the "More" sheet on mobile.** Its view list used a hardcoded
+  `skip(7)` (so Notes, Documents and Loyalty Cards were missing for
+  households whose view ordering puts them before position 7) and every
+  tile navigated to the household-switch screen instead of the view.
+  The sheet now lists exactly the views not shown in the bottom bar
+  (first four + More tab), and tapping a tile navigates to the view with
+  the proper data refreshes, matching the drawer's behavior.
 - Mobile bottom navigation showed only the first five views (upstream
   `take(5)`), hiding Tasks, Documents, Loyalty Cards, Events and anything
   added later. The bar now always shows the four leading views plus a

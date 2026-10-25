@@ -12,7 +12,9 @@ import 'package:houseowl/pages/household_update_page.dart';
 import 'package:houseowl/widgets/household_image.dart';
 
 class MorePage extends StatelessWidget {
-  const MorePage({super.key});
+  final void Function(BuildContext context, ViewsEnum view)? onPageSelected;
+
+  const MorePage({super.key, this.onPageSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -80,11 +82,12 @@ class MorePage extends StatelessWidget {
                     ?.equals(current.household.viewOrdering ?? const []) ??
                 true,
             builder: (context, state) {
-              List<ViewsEnum> pages =
-                  (state.household.viewOrdering ?? ViewsEnum.values)
-                      .where((e) => e.isViewActive(state.household))
-                      .skip(7)
-                      .toList();
+              // The bottom navigation bar shows the first four views; this
+              // sheet lists everything beyond them (never 'more' itself).
+              List<ViewsEnum> pages = ViewsEnum.orderedViews(state.household)
+                  .where((e) => e != ViewsEnum.more)
+                  .skip(4)
+                  .toList();
               if (pages.isEmpty) return const SizedBox();
               return Column(
                 children: pages
@@ -96,7 +99,17 @@ class MorePage extends StatelessWidget {
                                 leading: e.toIconWidget(context) ??
                                     Icon(e.toIcon(context)),
                                 minLeadingWidth: 16,
-                                onTap: () => context.go("/household"),
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                  if (onPageSelected != null) {
+                                    onPageSelected!(context, e);
+                                  } else {
+                                    householdCubit.refresh();
+                                    context.go(
+                                      "/household/${state.household.id}/${e.toString()}",
+                                    );
+                                  }
+                                },
                               ),
                             ) as Widget)
                         .toList() +

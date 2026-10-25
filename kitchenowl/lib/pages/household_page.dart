@@ -41,16 +41,8 @@ class _HouseholdPageState extends State<HouseholdPage>
   /// The household's stored `view_ordering` may be empty or predate newer
   /// views; fall back to the default ordering and append any views the stored
   /// ordering does not know about yet so they stay navigable.
-  static List<ViewsEnum> _orderedViews(Household household) {
-    final List<ViewsEnum>? stored = household.viewOrdering;
-    final List<ViewsEnum> ordering = (stored == null || stored.isEmpty)
-        ? ViewsEnum.values
-        : [
-            ...stored,
-            ...ViewsEnum.values.where((e) => !stored.contains(e)),
-          ];
-    return ordering.where((e) => e.isViewActive(household)).toList();
-  }
+  static List<ViewsEnum> _orderedViews(Household household) =>
+      ViewsEnum.orderedViews(household);
 
   late final HouseholdCubit householdCubit;
   late final ShoppinglistCubit shoppingListCubit;
@@ -202,7 +194,17 @@ class _HouseholdPageState extends State<HouseholdPage>
           isScrollControlled: true,
           builder: (context) => BlocProvider.value(
             value: householdCubit,
-            child: MorePage(),
+            child: MorePage(
+              onPageSelected: (ctx, view) => _onItemTapped(
+                ctx,
+                view,
+                ViewsEnum.orderedViews(householdCubit.state.household)
+                    .firstWhere(
+                  (p) => GoRouterState.of(ctx).uri.path.contains(p.toString()),
+                  orElse: () => view,
+                ),
+              ),
+            ),
           ),
         );
         return;
