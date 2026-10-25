@@ -62,7 +62,6 @@ class _PersonTile extends StatelessWidget {
   /// only what the person actually has.
   String? _contactLine(Person person) {
     final parts = <String>[
-      if ((person.role ?? "").isNotEmpty) person.role!,
       if ((person.phone ?? "").isNotEmpty) person.phone!,
       if ((person.email ?? "").isNotEmpty) person.email!,
     ];

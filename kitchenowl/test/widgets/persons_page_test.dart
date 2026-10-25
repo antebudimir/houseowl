@@ -4,17 +4,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:houseowl/cubits/persons_cubit.dart';
 import 'package:houseowl/gen/l10n/app_localizations.dart';
 import 'package:houseowl/models/household.dart';
+import 'package:houseowl/models/person.dart';
 import 'package:houseowl/pages/household_page/persons_page.dart';
 import 'package:houseowl/services/storage/mem_storage.dart';
 import 'package:material_ui/material_ui.dart' as mui;
 
 import '../cubits/local_only_transaction_handler.dart';
 
-Future<void> _pumpPage(WidgetTester tester) async {
+Future<void> _pumpPage(
+  WidgetTester tester, {
+  List<Person> persons = const [],
+}) async {
   final household = Household(id: 1, name: "Test");
   // Seed the in-memory cache so the cubit's initial load never touches
   // file IO, whose plugin futures never complete in the test FakeAsync zone.
-  MemStorage.getInstance().writePersons(household, const []);
+  MemStorage.getInstance().writePersons(household, persons);
   final cubit = PersonsCubit.forTesting(
     LocalOnlyTransactionHandler(),
     household,
@@ -42,5 +46,14 @@ void main() {
     expect(find.byType(PersonsPage), findsOneWidget);
     expect(find.text("No people yet.\nUse the plus button to add someone."),
         findsOneWidget);
+  });
+
+  testWidgets("person without birthday is listed", (tester) async {
+    await _pumpPage(
+      tester,
+      persons: const [Person(name: "No Birthday")],
+    );
+
+    expect(find.text("No Birthday"), findsOneWidget);
   });
 }

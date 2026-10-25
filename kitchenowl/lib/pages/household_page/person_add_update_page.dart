@@ -17,7 +17,6 @@ class PersonAddUpdatePage extends StatefulWidget {
 class _PersonAddUpdatePageState extends State<PersonAddUpdatePage> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _nameController;
-  late final TextEditingController _roleController;
   late final TextEditingController _phoneController;
   late final TextEditingController _emailController;
   late final TextEditingController _notesController;
@@ -31,7 +30,6 @@ class _PersonAddUpdatePageState extends State<PersonAddUpdatePage> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.person?.name ?? "");
-    _roleController = TextEditingController(text: widget.person?.role ?? "");
     _phoneController = TextEditingController(text: widget.person?.phone ?? "");
     _emailController = TextEditingController(text: widget.person?.email ?? "");
     _notesController = TextEditingController(text: widget.person?.notes ?? "");
@@ -43,7 +41,6 @@ class _PersonAddUpdatePageState extends State<PersonAddUpdatePage> {
   @override
   void dispose() {
     _nameController.dispose();
-    _roleController.dispose();
     _phoneController.dispose();
     _emailController.dispose();
     _notesController.dispose();
@@ -73,9 +70,6 @@ class _PersonAddUpdatePageState extends State<PersonAddUpdatePage> {
     final person = Person(
       id: widget.person?.id,
       name: _nameController.text.trim(),
-      role: _roleController.text.trim().isEmpty
-          ? null
-          : _roleController.text.trim(),
       phone: _phoneController.text.trim().isEmpty
           ? null
           : _phoneController.text.trim(),
@@ -135,13 +129,6 @@ class _PersonAddUpdatePageState extends State<PersonAddUpdatePage> {
                   ? AppLocalizations.of(context)!.name
                   : null,
               autofocus: !isEditing,
-            ),
-            TextFormField(
-              controller: _roleController,
-              textCapitalization: TextCapitalization.sentences,
-              decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.role,
-              ),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
