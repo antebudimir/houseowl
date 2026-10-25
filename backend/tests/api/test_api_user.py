@@ -34,6 +34,22 @@ def test_create_user(admin_client, username, name, password):
     assert response.status_code == 200
 
 
+def test_create_user_duplicate_username(
+    admin_client, admin_username, username, name, password
+):
+    data = {"username": admin_username, "name": name, "password": password}
+    response = admin_client.post("/api/user/new", json=data)
+    assert response.status_code == 400
+
+
+def test_create_user_duplicate_username_case_insensitive(
+    admin_client, admin_username, username, name, password
+):
+    data = {"username": admin_username.upper(), "name": name, "password": password}
+    response = admin_client.post("/api/user/new", json=data)
+    assert response.status_code == 400
+
+
 def test_list_users_user(user_client):
     response = user_client.get(
         "/api/user/all",

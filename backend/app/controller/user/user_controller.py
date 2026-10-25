@@ -129,8 +129,13 @@ def updateUserById(args, id):
 @server_admin_required()
 @validate_args(CreateUser)
 def createUser(args):
+    username = args["username"].replace(" ", "").lower()
+    if User.find_by_username(username):
+        return jsonify({"msg": "Request invalid: username already taken"}), 400
+    if "email" in args and User.find_by_email(args["email"].strip()):
+        return jsonify({"msg": "Request invalid: email already in use"}), 400
     User.create(
-        args["username"].replace(" ", ""),
+        username,
         args["password"],
         args["name"],
         email=args["email"] if "email" in args else None,
