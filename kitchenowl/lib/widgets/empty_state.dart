@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A friendly centered placeholder for empty lists.
 class EmptyState extends StatelessWidget {
