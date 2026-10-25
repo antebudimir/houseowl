@@ -250,20 +250,52 @@ class _EventAddUpdatePageState extends State<EventAddUpdatePage> {
               const SizedBox(height: 8),
               BlocBuilder<EventAddUpdateCubit, EventAddUpdateState>(
                 builder: (context, state) {
-                  if (state.persons.isEmpty) {
+                  // Only household members (persons linked to a user account)
+                  // can be invited; directory-only contacts are excluded.
+                  final members = state.persons
+                      .where((person) => person.userId != null)
+                      .toList();
+                  final selected = state.selectedPersons;
+                  final selectable = members
+                      .where((person) => !selected.contains(person))
+                      .toList();
+
+                  if (selectable.isEmpty && selected.isEmpty) {
                     return Text(loc.noTags);
                   }
 
-                  return Wrap(
-                    runSpacing: 8,
-                    spacing: 5,
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      for (final person in state.persons)
-                        FilterChip(
-                          label: Text(person.name),
-                          selected: state.selectedPersons.contains(person),
-                          onSelected: (selected) {
-                            _cubit.selectPerson(person, selected);
+                      if (selected.isNotEmpty)
+                        Wrap(
+                          runSpacing: 8,
+                          spacing: 5,
+                          children: [
+                            for (final person in selected)
+                              InputChip(
+                                label: Text(person.name),
+                                onDeleted: () {
+                                  _cubit.selectPerson(person, false);
+                                  _checkConflicts();
+                                },
+                              ),
+                          ],
+                        ),
+                      if (selectable.isNotEmpty)
+                        DropdownButtonFormField<Person?>(
+                          initialValue: null,
+                          decoration: InputDecoration(hintText: loc.add),
+                          items: [
+                            for (final person in selectable)
+                              DropdownMenuItem(
+                                value: person,
+                                child: Text(person.name),
+                              ),
+                          ],
+                          onChanged: (person) {
+                            if (person == null) return;
+                            _cubit.selectPerson(person, true);
                             _checkConflicts();
                           },
                         ),

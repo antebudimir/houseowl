@@ -223,8 +223,11 @@ class _DocumentAddUpdatePageState extends State<DocumentAddUpdatePage> {
                 const DropdownMenuItem(value: null, child: Text("\u2014")),
                 // Dedupe by id: duplicated entries would trip the
                 // DropdownButtonFormField value-uniqueness assertion.
+                // Only household members can be linked; directory-only
+                // contacts are excluded.
                 ...{
-                  for (final p in state.persons) p.id: p,
+                  for (final p in state.persons)
+                    if (p.userId != null) p.id: p,
                 }.values.map(
                       (p) => DropdownMenuItem(value: p.id, child: Text(p.name)),
                     ),

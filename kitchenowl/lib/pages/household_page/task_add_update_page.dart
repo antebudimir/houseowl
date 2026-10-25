@@ -59,7 +59,13 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
     _buyId = widget.task?.buyId;
     _persons = ApiService.getInstance()
         .getPersons(widget.household)
-        .then((v) => v ?? const <Person>[]);
+        .then(
+          (v) => (v ?? const <Person>[])
+              // Only household members can be assigned; directory-only
+              // contacts are excluded.
+              .where((p) => p.userId != null)
+              .toList(),
+        );
     _buys = ApiService.getInstance()
         .getPlannedBuys(widget.household)
         .then((v) => v ?? const <PlannedBuy>[]);

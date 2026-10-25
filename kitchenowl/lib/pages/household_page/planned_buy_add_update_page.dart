@@ -59,7 +59,13 @@ class _PlannedBuyAddUpdatePageState extends State<PlannedBuyAddUpdatePage> {
         .then((v) => v ?? const <String>[]);
     _persons = ApiService.getInstance()
         .getPersons(widget.household)
-        .then((v) => v ?? const <Person>[]);
+        .then(
+          (v) => (v ?? const <Person>[])
+              // Only household members can be assigned; directory-only
+              // contacts are excluded.
+              .where((p) => p.userId != null)
+              .toList(),
+        );
   }
 
   @override
