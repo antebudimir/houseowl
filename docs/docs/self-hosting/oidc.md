@@ -12,7 +12,7 @@ Inside your OIDC you need to configure a new client, with the following to redir
 - `houseowl:/signin/redirect`
 </div>
 
-1. FRONT_URL is the environment variable that exactly matches HouseOwl's URL including the schema (e.g. `https://app.kitchenowl.org`)
+1. FRONT_URL is the environment variable that exactly matches HouseOwl's URL including the schema (e.g. `https://houseowl.example.com`)
 
 HouseOwl uses the token auth method `client_secret_post` and will request the following scopes: 
 
@@ -23,10 +23,10 @@ HouseOwl uses the token auth method `client_secret_post` and will request the fo
 You can then configure the backend using environment variables, just provide your issuer URL, client ID, and client secret:
 
 ```yaml
-back:
+houseowl:
     environment:
         - [...]
-        - FRONT_URL=<URL> # front_url is requred when using oidc
+        - FRONT_URL=<URL> # FRONT_URL is required when using OIDC
         - OIDC_ISSUER=<URL> # e.g https://accounts.google.com
         - OIDC_CLIENT_ID=<ID>
         - OIDC_CLIENT_SECRET=<SECRET>
@@ -49,7 +49,7 @@ Account links are permanent and can only be removed by deleting the HouseOwl acc
 The mobile redirect URL follows RFC compliance. Some OIDC providers request a standard URL format, you may change the behaviour by switching off RFC compliance using the the backend environment variable 
 
 ```yaml
-back:
+houseowl:
     environment:
         - [...]
         - OIDC_RFC_COMPLIANT_REDIRECT=False # default: True
@@ -71,10 +71,10 @@ It is possible to directly launch the OIDC flow from a link with a query paramet
 These two providers will allow anyone to sign in with an Apple or Google account. They can be configured similarly to custom providers but will show up with a branded sign in with button.
 It is not recommended setting up social logins for self-hosted versions as they might not work correctly.
 ```yaml
-back:
+houseowl:
     environment:
         - [...]
-        - FRONT_URL=<URL> # front_url is requred when using oidc
+        - FRONT_URL=<URL> # FRONT_URL is required when using OIDC
         - APPLE_CLIENT_ID=<ID>
         - APPLE_CLIENT_SECRET=<SECRET>
         - GOOGLE_CLIENT_ID=<ID>

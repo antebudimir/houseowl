@@ -1,12 +1,13 @@
+
 <h1 align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./docs/docs/img/icon.png">
     <img width="128" src="./docs/docs/img/logo.png" alt="HouseOwl">
   </picture>
 </h1>
-<p align="center">
-  <p align="center">A smart, self-hosted household manager.</p>
-</p>
+
+<p align="center">NOTE: Logo redesign in progress</p>
+<p align="center">A smart, self-hosted household manager.</p>
 
 <h4 align="center">
   <a href="https://github.com/antebudimir/houseowl">Source</a> |
@@ -20,17 +21,10 @@
   <a href="LICENSE">
     <img alt="License" src="https://img.shields.io/github/license/antebudimir/houseowl" />
   </a>
-  <a href="https://github.com/antebudimir/houseowl/releases">
-    <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/antebudimir/houseowl">
-  </a>
   <a href="https://ghcr.io/antebudimir/houseowl">
     <img alt="Container image" src="https://img.shields.io/badge/ghcr.io-antebudimir%2Fhouseowl-blue" />
   </a>
 </h4>
-
-<h3 align="center">
- 🏠 📝 🛒
-</h3>
 
 HouseOwl is a smart self-hosted household manager. Easily add items to your
 shopping list before you go shopping, manage tasks, notes, birthdays, events,
@@ -48,33 +42,21 @@ Please keep in mind that this project is still in development.
 
 This is a hard fork of [KitchenOwl](https://github.com/kitchenowl/kitchenowl) (upstream: [TomBursch/kitchenowl](https://github.com/TomBursch/kitchenowl)),
 evolving it from a grocery list and recipe manager toward a broader household
-coordination app. Planned additions include tasks, a shared calendar,
-contacts, document storage, and planned purchases.
+coordination app.
 
-Landed so far:
+Changes from upstream:
 
-- Manage shopping lists directly from the main-view header: add, rename, and
-  delete lists inline (long-press a list for its actions)
+- Recipes and expenses removed
+- Tasks, notes, events, and persons (with birthdays and gift ideas) added
+- Shopping lists managed inline from the main-view header (add, rename, delete; long-press for actions)
 - Shopping-list renames sync to all household members in real time
-- Tasks, notes, events, persons with birthdays and gift ideas, documents,
-  loyalty cards, planned buys
-- Full rebrand from KitchenOwl to HouseOwl (see [CHANGELOG.md](CHANGELOG.md))
+- Rebranded from KitchenOwl to HouseOwl
 
 See [CHANGELOG.md](CHANGELOG.md) for the full history of fork changes.
 
 ## 📱 Screenshots
 
-> **Note:** the screenshots below are inherited from upstream KitchenOwl and
-> show the Recipe and Expense pages, which have been removed in this fork.
-
-<table>
-  <tr>
-    <td><img alt="Groceries page" src="metadata/en-US/images/phoneScreenshots/groceries.png"/></td>
-    <td><img alt="Recipe page" src="metadata/en-US/images/phoneScreenshots/recipe.png"/></td>
-    <td><img alt="Plan page" src="metadata/en-US/images/phoneScreenshots/plan.png"/></td>
-    <td><img alt="Expense page" src="metadata/en-US/images/phoneScreenshots/expenses.png"/></td>
-   </tr>
-</table>
+TO BE ADDED
 
 ## 🤖 App Install
 
@@ -114,10 +96,9 @@ For more information see [Contributing](CONTRIBUTING.md).
 Translations live in `kitchenowl/lib/l10n/*.arb`. Add or edit strings there and
 run `flutter gen-l10n`.
 
-
 ## 🛎️ Stay Up-to-Date
 
-KitchenOwl upstream is moving fast; to stay updated on this fork, consider starring and watching the releases of this repository.
+To stay updated on HouseOwl, consider starring and watching the releases of this repository.
 
 ### 💬 Status
 
@@ -127,15 +108,8 @@ KitchenOwl upstream is moving fast; to stay updated on this fork, consider starr
 
 ## 📚 Related
 
-- [Website](https://kitchenowl.org)
-- [Docs](https://docs.kitchenowl.org)
-- [KitchenOwl Backend](https://github.com/TomBursch/kitchenowl-backend) Repository
-- [KitchenOwl Website](https://github.com/TomBursch/kitchenowl-website) Repository
-- [KitchenOwl Python Client](https://github.com/TomBursch/kitchenowl-python) Repository
-- [KitchenOwl Home Assistant Integration](https://github.com/TomBursch/kitchenowl-ha) Repository
-- [DockerHub (upstream image)](https://hub.docker.com/r/tombursch/kitchenowl)
-- [Recipe scrapers](https://github.com/hhursev/recipe-scrapers) used for scraping recipes from the web
-- [Weblate](https://weblate.org/) is helping with continuous localization as part of their ongoing support for open-source software projects.
+- [Website](https://github.com/antebudimir/houseowl)
+- [Docs (source)](https://github.com/antebudimir/houseowl/tree/main/docs)
 
 ### 🔨 Built With
 
@@ -145,8 +119,10 @@ KitchenOwl upstream is moving fast; to stay updated on this fork, consider starr
 
 ## 🍀 Contributors
 
-<a href="https://github.com/tombursch/KitchenOwl/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=tombursch/KitchenOwl" />
+Includes everyone from the upstream KitchenOwl history this fork is built on.
+
+<a href="https://github.com/antebudimir/houseowl/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=antebudimir/houseowl" />
 </a>
 
 ## 📜 License

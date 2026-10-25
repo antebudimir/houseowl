@@ -4,13 +4,12 @@ Thanks for wanting to contribute to HouseOwl!
 
 So you want to contribute to HouseOwl? Great!
 
-If you have noticed a bug, please [create an issue](https://github.com/TomBursch/HouseOwl/issues/new) before starting any work on a pull request or get in contact by joining our [Matrix space](https://matrix.to/#/#houseowl:matrix.org).
+If you have noticed a bug, please [create an issue](https://github.com/antebudimir/houseowl/issues/new) before starting any work on a pull request or get in contact by joining our [Matrix space](https://matrix.to/#/#houseowl:matrix.org).
 
 ### Fork & create a branch
 
 If there is something you want to fix or add, the first step is to fork the repository.
-[:fontawesome-brands-github: Frontend](https://github.com/TomBursch/HouseOwl){ .md-button }
-[:fontawesome-brands-github: Website](https://github.com/TomBursch/HouseOwl-website){ .md-button }
+[:fontawesome-brands-github: HouseOwl](https://github.com/antebudimir/houseowl){ .md-button }
 
 Next is to create a new branch with an appropriate name. You can use the following format:
 

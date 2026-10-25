@@ -2,7 +2,6 @@ name: Feature request
 description: Suggest a feature to add to HouseOwl
 title: "Feature request: "
 labels: ["enhancement"]
-projects: ["TomBursch/1"]
 body:
   - type: textarea
     id: description
@@ -17,5 +16,5 @@ body:
       label: "Extra information and references"
       placeholder: |
         - I tried `docker run something` and it doesn't work
-        - That [url](https://github.com/TomBursch/kitchenowl/) is interesting
+        - That [url](https://github.com/antebudimir/houseowl/) is interesting
 

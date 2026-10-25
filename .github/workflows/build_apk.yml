@@ -1,0 +1,58 @@
+name: Build Android APK
+
+# Manual build of a signed release APK, uploaded as a workflow artifact.
+# Mirrors the Android job of release.yml without drafting a GitHub release.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  apk:
+    name: Build release APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Configure Flutter
+        run: flutter config --no-analytics
+
+      - name: Get packages
+        run: flutter packages get
+        working-directory: kitchenowl
+
+      - name: Configure Keystore for Android
+        run: |
+          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/upload-keystore.jks
+          echo "storeFile=upload-keystore.jks" >> key.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+        env:
+          PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+        working-directory: kitchenowl/android
+
+      - name: Build APK
+        run: flutter build apk --release
+        working-directory: kitchenowl
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: houseowl-android
+          path: kitchenowl/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error

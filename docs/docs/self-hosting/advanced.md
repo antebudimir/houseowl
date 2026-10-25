@@ -4,22 +4,22 @@ There are a few options for advanced users. Customization is done using environm
 
 ### Tags
 
-There are three tags available: `latest`, `beta` and `dev`. `latest` is the most current stable release and is the default. `beta` corresponds to the most recent prerelease and might have some experimental features. The `dev` tag is directly build from the main branch and should not be used in production. Release notes can be found on the [releases page](https://github.com/TomBursch/kitchenowl/releases).
+There are three tags available: `latest`, `beta` and `dev`. `latest` is the most current stable release and is the default. `beta` corresponds to the most recent prerelease and might have some experimental features. The `dev` tag is directly build from the main branch and should not be used in production. Release notes can be found on the [releases page](https://github.com/antebudimir/houseowl/releases).
 Additionally, the releases are tagged, so you can always choose a specific version with `vX.X.X`.
 
 ### Backend
 
 - Set up with OpenID Connect: [OIDC](./oidc.md)
-- Set up with a PostgreSQL database: [docker-compose.yml](https://github.com/TomBursch/kitchenowl/blob/main/docker-compose-postgres.yml)
+- Set up with a PostgreSQL database: [docker-compose-postgres.yml](https://github.com/antebudimir/houseowl/blob/main/docker-compose-postgres.yml)
 
-Environment variables for `antebudimir/houseowl` and `antebudimir/houseowl-backend`:
+Environment variables for the `ghcr.io/antebudimir/houseowl` image:
 
 | Variable                                   | Default                    | Description                                                                                                                                           |
 | ------------------------------------------ | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `JWT_REFRESH_TOKEN_EXPIRES`                | `30`                       | Sets how long (in days) refresh tokens are valid for. Essentially, how long it takes until users are automatically logged out. Must be a number.      |
 | `JWT_SECRET_KEY`                           |                            |                                                                                                                                                       |
 | `JWT_SECRET_KEY_FILE`                      |                            | Reads the JWT secret from the specified file. Should be a path to a file (will override JWT_SECRET_KEY)                                               |
-| `FRONT_URL`                                |                            | Adds allow origin CORS header for the URL. If set, should exactly match HouseOwl's URL including the schema (e.g. `https://app.kitchenowl.org`)     |
+| `FRONT_URL`                                |                            | Adds allow origin CORS header for the URL. If set, should exactly match HouseOwl's URL including the schema (e.g. `https://houseowl.example.com`)   |
 | `PRIVACY_POLICY_URL`                       |                            | Allows to set a custom privacy policy for your server instance                                                                                        |
 | `TERMS_URL`                                |                            | Allows to set a custom terms and conditions URL for your server instance                                                                              |
 | `DISABLE_USERNAME_PASSWORD_LOGIN`          | `false`                    | If set, allows login only through OpenID Connect (OIDC). Be aware: this automatically disables `OPEN_REGISTRATION`                                    |
@@ -66,10 +66,10 @@ Environment variables for `antebudimir/houseowl` and `antebudimir/houseowl-backe
 | `BASE_HREF`                                |                            | Sets the subdirectory HouseOwl is hosted at. Must begin and end with a slash `/`. Only applicable to `antebudimir/houseowl`                         |
 
 Additionally, to setting these environment variables you can also override the start command to scale the backend up.
-Add the following line or take a look at this exemplary [docker-compose.yml](https://github.com/TomBursch/kitchenowl/blob/main/docker-compose-postgres.yml) file:
+Add the following line or take a look at this exemplary [docker-compose-postgres.yml](https://github.com/antebudimir/houseowl/blob/main/docker-compose-postgres.yml) file:
 
 ```yml
-back:
+houseowl:
   [...]
   command: --ini wsgi.ini:web --gevent 2000 # default: 100
   [...]
@@ -79,7 +79,10 @@ Overriding the command is not recommended as we might change the underlying proc
 
 ### Frontend
 
-Environment variables for `antebudimir/houseowl-web`:
+!!! note
+    This fork publishes only the combined `ghcr.io/antebudimir/houseowl` image, where the backend serves the web app on port 8080. The separate `houseowl-web` frontend image is not published; the following is kept for reference (upstream KitchenOwl publishes separate images).
+
+Environment variables for the upstream `kitchenowl-web` image:
 
 | Variable    | Default     | Description                                                                                                                                                          |
 | ----------- | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -87,6 +90,9 @@ Environment variables for `antebudimir/houseowl-web`:
 | `BASE_HREF` |             | Sets the subdirectory HouseOwl is hosted at. Must begin and end with a slash `/`.                                                                                  |
 
 ## Multiservice Setup
+
+!!! note
+    The separate front/backend images are not published in this fork — only the combined `ghcr.io/antebudimir/houseowl` image. The split setup below requires building the images yourself; see [upstream KitchenOwl](https://github.com/TomBursch/kitchenowl) for reference.
 
 All provided examples can be turned into a multiservice setup with just a few changes. This means separating frontend and backend into multiple docker containers.
 

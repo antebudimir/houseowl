@@ -90,6 +90,9 @@ RUN apt-get update \
 
 # Use virtual enviroment
 COPY --from=backend_builder /opt/venv /opt/venv
+# uv resolves python 3.13 (pyproject pins >=3.13,<3.14) to a managed interpreter
+# outside the venv; copy it so the venv's python symlink does not dangle.
+COPY --from=backend_builder /root/.local/share/uv/python /root/.local/share/uv/python
 ENV PATH="/opt/venv/bin:$PATH"
 
 # Setup Frontend

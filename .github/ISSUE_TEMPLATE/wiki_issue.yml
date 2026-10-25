@@ -7,7 +7,7 @@ body:
     id: url
     attributes:
       label: "URL to the Wiki page"
-      placeholder: "https://docs.kitchenowl.org/get-started/"
+      placeholder: "https://github.com/antebudimir/houseowl"
     validations:
       required: false
   - type: textarea

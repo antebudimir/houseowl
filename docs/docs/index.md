@@ -6,24 +6,24 @@ hide:
 
 # Welcome
 
-Welcome to the documentation of [HouseOwl](https://kitchenowl.org). 
-If you want to contribute or set up a self-hosted instance of HouseOwl you're at the right place. 
-Otherwise, you can find general information and features on the [main website](https://kitchenowl.org).
+Welcome to the documentation of [HouseOwl](https://github.com/antebudimir/houseowl).
+If you want to contribute or set up a self-hosted instance of HouseOwl you're at the right place.
+Otherwise, you can find general information and features on the [main website](https://github.com/antebudimir/houseowl).
 
 <div class="grid cards" markdown>
 
--   :material-rocket-launch: &nbsp;
+- :material-rocket-launch: &nbsp;
     __Getting Started__
 
     ---
 
     Looking to set up your own a HouseOwl instance?
-    
+
     ---
 
     [:octicons-arrow-right-24: Self hosting guide](./self-hosting/index.md)
 
--   :material-chat-question: &nbsp;
+- :material-chat-question: &nbsp;
     __FAQ__
 
     ---
@@ -34,18 +34,18 @@ Otherwise, you can find general information and features on the [main website](h
 
     [:octicons-arrow-right-24: Read more](./Tips-&-Tricks/index.md)
 
--   :material-folder: &nbsp;
+- :material-folder: &nbsp;
     __Reference__
 
     ---
 
-    Learn more about the API and how to manage your instance<br/><br/>
+    Learn how to manage your instance and contribute<br/><br/>
 
     ---
 
-    [:octicons-arrow-right-24: Read more](./reference/API.md)
+    [:octicons-arrow-right-24: Read more](./reference/management.md)
 
--   :material-license: &nbsp;
+- :material-license: &nbsp;
     __AGPL-3.0 License__
 
     ---
@@ -72,18 +72,18 @@ There are multiple ways in which you can improve HouseOwl to help you and others
 
 <div class="grid cards" markdown>
 
--   :material-bug-outline: &nbsp;
+- :material-bug-outline: &nbsp;
     __Something is not working?__
 
     ---
 
     Report a bug by creating an issue with information on how to reproduce it
-    
+
     ---
 
-    [:octicons-arrow-right-24: Report a bug](https://github.com/TomBursch/kitchenowl/issues/new?template=bug.yml)
+    [:octicons-arrow-right-24: Report a bug](https://github.com/antebudimir/houseowl/issues/new?template=bug.yml)
 
--   :material-file-document-remove-outline: &nbsp;
+- :material-file-document-remove-outline: &nbsp;
     __Missing information in our docs?__
 
     ---
@@ -93,9 +93,9 @@ There are multiple ways in which you can improve HouseOwl to help you and others
 
     ---
 
-    [:octicons-arrow-right-24: Report a docs issue](https://github.com/TomBursch/kitchenowl/issues/new?template=wiki_issue.yml)
+    [:octicons-arrow-right-24: Report a docs issue](https://github.com/antebudimir/houseowl/issues/new?template=wiki_issue.yml)
 
--   :material-lightbulb-on-20: &nbsp;
+- :material-lightbulb-on-20: &nbsp;
     __Want to submit an idea?__
 
     ---
@@ -104,9 +104,9 @@ There are multiple ways in which you can improve HouseOwl to help you and others
 
     ---
 
-    [:octicons-arrow-right-24: Request a change](https://github.com/TomBursch/kitchenowl/issues/new/choose)
+    [:octicons-arrow-right-24: Request a change](https://github.com/antebudimir/houseowl/issues/new/choose)
 
--   :material-source-pull: &nbsp;
+- :material-source-pull: &nbsp;
     __Want to create a pull request?__
 
     ---
@@ -116,14 +116,14 @@ There are multiple ways in which you can improve HouseOwl to help you and others
     ---
 
     [:octicons-arrow-right-24: Set up your development environment](./reference/contributing.md)<br/>
-    [:octicons-arrow-right-24: Create a pull request](https://github.com/TomBursch/kitchenowl/pulls)
+    [:octicons-arrow-right-24: Create a pull request](https://github.com/antebudimir/houseowl/pulls)
 
 </div>
 
 !!! info "Hint"
     Before submitting an issue, make sure to:
 
-    - Check that no similar issue already exists [here](https://github.com/TomBursch/kitchenowl/issues)
+    - Check that no similar issue already exists [here](https://github.com/antebudimir/houseowl/issues)
     - You provided all information needed to understand the issue
 
 ---

@@ -1,5 +1,5 @@
 site_name: HouseOwl Docs
-site_url: https://antebudimir.github.io/houseowl/
+site_url: https://github.com/antebudimir/houseowl
 repo_url: https://github.com/antebudimir/houseowl
 repo_name: antebudimir/houseowl
 edit_uri: edit/main/docs/docs/
@@ -39,7 +39,7 @@ extra:
     - icon: fontawesome/brands/docker
       link: https://hub.docker.com/u/tombursch
     - icon: fontawesome/solid/paper-plane
-      link: mailto:info@kitchenowl.org
+      link: mailto:developer@antebudimir.com
     - icon: fontawesome/solid/comment
       link: https://matrix.to/#/#kitchenowl:matrix.org
 markdown_extensions:

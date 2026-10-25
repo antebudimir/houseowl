@@ -60,31 +60,23 @@ This example configuration assumes that you are:
 version: "3"
 
 services:
-  front:
-    image: antebudimir/houseowl-web:latest
+  houseowl:
+    image: ghcr.io/antebudimir/houseowl:latest
     networks:
       - default
       - web
-    restart: unless-stopped
-    depends_on:
-      - back
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=web"
-      - "traefik.http.routers.houseowl.rule=Host(`your.domain.here`)"
-      - "traefik.http.routers.houseowl.entrypoints=websecure"
-      - "traefik.http.routers.houseowl.middlewares=security@docker" # Use to apply security middlewares
-
-  back:
-    image: antebudimir/houseowl:latest
-    networks:
-      - default
     restart: unless-stopped
     environment:
       - FRONT_URL=https://your.domain.here
       - JWT_SECRET_KEY=PLEASE_CHANGE_ME
     volumes:
       - houseowl_data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=web"
+      - "traefik.http.routers.houseowl.rule=Host(`your.domain.here`)"
+      - "traefik.http.routers.houseowl.entrypoints=websecure"
+      - "traefik.http.routers.houseowl.middlewares=security@docker" # Use to apply security middlewares
 
 networks:
   web:

@@ -1,5 +1,8 @@
 # Migrating from Older Versions
 
+!!! note
+    This fork publishes only the combined `ghcr.io/antebudimir/houseowl` image. The split `houseowl-web`/`houseowl-backend` images mentioned in older release notes were upstream (KitchenOwl) artifacts and were never published for this fork.
+
 ### v0.6.16
 For OIDC users the redirect URI has changed from `kitchenowl:///signin/redirect` to `kitchenowl:/signin/redirect` (See [#644](https://github.com/TomBursch/kitchenowl/issues/644) for the reason why).
 

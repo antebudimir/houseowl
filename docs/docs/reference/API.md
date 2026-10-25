@@ -1,1 +1,0 @@
-[OAD(https://app.kitchenowl.org/api/openapi)]
