@@ -281,7 +281,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../reference/API/" class="md-tabs__link">
+        <a href="../../reference/contributing/" class="md-tabs__link">
           
   
   
@@ -515,29 +515,6 @@
             Reference
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../reference/API/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    API
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -945,14 +922,14 @@
 <h1 id="advanced-configuration">Advanced Configuration</h1>
 <p>There are a few options for advanced users. Customization is done using environment variables.</p>
 <h3 id="tags">Tags</h3>
-<p>There are three tags available: <code>latest</code>, <code>beta</code> and <code>dev</code>. <code>latest</code> is the most current stable release and is the default. <code>beta</code> corresponds to the most recent prerelease and might have some experimental features. The <code>dev</code> tag is directly build from the main branch and should not be used in production. Release notes can be found on the <a href="https://github.com/TomBursch/kitchenowl/releases">releases page</a>.
+<p>There are three tags available: <code>latest</code>, <code>beta</code> and <code>dev</code>. <code>latest</code> is the most current stable release and is the default. <code>beta</code> corresponds to the most recent prerelease and might have some experimental features. The <code>dev</code> tag is directly build from the main branch and should not be used in production. Release notes can be found on the <a href="https://github.com/antebudimir/houseowl/releases">releases page</a>.
 Additionally, the releases are tagged, so you can always choose a specific version with <code>vX.X.X</code>.</p>
 <h3 id="backend">Backend</h3>
 <ul>
 <li>Set up with OpenID Connect: <a href="../oidc/">OIDC</a></li>
-<li>Set up with a PostgreSQL database: <a href="https://github.com/TomBursch/kitchenowl/blob/main/docker-compose-postgres.yml">docker-compose.yml</a></li>
+<li>Set up with a PostgreSQL database: <a href="https://github.com/antebudimir/houseowl/blob/main/docker-compose-postgres.yml">docker-compose-postgres.yml</a></li>
 </ul>
-<p>Environment variables for <code>antebudimir/houseowl</code> and <code>antebudimir/houseowl-backend</code>:</p>
+<p>Environment variables for the <code>ghcr.io/antebudimir/houseowl</code> image:</p>
 <table>
 <thead>
 <tr>
@@ -980,7 +957,7 @@ Additionally, the releases are tagged, so you can always choose a specific versi
 <tr>
 <td><code>FRONT_URL</code></td>
 <td></td>
-<td>Adds allow origin CORS header for the URL. If set, should exactly match HouseOwl's URL including the schema (e.g. <code>https://app.kitchenowl.org</code>)</td>
+<td>Adds allow origin CORS header for the URL. If set, should exactly match HouseOwl's URL including the schema (e.g. <code>https://houseowl.example.com</code>)</td>
 </tr>
 <tr>
 <td><code>PRIVACY_POLICY_URL</code></td>
@@ -1205,15 +1182,19 @@ Additionally, the releases are tagged, so you can always choose a specific versi
 </tbody>
 </table>
 <p>Additionally, to setting these environment variables you can also override the start command to scale the backend up.
-Add the following line or take a look at this exemplary <a href="https://github.com/TomBursch/kitchenowl/blob/main/docker-compose-postgres.yml">docker-compose.yml</a> file:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">back</span><span class="p">:</span>
+Add the following line or take a look at this exemplary <a href="https://github.com/antebudimir/houseowl/blob/main/docker-compose-postgres.yml">docker-compose-postgres.yml</a> file:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">houseowl</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
 <span class="w">  </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--ini wsgi.ini:web --gevent 2000</span><span class="w"> </span><span class="c1"># default: 100</span>
 <span class="w">  </span><span class="p p-Indicator">[</span><span class="nv">...</span><span class="p p-Indicator">]</span>
 </code></pre></div>
 <p>Overriding the command is not recommended as we might change the underlying process in the future.</p>
 <h3 id="frontend">Frontend</h3>
-<p>Environment variables for <code>antebudimir/houseowl-web</code>:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This fork publishes only the combined <code>ghcr.io/antebudimir/houseowl</code> image, where the backend serves the web app on port 8080. The separate <code>houseowl-web</code> frontend image is not published; the following is kept for reference (upstream KitchenOwl publishes separate images).</p>
+</div>
+<p>Environment variables for the upstream <code>kitchenowl-web</code> image:</p>
 <table>
 <thead>
 <tr>
@@ -1236,6 +1217,10 @@ Add the following line or take a look at this exemplary <a href="https://github.
 </tbody>
 </table>
 <h2 id="multiservice-setup">Multiservice Setup</h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The separate front/backend images are not published in this fork — only the combined <code>ghcr.io/antebudimir/houseowl</code> image. The split setup below requires building the images yourself; see <a href="https://github.com/TomBursch/kitchenowl">upstream KitchenOwl</a> for reference.</p>
+</div>
 <p>All provided examples can be turned into a multiservice setup with just a few changes. This means separating frontend and backend into multiple docker containers.</p>
 <p>See <a href="https://github.com/TomBursch/kitchenowl/blob/main/docker-compose.yml">docker-compose.yml</a></p>
 <div class="highlight"><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">"3"</span>

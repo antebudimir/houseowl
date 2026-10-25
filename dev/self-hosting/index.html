@@ -281,7 +281,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../reference/API/" class="md-tabs__link">
+        <a href="../reference/contributing/" class="md-tabs__link">
           
   
   
@@ -515,29 +515,6 @@
             Reference
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../reference/API/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    API
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -940,25 +917,17 @@
 <p>There are multiple ways you can install the HouseOwl server.</p>
 <h2 id="official-installation">Official Installation</h2>
 <p>The official installation method is using <a href="https://docs.docker.com/engine/install/">Docker</a> and <a href="https://docs.docker.com/compose/">docker-compose</a>:</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Docker compose</label><label for="__tabbed_1_2">Docker (All-in-one)</label><label for="__tabbed_1_3">Docker compose (All-in-one)</label></div>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Docker compose</label><label for="__tabbed_1_2">Docker (All-in-one)</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
 <ol>
-<li>Download <a href="https://github.com/TomBursch/kitchenowl/blob/main/docker-compose.yml">docker-compose.yml</a>
-<div class="highlight"><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">"3"</span>
-<span class="nt">services</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">front</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">antebudimir/houseowl-web:latest</span>
+<li>Download <a href="https://github.com/antebudimir/houseowl/blob/main/docker-compose.yml">docker-compose.yml</a>
+<div class="highlight"><pre><span></span><code><span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">houseowl</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/antebudimir/houseowl:latest</span>
 <span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
-<span class="w">    </span><span class="c1"># environment:</span>
-<span class="w">    </span><span class="c1">#   - BACK_URL=back:5000 # Change this if you rename the containers</span>
 <span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"80:80"</span>
-<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">back</span>
-<span class="w">  </span><span class="nt">back</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">antebudimir/houseowl-backend:latest</span>
-<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"80:8080"</span>
 <span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
 <span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">JWT_SECRET_KEY=PLEASE_CHANGE_ME</span>
 <span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
@@ -975,30 +944,7 @@
 <div class="tabbed-block">
 <ol>
 <li>Create a volume <code>docker volume create houseowl_data</code></li>
-<li>Run <code>docker run -d -p 8080:8080 -e "JWT_SECRET_KEY=PLEASE_CHANGE_ME" -v houseowl_data:/data antebudimir/houseowl:latest</code></li>
-</ol>
-</div>
-<div class="tabbed-block">
-<ol>
-<li>Download <a href="https://github.com/TomBursch/kitchenowl/blob/main/docker-compose-single.yml">docker-compose.yml</a>
-<div class="highlight"><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">"3"</span>
-<span class="nt">services</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">back</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">antebudimir/houseowl:latest</span>
-<span class="w">    </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
-<span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">"80:8080"</span>
-<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">JWT_SECRET_KEY=PLEASE_CHANGE_ME</span>
-<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">houseowl_data:/data</span>
-
-<span class="nt">volumes</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">houseowl_data</span><span class="p">:</span>
-</code></pre></div></li>
-<li>Change the default value for <code>JWT_SECRET_KEY</code></li>
-<li>If you want to use PostgreSQL, use separate containers for front and backend, or want to set other settings take a look at the <a href="advanced/">advanced</a> options</li>
-<li>Run <code>podman compose up -d</code></li>
+<li>Run <code>docker run -d -p 8080:8080 -e "JWT_SECRET_KEY=PLEASE_CHANGE_ME" -v houseowl_data:/data ghcr.io/antebudimir/houseowl:latest</code></li>
 </ol>
 </div>
 </div>
