@@ -192,18 +192,21 @@ class _HouseholdPageState extends State<HouseholdPage>
           context: context,
           showDragHandle: true,
           isScrollControlled: true,
-          builder: (context) => BlocProvider.value(
+          builder: (sheetContext) => BlocProvider.value(
             value: householdCubit,
             child: MorePage(
-              onPageSelected: (ctx, view) => _onItemTapped(
-                ctx,
-                view,
-                ViewsEnum.orderedViews(householdCubit.state.household)
-                    .firstWhere(
-                  (p) => GoRouterState.of(ctx).uri.path.contains(p.toString()),
+              // The sheet's context is unmounted once the sheet is dismissed,
+              // so navigation must use this page's context and the router's
+              // live state instead of the sheet context.
+              onPageSelected: (ctx, view) {
+                final current =
+                    ViewsEnum.orderedViews(householdCubit.state.household)
+                        .firstWhere(
+                  (p) => router.state.uri.path.contains(p.toString()),
                   orElse: () => view,
-                ),
-              ),
+                );
+                _onItemTapped(context, view, current);
+              },
             ),
           ),
         );

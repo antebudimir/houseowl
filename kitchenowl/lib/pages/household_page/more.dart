@@ -100,7 +100,9 @@ class MorePage extends StatelessWidget {
                                     Icon(e.toIcon(context)),
                                 minLeadingWidth: 16,
                                 onTap: () {
-                                  Navigator.of(context).pop();
+                                  // Navigate (or notify) first and dismiss the
+                                  // sheet last: after the pop this context is
+                                  // unmounted and unusable for navigation.
                                   if (onPageSelected != null) {
                                     onPageSelected!(context, e);
                                   } else {
@@ -109,6 +111,7 @@ class MorePage extends StatelessWidget {
                                       "/household/${state.household.id}/${e.toString()}",
                                     );
                                   }
+                                  Navigator.of(context).pop();
                                 },
                               ),
                             ) as Widget)

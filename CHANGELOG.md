@@ -11,8 +11,13 @@ For multi-commit features, that's the final commit. For single-commit
 features, that's the same commit.
 
 ## [Unreleased]
-## [Unreleased]
 
+- **Fix the "More" sheet dismissing without navigating.** Tapping a view
+  tile popped the sheet before invoking the callback, so navigation ran
+  against the sheet's already-unmounted context and silently failed.
+  Navigation now happens first (via the household page's context and the
+  router's live state), and the sheet is dismissed afterwards.
+- **Fix the "More" sheet on mobile.**
 - **Fix the "More" sheet on mobile.** Its view list used a hardcoded
   `skip(7)` (so Notes, Documents and Loyalty Cards were missing for
   households whose view ordering puts them before position 7) and every
@@ -27,7 +32,6 @@ features, that's the same commit.
   the "More" tab highlights when a non-visible view is open, fixing the
   out-of-range selected-index glitch when deep views were opened from the
   drawer.
-
 
 - **Rebrand: KitchenOwl → HouseOwl.** Dart package renamed
   (`package:kitchenowl` → `package:houseowl`), backend API/branding, app
@@ -269,6 +273,7 @@ features, that's the same commit.
   filename when the title is empty) instead of the raw UUID blob name
 
 ### Known limitations
+
 - Birthdays are list-only: there are no reminders/notifications for
   upcoming birthdays (backlog — a reminder pass would also want tasks/events
   integration)

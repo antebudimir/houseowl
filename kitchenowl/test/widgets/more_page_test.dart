@@ -105,4 +105,68 @@ void main() {
 
     expect(tapped, [ViewsEnum.tasks]);
   });
+
+  // Regression: MorePage used to be dismissed (popping its context) *before*
+  // the callback ran, so any navigation depending on that context silently
+  // failed with an unmounted-element error. The tile must invoke the callback
+  // while its context is still mounted.
+  testWidgets(
+      "tapping a tile from within a modal sheet invokes the callback "
+      "while the sheet is still open", (tester) async {
+    _initApp();
+    final household = Household(id: 1, name: "Test");
+    final List<ViewsEnum> tapped = [];
+
+    await tester.pumpWidget(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthCubit>.value(value: AuthCubit()),
+          BlocProvider<HouseholdCubit>.value(
+            value: _NoRefreshHouseholdCubit(household),
+          ),
+        ],
+        child: mui.MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
+          home: mui.Scaffold(
+            body: Builder(
+              builder: (context) => Center(
+                child: TextButton(
+                  onPressed: () => showModalBottomSheet(
+                    context: context,
+                    builder: (sheetContext) => BlocProvider.value(
+                      value: context.read<HouseholdCubit>(),
+                      child: MorePage(
+                        onPageSelected: (ctx, view) {
+                          // Mimic the household page: the callback receives
+                          // the sheet's context and must still be able to
+                          // resolve router state from it while mounted.
+                          expect(ctx.mounted, isTrue);
+                          tapped.add(view);
+                        },
+                      ),
+                    ),
+                  ),
+                  child: const Text("open"),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+
+    await tester.tap(find.text("open"));
+    await tester.pumpAndSettle();
+    expect(find.text("Tasks"), findsOneWidget);
+
+    await tester.tap(find.text("Tasks"));
+    await tester.pumpAndSettle();
+
+    expect(tapped, [ViewsEnum.tasks]);
+    // The sheet is dismissed after the callback ran.
+    expect(find.text("Tasks"), findsNothing);
+  });
 }
