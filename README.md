@@ -6,7 +6,6 @@
   </picture>
 </h1>
 
-<p align="center">NOTE: Logo redesign in progress</p>
 <p align="center">A smart, self-hosted household manager.</p>
 
 <h4 align="center">
