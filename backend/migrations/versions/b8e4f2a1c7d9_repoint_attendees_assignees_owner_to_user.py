@@ -27,6 +27,9 @@ def upgrade():
     # event_attendee: PK changes from (event_id, person_id) to
     # (event_id, user_id), so the table is rebuilt with a data-preserving
     # copy. Rows whose person has no linked user cannot be kept.
+    # Drop any leftover staging table from an interrupted earlier run so the
+    # migration can be re-applied after a partial failure.
+    op.execute('DROP TABLE IF EXISTS event_attendee_new')
     op.create_table(
         'event_attendee_new',
         sa.Column('event_id', sa.Integer(), nullable=False),
@@ -47,11 +50,14 @@ def upgrade():
         sa.ForeignKeyConstraint(['user_id'], ['user.id'], ondelete='CASCADE'),
         sa.PrimaryKeyConstraint('event_id', 'user_id'),
     )
+    # ON CONFLICT DO NOTHING (portable across SQLite >= 3.24 and Postgres):
+    # person.user_id has no unique constraint, so two person rows can link to
+    # the same user; without dedup a shared attendee would violate the new PK.
     op.execute(
         'INSERT INTO event_attendee_new (event_id, user_id, created_at, updated_at) '
         'SELECT ea.event_id, p.user_id, ea.created_at, ea.updated_at '
         'FROM event_attendee ea JOIN person p ON p.id = ea.person_id '
-        'WHERE p.user_id IS NOT NULL'
+        "WHERE p.user_id IS NOT NULL ON CONFLICT DO NOTHING"
     )
     op.drop_table('event_attendee')
     op.rename_table('event_attendee_new', 'event_attendee')
