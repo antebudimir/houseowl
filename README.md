@@ -46,7 +46,7 @@ coordination app.
 Changes from upstream:
 
 - Recipes and expenses removed
-- Tasks, notes, events, and persons (with birthdays and gift ideas) added
+- planned buys, loyalty cards, tasks, notes, events, & persons (with birthdays and gift ideas) added, along with document vault for e.g. uploading warranties.
 - Shopping lists managed inline from the main-view header (add, rename, delete; long-press for actions)
 - Shopping-list renames sync to all household members in real time
 - Rebranded from KitchenOwl to HouseOwl
@@ -55,7 +55,12 @@ See [CHANGELOG.md](CHANGELOG.md) for the full history of fork changes.
 
 ## 📱 Screenshots
 
-TO BE ADDED
+| | |
+| :---: | :---: |
+| ![](/.github/screenshots/lists.png) | ![](/.github/screenshots/tasks.png) |
+| ![](/.github/screenshots/calendar.png) | ![](/.github/screenshots/documents.png) |
+| ![](/.github/screenshots/loyalty-cards.png) | ![](/.github/screenshots/loyalty-cards-2.png) |
+| ![](/.github/screenshots/more.png) | |
 
 ## 🤖 App Install
 
@@ -72,7 +77,7 @@ flutter run
 
 > **Note (Android):** the app id changed from `com.tombursch.kitchenowl` to
 > `com.antebudimir.houseowl`. Android treats this as a different app —
-> in-place upgrades from KitchenOwl are not possible; install fresh.
+> in-place upgrades from KitchenOwl aren't possible; install fresh.
 
 ## 🚀 Get started (self-hosting)
 
