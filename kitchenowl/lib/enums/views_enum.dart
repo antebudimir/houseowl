@@ -94,7 +94,7 @@ enum ViewsEnum {
       Icons.loyalty_outlined,
       Icons.checklist_outlined,
       Icons.event_outlined,
-      App.isOffline ? Icons.cloud_off_rounded : Icons.house_rounded,
+      App.isOffline ? Icons.cloud_off_rounded : Icons.more_vert_rounded,
     ][index];
   }
 
@@ -109,7 +109,7 @@ enum ViewsEnum {
       Icons.loyalty_rounded,
       Icons.checklist_rounded,
       Icons.event_rounded,
-      App.isOffline ? Icons.cloud_off_rounded : Icons.house_rounded,
+      App.isOffline ? Icons.cloud_off_rounded : Icons.more_vert_rounded,
     ][index];
   }
 
