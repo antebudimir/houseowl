@@ -6,7 +6,7 @@ import 'package:houseowl/enums/update_enum.dart';
 import 'package:houseowl/kitchenowl.dart';
 import 'package:houseowl/models/event.dart';
 import 'package:houseowl/models/household.dart';
-import 'package:houseowl/models/person.dart';
+import 'package:houseowl/models/member.dart';
 
 class EventAddUpdatePage extends StatefulWidget {
   final Household household;
@@ -52,7 +52,7 @@ class _EventAddUpdatePageState extends State<EventAddUpdatePage> {
     _cubit = EventAddUpdateCubit(
       widget.household,
       selectedPersons:
-          Set<Person>.from(widget.event?.attendees ?? const <Person>[]),
+          Set<Member>.from(widget.event?.attendees ?? const <Member>[]),
     );
   }
 
@@ -250,18 +250,14 @@ class _EventAddUpdatePageState extends State<EventAddUpdatePage> {
               const SizedBox(height: 8),
               BlocBuilder<EventAddUpdateCubit, EventAddUpdateState>(
                 builder: (context, state) {
-                  // Only household members (persons linked to a user account)
-                  // can be invited; directory-only contacts are excluded.
-                  final members = state.persons
-                      .where((person) => person.userId != null)
-                      .toList();
+                  final members = state.persons;
                   final selected = state.selectedPersons;
                   final selectable = members
                       .where((person) => !selected.contains(person))
                       .toList();
 
                   if (selectable.isEmpty && selected.isEmpty) {
-                    return Text(loc.noTags);
+                    return Text(loc.noMembers);
                   }
 
                   return Column(
@@ -283,7 +279,7 @@ class _EventAddUpdatePageState extends State<EventAddUpdatePage> {
                           ],
                         ),
                       if (selectable.isNotEmpty)
-                        DropdownButtonFormField<Person?>(
+                        DropdownButtonFormField<Member?>(
                           initialValue: null,
                           decoration: InputDecoration(hintText: loc.add),
                           items: [

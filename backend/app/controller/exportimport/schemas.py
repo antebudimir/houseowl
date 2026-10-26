@@ -29,7 +29,7 @@ class ImportSchema(Schema):
         title = fields.String(required=True, validate=_not_blank)
         notes = fields.String(allow_none=True)
         expires_at = fields.String(allow_none=True)
-        contact = fields.String(allow_none=True)
+        owner = fields.String(allow_none=True)
         file = fields.Nested("DocumentFile", allow_none=True)
 
     documents = fields.List(fields.Nested(Document))

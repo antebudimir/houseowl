@@ -1,5 +1,5 @@
+import 'package:houseowl/models/member.dart';
 import 'package:houseowl/models/model.dart';
-import 'package:houseowl/models/person.dart';
 
 /// An event with optional attendees.
 ///
@@ -17,7 +17,7 @@ class Event extends Model {
   final DateTime start;
   final DateTime end;
   final bool allDay;
-  final List<Person> attendees;
+  final List<Member> attendees;
 
   const Event({
     this.id,
@@ -47,7 +47,7 @@ class Event extends Model {
       allDay: map['all_day'] ?? false,
       attendees: map['attendees'] != null
           ? List.from(map['attendees'])
-              .map((e) => Person.fromJson(Map<String, dynamic>.from(e as Map)))
+              .map((e) => Member.fromJson(Map<String, dynamic>.from(e as Map)))
               .toList()
           : const [],
     );
@@ -61,7 +61,7 @@ class Event extends Model {
     DateTime? start,
     DateTime? end,
     bool? allDay,
-    List<Person>? attendees,
+    List<Member>? attendees,
   }) =>
       Event(
         id: id ?? this.id,

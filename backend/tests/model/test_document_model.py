@@ -2,7 +2,7 @@ import os
 from datetime import datetime, timedelta, timezone
 
 from app import db
-from app.models import Document, File, Household, Person
+from app.models import Document, File, Household, HouseholdMember, User
 from app.config import UPLOAD_FOLDER
 
 
@@ -26,7 +26,7 @@ def test_document_defaults(db_session):
     assert document.notes is None
     assert document.expires_at is None
     assert document.file_id is None
-    assert document.contact_id is None
+    assert document.owner_id is None
     assert document.created_at is not None
     assert document.updated_at is not None
 
@@ -35,20 +35,21 @@ def test_document_defaults(db_session):
     assert data["household_id"] == household.id
 
 
-def test_document_contact_set_null_on_person_delete(db_session):
+def test_document_owner_set_null_on_user_delete(db_session):
     household = _make_household()
-    person = Person(name="Jane", household=household).save()
-    document = Document(title="Contract", household=household, contact=person).save()
+    user = User(username="jane", name="Jane").save()
+    HouseholdMember(household=household, user=user).save()
+    document = Document(title="Contract", household=household, owner=user).save()
 
-    assert document.contact_id == person.id
+    assert document.owner_id == user.id
 
-    db.session.delete(person)
+    db.session.delete(user)
     db.session.commit()
     db.session.expire_all()
 
     document = Document.find_by_id(document.id)
     assert document is not None
-    assert document.contact_id is None
+    assert document.owner_id is None
 
 
 def test_file_gc_skips_files_attached_to_documents(db_session):

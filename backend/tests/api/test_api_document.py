@@ -1,8 +1,7 @@
 import os
 
-from app import db
 from app.config import UPLOAD_FOLDER
-from app.models import File, Person
+from app.models import File
 
 
 def _make_file(name: str) -> File:
@@ -37,7 +36,7 @@ def test_document_crud(user_client_with_household, household_id):
     assert data["title"] == "Passport"
     assert data["notes"] == "expires soon"
     assert data["file"] is None
-    assert data["contact"] is None
+    assert data["owner"] is None
     assert data["expires_at"] is None
 
     doc_id = data["id"]
@@ -172,48 +171,83 @@ def test_document_file_attach_and_cascade_delete(
     assert not os.path.exists(os.path.join(UPLOAD_FOLDER, file.filename))
 
 
-def test_document_contact_set_null(user_client_with_household, household_id):
-    response = user_client_with_household.post(
-        f"/api/household/{household_id}/person", json={"name": "Alice"}
+def _add_member(client, household_id, admin_username, admin_password, username):
+    """Create a fresh user (needs admin auth) and add them to the household."""
+    admin = client.application.test_client()
+    response = admin.post(
+        "/api/auth", json={"username": admin_username, "password": admin_password}
     )
     assert response.status_code == 200
-    person = response.get_json()
-    person_id = person["id"]
+    admin.environ_base["HTTP_AUTHORIZATION"] = (
+        f"Bearer {response.get_json()['access_token']}"
+    )
+    response = admin.post(
+        "/api/user/new",
+        json={"username": username, "name": username, "password": "memberpwd"},
+    )
+    assert response.status_code == 200
+
+    # /user/new returns no id; log the member in to read it.
+    response = admin.post(
+        "/api/auth", json={"username": username, "password": "memberpwd"}
+    )
+    assert response.status_code == 200
+    admin.environ_base["HTTP_AUTHORIZATION"] = (
+        f"Bearer {response.get_json()['access_token']}"
+    )
+    user = admin.get("/api/user").get_json()
+
+    response = client.put(
+        f"/api/household/{household_id}/member/{user['id']}", json={}
+    )
+    assert response.status_code == 200
+    return user
+
+
+def test_document_owner_clearable(user_client_with_household, household_id,
+                                   admin_username, admin_password):
+    member = _add_member(
+        user_client_with_household, household_id, admin_username, admin_password,
+        "docowner1",
+    )
 
     response = _create_document(
-        user_client_with_household, household_id, title="Deed", contact_id=person_id
+        user_client_with_household, household_id, title="Deed",
+        owner_id=member["id"],
     )
     assert response.status_code == 200
     doc_id = response.get_json()["id"]
-    assert response.get_json()["contact"]["id"] == person_id
+    assert response.get_json()["owner"]["id"] == member["id"]
 
-    response = user_client_with_household.delete(f"/api/person/{person_id}")
+    response = user_client_with_household.post(
+        f"/api/document/{doc_id}", json={"owner_id": None}
+    )
     assert response.status_code == 200
-    db.session.expire_all()
 
     response = user_client_with_household.get(f"/api/document/{doc_id}")
     assert response.status_code == 200
-    assert response.get_json()["contact"] is None
+    assert response.get_json()["owner"] is None
 
 
-def test_document_invalid_contact_rejected(user_client_with_household, household_id):
+def test_document_invalid_owner_rejected(user_client_with_household, household_id):
     response = _create_document(
-        user_client_with_household, household_id, title="Deed", contact_id=999999
+        user_client_with_household, household_id, title="Deed", owner_id=999999
     )
     assert response.status_code == 400
 
 
 def test_document_export_import_roundtrip(
-    user_client_with_household, household_id
+    user_client_with_household, household_id, admin_username, admin_password
 ):
     import base64
     import os
 
     file = _make_file("export_me.pdf")
-    response = user_client_with_household.post(
-        f"/api/household/{household_id}/person", json={"name": "Alice"}
+    member = _add_member(
+        user_client_with_household, household_id, admin_username, admin_password,
+        "docowner2",
     )
-    person_name = response.get_json()["name"]
+    person_name = member["name"]
 
     from datetime import datetime, timedelta, timezone
 
@@ -224,7 +258,7 @@ def test_document_export_import_roundtrip(
         title="Passport",
         notes="vault",
         expires_at=int(expiry.timestamp() * 1000),
-        contact_id=response.get_json()["id"],
+        owner_id=member["id"],
         file_id=file.filename,
     )
 
@@ -238,7 +272,7 @@ def test_document_export_import_roundtrip(
     exported = docs[0]
     assert exported["title"] == "Passport"
     assert exported["notes"] == "vault"
-    assert exported["contact"] == person_name
+    assert exported["owner"] == person_name
     assert exported["expires_at"] is not None
     assert exported["file"]["filename"] == file.filename
     with open(os.path.join(UPLOAD_FOLDER, file.filename), "rb") as f:
@@ -255,7 +289,7 @@ def test_document_export_import_roundtrip(
     assert len(response.get_json()) == 1
 
 
-def test_document_import_recreates_file_and_links_contact(
+def test_document_import_recreates_file_and_links_owner(
     user_client_with_household, household_id
 ):
     import base64
@@ -269,7 +303,7 @@ def test_document_import_recreates_file_and_links_contact(
                 "title": "Deed",
                 "notes": None,
                 "expires_at": expiry.isoformat(),
-                "contact": None,
+                "owner": None,
                 "file": {
                     "filename": "imported_deed.pdf",
                     "data": base64.b64encode(b"blob").decode(),
@@ -296,17 +330,18 @@ def test_document_import_recreates_file_and_links_contact(
     assert docs[0]["expires_at"] == int(expiry.timestamp() * 1000)
 
 
-def test_document_import_links_existing_contact_by_name(
-    user_client_with_household, household_id
+def test_document_import_links_existing_owner_by_name(
+    user_client_with_household, household_id, admin_username, admin_password
 ):
-    response = user_client_with_household.post(
-        f"/api/household/{household_id}/person", json={"name": "Bob"}
+    member = _add_member(
+        user_client_with_household, household_id, admin_username, admin_password,
+        "Bob",
     )
-    person_id = response.get_json()["id"]
+    user_id = member["id"]
 
     payload = {
         "documents": [
-            {"title": "Contract", "contact": "Bob", "file": None},
+            {"title": "Contract", "owner": "Bob", "file": None},
         ]
     }
     response = user_client_with_household.post(
@@ -317,7 +352,7 @@ def test_document_import_links_existing_contact_by_name(
     response = user_client_with_household.get(
         f"/api/household/{household_id}/document"
     )
-    assert response.get_json()[0]["contact"]["id"] == person_id
+    assert response.get_json()[0]["owner"]["id"] == user_id
 
 
 def test_document_non_member_forbidden(

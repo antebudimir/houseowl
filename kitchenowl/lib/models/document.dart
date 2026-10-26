@@ -1,8 +1,8 @@
+import 'package:houseowl/models/member.dart';
 import 'package:houseowl/models/model.dart';
-import 'package:houseowl/models/person.dart';
 
 /// A household document with optional expiry date, attached file and linked
-/// contact. `expiresAt` and `filename` mirror the backend's epoch-ms /
+/// owner. `expiresAt` and `filename` mirror the backend's epoch-ms /
 /// embedded-file JSON shape.
 class Document extends Model {
   final int? id;
@@ -11,8 +11,8 @@ class Document extends Model {
 
   /// UTC instant at which the document expires; null means never expires.
   final DateTime? expiresAt;
-  final Person? contact;
-  final int? contactId;
+  final Member? owner;
+  final int? ownerId;
 
   /// Name of the file uploaded through `/api/upload`; doubles as the
   /// backend's `file_id`.
@@ -26,8 +26,8 @@ class Document extends Model {
     this.title = '',
     this.notes,
     this.expiresAt,
-    this.contact,
-    this.contactId,
+    this.owner,
+    this.ownerId,
     this.filename,
     this.fileBlurHash,
   });
@@ -43,10 +43,10 @@ class Document extends Model {
               map['expires_at'],
               isUtc: true,
             ),
-      contact: map['contact'] == null
+      owner: map['owner'] == null
           ? null
-          : Person.fromJson(Map<String, dynamic>.from(map['contact'] as Map)),
-      contactId: map['contact_id'],
+          : Member.fromJson(Map<String, dynamic>.from(map['owner'] as Map)),
+      ownerId: map['owner_id'],
       filename: map['file'] == null
           ? null
           : (map['file'] as Map)['filename'] as String?,
@@ -61,8 +61,8 @@ class Document extends Model {
     String? title,
     String? notes,
     DateTime? expiresAt,
-    Person? contact,
-    int? contactId,
+    Member? owner,
+    int? ownerId,
     String? filename,
   }) =>
       Document(
@@ -70,8 +70,8 @@ class Document extends Model {
         title: title ?? this.title,
         notes: notes ?? this.notes,
         expiresAt: expiresAt ?? this.expiresAt,
-        contact: contact ?? this.contact,
-        contactId: contactId ?? this.contactId,
+        owner: owner ?? this.owner,
+        ownerId: ownerId ?? this.ownerId,
         filename: filename ?? this.filename,
         fileBlurHash: fileBlurHash ?? this.fileBlurHash,
       );
@@ -92,7 +92,7 @@ class Document extends Model {
 
   @override
   List<Object?> get props =>
-      [id, title, notes, expiresAt, contact, contactId, filename, fileBlurHash];
+      [id, title, notes, expiresAt, owner, ownerId, filename, fileBlurHash];
 
   @override
   String toString() => "Document($id, $title)";
@@ -102,7 +102,7 @@ class Document extends Model {
         "notes": notes,
         "expires_at": expiresAt?.millisecondsSinceEpoch,
         "file_id": filename,
-        "contact_id": contactId ?? contact?.id,
+        "owner_id": ownerId ?? owner?.id,
       };
 
   @override

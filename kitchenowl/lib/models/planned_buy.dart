@@ -1,6 +1,6 @@
 import 'package:houseowl/enums/buy_status.dart';
+import 'package:houseowl/models/member.dart';
 import 'package:houseowl/models/model.dart';
-import 'package:houseowl/models/person.dart';
 
 class PlannedBuy extends Model {
   final int? id;
@@ -16,7 +16,7 @@ class PlannedBuy extends Model {
   /// Server-stamped when the status transitions to acquired.
   final DateTime? acquiredAt;
   final int? assigneeId;
-  final Person? assignee;
+  final Member? assignee;
 
   const PlannedBuy({
     this.id,
@@ -59,7 +59,7 @@ class PlannedBuy extends Model {
             ),
       assigneeId: map['assignee_id'],
       assignee:
-          map['assignee'] == null ? null : Person.fromJson(map['assignee']),
+          map['assignee'] == null ? null : Member.fromJson(map['assignee']),
     );
   }
 
@@ -75,7 +75,7 @@ class PlannedBuy extends Model {
     num? actualPrice,
     DateTime? acquiredAt,
     int? assigneeId,
-    Person? assignee,
+    Member? assignee,
   }) =>
       PlannedBuy(
         id: id ?? this.id,

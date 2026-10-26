@@ -222,11 +222,11 @@ def _tool_create_document(args: dict[str, Any]) -> Any:
         document.expires_at = datetime.fromtimestamp(
             int(args["expires_at"]) / 1000, timezone.utc
         )
-    if args.get("contact_id"):
-        person = Person.find_by_id(int(args["contact_id"]))
-        if not person or person.household_id != household_id:
-            return {"created": False, "reason": "invalid_contact"}
-        document.contact = person
+    if args.get("owner_id"):
+        member = HouseholdMember.find_by_ids(household_id, int(args["owner_id"]))
+        if not member:
+            return {"created": False, "reason": "invalid_owner"}
+        document.owner = member.user
     document.save()
     return document.obj_to_full_dict()
 
@@ -315,10 +315,10 @@ def _tool_create_event(args: dict[str, Any]) -> Any:
     if args.get("location"):
         event.location = str(args["location"])
     event.save()
-    for person_id in attendee_ids:
-        person = Person.find_by_id(person_id)
-        if person and person.household_id == household_id:
-            EventAttendee(event=event, person=person).save()
+    for user_id in attendee_ids:
+        member = HouseholdMember.find_by_ids(household_id, user_id)
+        if member:
+            EventAttendee(event=event, user_id=user_id).save()
     return event.obj_to_full_dict()
 
 
@@ -550,7 +550,7 @@ TOOLS: dict[str, tuple[dict[str, Any], Callable[[dict[str, Any]], Any]]] = {
                 "attendees": {
                     "type": "array",
                     "items": {"type": "integer"},
-                    "description": "Person ids; conflicting attendees block creation",
+                    "description": "User ids of household members; conflicting attendees block creation",
                 },
             },
             "required": ["household_id", "name", "start", "end"],
@@ -590,7 +590,7 @@ TOOLS: dict[str, tuple[dict[str, Any], Callable[[dict[str, Any]], Any]]] = {
                     "type": "integer",
                     "description": "UTC epoch milliseconds",
                 },
-                "contact_id": {"type": "integer"},
+                "owner_id": {"type": "integer"},
             },
             "required": ["household_id", "title"],
         },

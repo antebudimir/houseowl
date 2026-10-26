@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped
 
 Model = db.Model
 if TYPE_CHECKING:
-    from app.models import Household, Person
+    from app.models import Household, User
     from app.helpers.db_model_base import DbModelBase
 
     Model = DbModelBase
@@ -33,8 +33,9 @@ class PlannedBuy(Model, DbModelAuthorizeMixin):
     acquired_at: Mapped[Optional[datetime]] = db.Column(
         db.DateTime, nullable=True
     )
+    # Assignee is a household member (user account), not a directory person.
     assignee_id: Mapped[Optional[int]] = db.Column(
-        db.Integer, db.ForeignKey("person.id", ondelete="SET NULL"), nullable=True
+        db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"), nullable=True
     )
     household_id: Mapped[int] = db.Column(
         db.Integer, db.ForeignKey("household.id"), nullable=False, index=True
@@ -47,10 +48,10 @@ class PlannedBuy(Model, DbModelAuthorizeMixin):
             uselist=False,
         ),
     )
-    assignee: Mapped[Optional["Person"]] = cast(
-        Mapped[Optional["Person"]],
+    assignee: Mapped[Optional["User"]] = cast(
+        Mapped[Optional["User"]],
         db.relationship(
-            "Person",
+            "User",
             uselist=False,
         ),
     )

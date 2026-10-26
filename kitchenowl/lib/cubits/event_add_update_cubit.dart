@@ -2,32 +2,33 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:houseowl/models/event.dart';
 import 'package:houseowl/models/household.dart';
-import 'package:houseowl/models/person.dart';
+import 'package:houseowl/models/member.dart';
 import 'package:houseowl/services/api/api_service.dart';
 
-/// State for the event editor: the household's persons (for the attendee
+/// State for the event editor: the household's members (for the attendee
 /// chips), the current selection, and the live conflict banner fed by the
 /// server's /conflicts pre-check (the save itself is authoritatively
 /// re-checked and hard-blocked with 409).
 class EventAddUpdateCubit extends Cubit<EventAddUpdateState> {
   final Household household;
 
-  EventAddUpdateCubit(this.household, {Set<Person> selectedPersons = const {}})
+  EventAddUpdateCubit(this.household, {Set<Member> selectedPersons = const {}})
       : super(EventAddUpdateState(selectedPersons: selectedPersons)) {
-    getPersons();
+    getMembers();
   }
 
-  Future<void> getPersons() async {
-    final persons = await ApiService.getInstance()
-        .getPersons(household)
-        .then((v) => v ?? const <Person>[]);
-    emit(state.copyWith(persons: persons));
-    // The page triggers checkConflicts with the current time slot; person
+  Future<void> getMembers() async {
+    final members = await ApiService.getInstance()
+            .getHousehold(household)
+            .then((r) => r.household?.member) ??
+        const <Member>[];
+    emit(state.copyWith(persons: members));
+    // The page triggers checkConflicts with the current time slot; member
     // selection changes go through selectPerson below.
   }
 
-  void selectPerson(Person person, bool selected) {
-    final persons = Set<Person>.from(state.selectedPersons);
+  void selectPerson(Member person, bool selected) {
+    final persons = Set<Member>.from(state.selectedPersons);
     selected ? persons.add(person) : persons.remove(person);
     emit(state.copyWith(selectedPersons: persons));
   }
@@ -59,8 +60,8 @@ class EventAddUpdateCubit extends Cubit<EventAddUpdateState> {
 }
 
 class EventAddUpdateState extends Equatable {
-  final List<Person> persons;
-  final Set<Person> selectedPersons;
+  final List<Member> persons;
+  final Set<Member> selectedPersons;
   final List<Event> conflicts;
 
   const EventAddUpdateState({
@@ -70,8 +71,8 @@ class EventAddUpdateState extends Equatable {
   });
 
   EventAddUpdateState copyWith({
-    List<Person>? persons,
-    Set<Person>? selectedPersons,
+    List<Member>? persons,
+    Set<Member>? selectedPersons,
     List<Event>? conflicts,
   }) =>
       EventAddUpdateState(

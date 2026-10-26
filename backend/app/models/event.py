@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped
 
 Model = db.Model
 if TYPE_CHECKING:
-    from app.models import Household, Person
+    from app.models import Household, User
     from app.helpers.db_model_base import DbModelBase
 
     Model = DbModelBase
@@ -53,7 +53,7 @@ class Event(Model, DbModelAuthorizeMixin):
     def obj_to_full_dict(self) -> dict[str, Any]:
         res = super().obj_to_dict()
         res["attendees"] = [
-            con.person.obj_to_dict() for con in self.attendees
+            con.user.obj_to_dict() for con in self.attendees
         ]
         return res
 
@@ -89,7 +89,7 @@ class Event(Model, DbModelAuthorizeMixin):
             cls.household_id == household_id,
             cls.start < end,
             cls.end > start,
-            cls.attendees.any(EventAttendee.person_id.in_(attendee_ids)),
+            cls.attendees.any(EventAttendee.user_id.in_(attendee_ids)),
         )
         if exclude_id is not None:
             query = query.filter(cls.id != exclude_id)
@@ -102,14 +102,14 @@ class EventAttendee(Model):
     event_id: Mapped[int] = db.Column(
         db.Integer, db.ForeignKey("event.id", ondelete="CASCADE"), primary_key=True
     )
-    person_id: Mapped[int] = db.Column(
-        db.Integer, db.ForeignKey("person.id", ondelete="CASCADE"), primary_key=True
+    user_id: Mapped[int] = db.Column(
+        db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), primary_key=True
     )
 
-    person: Mapped["Person"] = cast(
-        Mapped["Person"],
+    user: Mapped["User"] = cast(
+        Mapped["User"],
         db.relationship(
-            "Person",
+            "User",
         ),
     )
     event: Mapped["Event"] = cast(
@@ -122,7 +122,7 @@ class EventAttendee(Model):
     )
 
     @classmethod
-    def find_by_ids(cls, event_id: int, person_id: int) -> Self | None:
+    def find_by_ids(cls, event_id: int, user_id: int) -> Self | None:
         return cls.query.filter(
-            cls.event_id == event_id, cls.person_id == person_id
+            cls.event_id == event_id, cls.user_id == user_id
         ).first()

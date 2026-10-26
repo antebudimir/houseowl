@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 
 from app.config import UPLOAD_FOLDER
-from app.models import Document, File, Household, Person
+from app.models import Document, File, Household, HouseholdMember, User
 
 
 def _import_file(args: dict) -> File | None:
@@ -23,15 +23,15 @@ def _import_file(args: dict) -> File | None:
     return File(filename=filename).save()
 
 
-def _import_contact(household: Household, name: str | None) -> Person | None:
-    # Contacts are only linked, never created: the import must not invent
-    # person rows the exporting household may have intentionally dropped.
+def _import_owner(household: Household, name: str | None) -> User | None:
+    # Owners are only linked, never created: the import must not invent user
+    # accounts the exporting household may have intentionally dropped.
     if not name:
         return None
     return (
-        Person.query.filter(
-            Person.household_id == household.id, Person.name == name
-        ).first()
+        User.query.join(HouseholdMember, HouseholdMember.user_id == User.id)
+        .filter(HouseholdMember.household_id == household.id, User.name == name)
+        .first()
     )
 
 
@@ -54,6 +54,6 @@ def importDocument(household: Household, args: dict):
     if args.get("expires_at"):
         document.expires_at = datetime.fromisoformat(args["expires_at"])
     document.file = _import_file(args)
-    document.contact = _import_contact(household, args.get("contact"))
+    document.owner = _import_owner(household, args.get("owner"))
     document.save()
     return document

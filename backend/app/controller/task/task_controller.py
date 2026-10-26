@@ -6,7 +6,7 @@ from flask_jwt_extended import current_user, jwt_required
 from app import socketio
 from app.errors import NotFoundRequest
 from app.helpers import validate_args, authorize_household
-from app.models import Person, PlannedBuy, Tag, Task, TaskTags
+from app.models import HouseholdMember, PlannedBuy, Tag, Task, TaskTags
 from .schemas import AddTask, UpdateTask
 
 taskBP = Blueprint("task", __name__)
@@ -21,10 +21,10 @@ def _set_assignee(task, household_id, assignee_id):
     if assignee_id is None:
         task.assignee_id = None
         return
-    person = Person.find_by_id(assignee_id)
-    if not person or person.household_id != household_id:
+    member = HouseholdMember.find_by_ids(household_id, assignee_id)
+    if not member:
         raise NotFoundRequest()
-    task.assignee_id = person.id
+    task.assignee_id = assignee_id
 
 
 def _set_buy(task, household_id, buy_id):
@@ -70,11 +70,7 @@ def getTasks(household_id):
     if status and status != "all":
         tasks = [t for t in tasks if t.status == status]
     if request.args.get("assignee") == "me":
-        person = Person.query.filter(
-            Person.household_id == household_id,
-            Person.user_id == current_user.id,
-        ).first()
-        tasks = [t for t in tasks if t.assignee_id == person.id] if person else []
+        tasks = [t for t in tasks if t.assignee_id == current_user.id]
     tag_name = request.args.get("tag")
     if tag_name:
         tasks = [t for t in tasks if any(c.tag.name == tag_name for c in t.tags)]

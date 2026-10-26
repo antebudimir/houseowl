@@ -29,7 +29,7 @@ class _DocumentAddUpdatePageState extends State<DocumentAddUpdatePage> {
   late final TextEditingController _titleController;
   late final TextEditingController _notesController;
   DateTime? _expiresAt;
-  int? _contactId;
+  int? _ownerId;
   NamedByteArray? _file;
   String? _existingFilename;
   late final DocumentAddUpdateCubit _cubit;
@@ -45,7 +45,7 @@ class _DocumentAddUpdatePageState extends State<DocumentAddUpdatePage> {
     _notesController =
         TextEditingController(text: widget.document?.notes ?? "");
     _expiresAt = widget.document?.expiresAt;
-    _contactId = widget.document?.contactId ?? widget.document?.contact?.id;
+    _ownerId = widget.document?.ownerId ?? widget.document?.owner?.id;
     _existingFilename = widget.document?.filename;
     _cubit = DocumentAddUpdateCubit(widget.household);
   }
@@ -121,7 +121,7 @@ class _DocumentAddUpdatePageState extends State<DocumentAddUpdatePage> {
       notes:
           _notesController.text.trim().isEmpty ? null : _notesController.text,
       expiresAt: _expiresAt,
-      contactId: _contactId,
+      ownerId: _ownerId,
       filename: filename,
     );
 
@@ -215,24 +215,21 @@ class _DocumentAddUpdatePageState extends State<DocumentAddUpdatePage> {
         onTap: _selectExpiryDate,
       ),
       DropdownButtonFormField<int?>(
-        initialValue: _contactId,
+        initialValue: _ownerId,
         decoration: InputDecoration(labelText: loc.person),
-        items: state.persons.isEmpty
+        items: state.members.isEmpty
             ? const <DropdownMenuItem<int?>>[]
             : [
                 const DropdownMenuItem(value: null, child: Text("\u2014")),
                 // Dedupe by id: duplicated entries would trip the
                 // DropdownButtonFormField value-uniqueness assertion.
-                // Only household members can be linked; directory-only
-                // contacts are excluded.
                 ...{
-                  for (final p in state.persons)
-                    if (p.userId != null) p.id: p,
+                  for (final m in state.members) m.id: m,
                 }.values.map(
-                      (p) => DropdownMenuItem(value: p.id, child: Text(p.name)),
+                      (m) => DropdownMenuItem(value: m.id, child: Text(m.name)),
                     ),
               ],
-        onChanged: (value) => setState(() => _contactId = value),
+        onChanged: (value) => setState(() => _ownerId = value),
       ),
       ListTile(
         contentPadding: EdgeInsets.zero,

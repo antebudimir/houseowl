@@ -10,7 +10,7 @@ from .tag import Tag
 
 Model = db.Model
 if TYPE_CHECKING:
-    from app.models import Household, Person, PlannedBuy, Tag
+    from app.models import Household, PlannedBuy, Tag, User
     from app.helpers.db_model_base import DbModelBase
 
     Model = DbModelBase
@@ -79,8 +79,9 @@ class Task(Model, DbModelAuthorizeMixin):
     completed_at: Mapped[Optional[datetime]] = db.Column(
         db.DateTime, nullable=True
     )
+    # Assignee is a household member (user account), not a directory person.
     assignee_id: Mapped[Optional[int]] = db.Column(
-        db.Integer, db.ForeignKey("person.id", ondelete="SET NULL"), nullable=True
+        db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"), nullable=True
     )
     buy_id: Mapped[Optional[int]] = db.Column(
         db.Integer, db.ForeignKey("planned_buy.id", ondelete="SET NULL"), nullable=True
@@ -96,10 +97,10 @@ class Task(Model, DbModelAuthorizeMixin):
             uselist=False,
         ),
     )
-    assignee: Mapped[Optional["Person"]] = cast(
-        Mapped[Optional["Person"]],
+    assignee: Mapped[Optional["User"]] = cast(
+        Mapped[Optional["User"]],
         db.relationship(
-            "Person",
+            "User",
             uselist=False,
         ),
     )

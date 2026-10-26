@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required
 from app import socketio
 from app.errors import InvalidUsage, NotFoundRequest
 from app.helpers import validate_args, authorize_household
-from app.models import Document, File, Person
+from app.models import Document, File, HouseholdMember
 from .schemas import GetDocuments, AddDocument, UpdateDocument
 
 document = Blueprint("document", __name__)
@@ -46,13 +46,13 @@ def _parse_expires_at(args):
     return datetime.fromtimestamp(args["expires_at"] / 1000, timezone.utc)
 
 
-def _resolve_contact(args, household_id):
-    if not args.get("contact_id"):
+def _resolve_owner(args, household_id):
+    if not args.get("owner_id"):
         return None
-    person = Person.find_by_id(args["contact_id"])
-    if not person or person.household_id != household_id:
-        raise InvalidUsage("Invalid contact_id")
-    return person
+    member = HouseholdMember.find_by_ids(household_id, args["owner_id"])
+    if not member:
+        raise InvalidUsage("Invalid owner_id")
+    return member.user
 
 
 def _resolve_file(args):
@@ -75,7 +75,7 @@ def addDocument(args, household_id):
     document.notes = args.get("notes")
     document.expires_at = _parse_expires_at(args)
     document.file = _resolve_file(args)
-    document.contact = _resolve_contact(args, household_id)
+    document.owner = _resolve_owner(args, household_id)
     document.save()
     socketio.emit(
         "document:update",
@@ -112,8 +112,8 @@ def updateDocument(args, id):
         document.expires_at = _parse_expires_at(args)
     if "file_id" in args:
         document.file = _resolve_file(args)
-    if "contact_id" in args:
-        document.contact = _resolve_contact(args, document.household_id)
+    if "owner_id" in args:
+        document.owner = _resolve_owner(args, document.household_id)
     document.save()
     socketio.emit(
         "document:update",

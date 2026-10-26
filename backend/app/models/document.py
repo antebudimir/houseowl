@@ -11,7 +11,7 @@ from app.helpers import DbModelAuthorizeMixin
 
 Model = db.Model
 if TYPE_CHECKING:
-    from app.models import File, Household, Person
+    from app.models import File, Household, User
     from app.helpers.db_model_base import DbModelBase
 
     Model = DbModelBase
@@ -29,8 +29,9 @@ class Document(Model, DbModelAuthorizeMixin):
     file_id: Mapped[Optional[str]] = db.Column(
         db.String(), db.ForeignKey("file.filename"), nullable=True
     )
-    contact_id: Mapped[Optional[int]] = db.Column(
-        db.Integer, db.ForeignKey("person.id", ondelete="SET NULL"), nullable=True
+    # Owner is a household member (user account), not a directory person.
+    owner_id: Mapped[Optional[int]] = db.Column(
+        db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"), nullable=True
     )
     household_id: Mapped[int] = db.Column(
         db.Integer, db.ForeignKey("household.id"), nullable=False, index=True
@@ -51,10 +52,10 @@ class Document(Model, DbModelAuthorizeMixin):
             uselist=False,
         ),
     )
-    contact: Mapped[Optional["Person"]] = cast(
-        Mapped[Optional["Person"]],
+    owner: Mapped[Optional["User"]] = cast(
+        Mapped[Optional["User"]],
         db.relationship(
-            "Person",
+            "User",
             uselist=False,
         ),
     )
@@ -110,17 +111,17 @@ class Document(Model, DbModelAuthorizeMixin):
     def obj_to_full_dict(self) -> dict[str, Any]:
         res = super().obj_to_dict()
         res["file"] = self.file.obj_to_dict() if self.file else None
-        res["contact"] = self.contact.obj_to_dict() if self.contact else None
+        res["owner"] = self.owner.obj_to_dict() if self.owner else None
         return res
 
     def obj_to_export_dict(self) -> dict[str, Any]:
-        # Portable representation: no ids, ISO expiry, contact by name and the
+        # Portable representation: no ids, ISO expiry, owner by name and the
         # file blob inlined as base64 so an export is self-contained.
         res: dict[str, Any] = {
             "title": self.title,
             "notes": self.notes,
             "expires_at": self.expires_at.isoformat() if self.expires_at else None,
-            "contact": self.contact.name if self.contact else None,
+            "owner": self.owner.name if self.owner else None,
             "file": None,
         }
         if self.file:

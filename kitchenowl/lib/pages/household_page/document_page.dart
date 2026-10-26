@@ -158,12 +158,12 @@ class _DocumentPageState extends State<DocumentPage> {
                     )
                   : null,
             ),
-          if (widget.document.contact != null)
+          if (widget.document.owner != null)
             ListTile(
               contentPadding: EdgeInsets.zero,
               leading: const Icon(Icons.person_outline_rounded),
               title: Text(loc.person),
-              subtitle: Text(widget.document.contact!.name),
+              subtitle: Text(widget.document.owner!.name),
             ),
           if (_isImageFile(widget.document.filename!)) ...[
             InkWell(

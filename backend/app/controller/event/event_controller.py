@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required
 from app import socketio
 from app.errors import NotFoundRequest
 from app.helpers import validate_args, authorize_household
-from app.models import Event, EventAttendee, Person
+from app.models import Event, EventAttendee, HouseholdMember
 from .schemas import AddEvent, UpdateEvent
 
 eventBP = Blueprint("event", __name__)
@@ -20,15 +20,15 @@ def _parse_ms(raw):
 
 def _set_attendees(event, household_id, attendee_ids):
     for con in event.attendees:
-        if con.person_id not in attendee_ids:
+        if con.user_id not in attendee_ids:
             con.delete()
-    for person_id in attendee_ids:
-        person = Person.find_by_id(person_id)
-        if not person or person.household_id != household_id:
+    for user_id in attendee_ids:
+        member = HouseholdMember.find_by_ids(household_id, user_id)
+        if not member:
             raise NotFoundRequest()
-        con = EventAttendee.find_by_ids(event.id, person.id)
+        con = EventAttendee.find_by_ids(event.id, user_id)
         if not con:
-            EventAttendee(event=event, person=person).save()
+            EventAttendee(event=event, user_id=user_id).save()
 
 
 def _emit_update(event_or_none, household_id):
@@ -50,7 +50,7 @@ def _conflict_response(events):
                     "start": e.start,
                     "end": e.end,
                     "attendees": [
-                        con.person.obj_to_dict() for con in e.attendees
+                        con.user.obj_to_dict() for con in e.attendees
                     ],
                 }
                 for e in events
@@ -97,7 +97,7 @@ def getEventConflicts(household_id):
                 "name": e.name,
                 "start": e.start,
                 "end": e.end,
-                "attendees": [con.person.obj_to_dict() for con in e.attendees],
+                "attendees": [con.user.obj_to_dict() for con in e.attendees],
             }
             for e in conflicts
         ]
@@ -178,7 +178,7 @@ def updateEvent(args, id):
         or attendee_ids is not None
     ):
         if attendee_ids is None:
-            attendee_ids = [con.person_id for con in event.attendees]
+            attendee_ids = [con.user_id for con in event.attendees]
         conflicts = Event.find_conflicts(
             event.household_id,
             event.start,

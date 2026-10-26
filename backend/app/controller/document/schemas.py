@@ -26,7 +26,7 @@ class AddDocument(Schema):
     notes = fields.String(allow_none=True)
     expires_at = fields.Integer(allow_none=True)
     file_id = fields.String(allow_none=True)
-    contact_id = fields.Integer(allow_none=True)
+    owner_id = fields.Integer(allow_none=True)
 
 
 class UpdateDocument(Schema):
@@ -37,4 +37,4 @@ class UpdateDocument(Schema):
     notes = fields.String(allow_none=True)
     expires_at = fields.Integer(allow_none=True)
     file_id = fields.String(allow_none=True)
-    contact_id = fields.Integer(allow_none=True)
+    owner_id = fields.Integer(allow_none=True)

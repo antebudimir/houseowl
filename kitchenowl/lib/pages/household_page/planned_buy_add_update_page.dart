@@ -6,7 +6,7 @@ import 'package:houseowl/enums/buy_status.dart';
 import 'package:houseowl/enums/update_enum.dart';
 import 'package:houseowl/kitchenowl.dart';
 import 'package:houseowl/models/household.dart';
-import 'package:houseowl/models/person.dart';
+import 'package:houseowl/models/member.dart';
 import 'package:houseowl/models/planned_buy.dart';
 import 'package:houseowl/services/api/api_service.dart';
 
@@ -35,7 +35,7 @@ class _PlannedBuyAddUpdatePageState extends State<PlannedBuyAddUpdatePage> {
   DateTime? _targetDate;
   int? _assigneeId;
   late final Future<List<String>> _categories;
-  late final Future<List<Person>> _persons;
+  late final Future<List<Member>> _members;
   bool _isLoading = false;
 
   bool get isEditing => widget.plannedBuy != null;
@@ -57,15 +57,9 @@ class _PlannedBuyAddUpdatePageState extends State<PlannedBuyAddUpdatePage> {
     _categories = ApiService.getInstance()
         .getPlannedBuyCategories(widget.household)
         .then((v) => v ?? const <String>[]);
-    _persons = ApiService.getInstance()
-        .getPersons(widget.household)
-        .then(
-          (v) => (v ?? const <Person>[])
-              // Only household members can be assigned; directory-only
-              // contacts are excluded.
-              .where((p) => p.userId != null)
-              .toList(),
-        );
+    _members = ApiService.getInstance()
+        .getHousehold(widget.household)
+        .then((r) => r.household?.member ?? const <Member>[]);
   }
 
   @override
@@ -214,18 +208,18 @@ class _PlannedBuyAddUpdatePageState extends State<PlannedBuyAddUpdatePage> {
         },
         onSelected: (option) => _categoryController.text = option,
       ),
-      FutureBuilder<List<Person>>(
-        future: _persons,
+      FutureBuilder<List<Member>>(
+        future: _members,
         builder: (context, snapshot) {
-          final persons = snapshot.data ?? const <Person>[];
+          final members = snapshot.data ?? const <Member>[];
 
           return DropdownButtonFormField<int?>(
             initialValue: _assigneeId,
             decoration: InputDecoration(labelText: loc.assignee),
             items: [
               const DropdownMenuItem(value: null, child: Text("\u2014")),
-              ...persons.map(
-                (p) => DropdownMenuItem(value: p.id, child: Text(p.name)),
+              ...members.map(
+                (m) => DropdownMenuItem(value: m.id, child: Text(m.name)),
               ),
             ],
             onChanged: (value) => setState(() => _assigneeId = value),

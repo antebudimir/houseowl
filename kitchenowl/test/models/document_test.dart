@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:houseowl/models/document.dart';
-import 'package:houseowl/models/person.dart';
+import 'package:houseowl/models/member.dart';
 
 void main() {
   test("Document json roundtrip", () {
@@ -9,7 +9,7 @@ void main() {
       "title": "Insurance",
       "notes": "Policy #1234",
       "expires_at": 1893456000000,
-      "contact": {"id": 2, "name": "Alice"},
+      "owner": {"id": 2, "name": "Alice", "username": "alice"},
       "file": {"filename": "policy.pdf"},
     });
 
@@ -19,7 +19,7 @@ void main() {
       document.expiresAt,
       DateTime.fromMillisecondsSinceEpoch(1893456000000, isUtc: true),
     );
-    expect(document.contact, const Person(id: 2, name: "Alice"));
+    expect(document.owner, isA<Member>());
     expect(document.filename, "policy.pdf");
 
     final map = document.toJsonWithId();
@@ -27,18 +27,18 @@ void main() {
     expect(map["title"], "Insurance");
     expect(map["notes"], "Policy #1234");
     expect(map["expires_at"], 1893456000000);
-    expect(map["contact_id"], 2);
+    expect(map["owner_id"], 2);
     expect(map["file_id"], "policy.pdf");
 
-    // fromJson accepts the embedded file/contact objects the server returns.
+    // fromJson accepts the embedded file/owner objects the server returns.
     final reparsed = Document.fromJson({
       ...map,
-      "contact": {"id": 2, "name": "Alice"},
+      "owner": {"id": 2, "name": "Alice", "username": "alice"},
       "file": {"filename": "policy.pdf"},
     });
     expect(reparsed.title, document.title);
     expect(reparsed.expiresAt, document.expiresAt);
-    expect(reparsed.contact, document.contact);
+    expect(reparsed.owner, document.owner);
     expect(reparsed.filename, document.filename);
   });
 
@@ -47,7 +47,7 @@ void main() {
 
     expect(document.notes, isNull);
     expect(document.expiresAt, isNull);
-    expect(document.contact, isNull);
+    expect(document.owner, isNull);
     expect(document.filename, isNull);
   });
 

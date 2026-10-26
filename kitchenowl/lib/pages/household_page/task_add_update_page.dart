@@ -6,7 +6,7 @@ import 'package:houseowl/enums/task_recurrence_enum.dart';
 import 'package:houseowl/enums/update_enum.dart';
 import 'package:houseowl/kitchenowl.dart';
 import 'package:houseowl/models/household.dart';
-import 'package:houseowl/models/person.dart';
+import 'package:houseowl/models/member.dart';
 import 'package:houseowl/models/planned_buy.dart';
 import 'package:houseowl/models/tag.dart';
 import 'package:houseowl/models/task.dart';
@@ -35,7 +35,7 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
   DateTime? _dueDate;
   int? _assigneeId;
   int? _buyId;
-  late final Future<List<Person>> _persons;
+  late final Future<List<Member>> _members;
   late final Future<List<PlannedBuy>> _buys;
   late final TaskAddUpdateCubit _cubit;
   bool _isLoading = false;
@@ -57,15 +57,9 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
     _dueDate = widget.task?.dueDate;
     _assigneeId = widget.task?.assigneeId;
     _buyId = widget.task?.buyId;
-    _persons = ApiService.getInstance()
-        .getPersons(widget.household)
-        .then(
-          (v) => (v ?? const <Person>[])
-              // Only household members can be assigned; directory-only
-              // contacts are excluded.
-              .where((p) => p.userId != null)
-              .toList(),
-        );
+    _members = ApiService.getInstance()
+        .getHousehold(widget.household)
+        .then((r) => r.household?.member ?? const <Member>[]);
     _buys = ApiService.getInstance()
         .getPlannedBuys(widget.household)
         .then((v) => v ?? const <PlannedBuy>[]);
@@ -228,25 +222,25 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
             : null,
         onTap: _selectDueDate,
       ),
-      FutureBuilder<List<Person>>(
-        future: _persons,
+      FutureBuilder<List<Member>>(
+        future: _members,
         builder: (context, snapshot) {
-          final persons = snapshot.data ?? const <Person>[];
+          final members = snapshot.data ?? const <Member>[];
 
           return DropdownButtonFormField<int?>(
             initialValue: _assigneeId,
             decoration: InputDecoration(labelText: loc.assignee),
-            items: persons.isEmpty
+            items: members.isEmpty
                 ? const <DropdownMenuItem<int?>>[]
                 : [
                     const DropdownMenuItem(value: null, child: Text("\u2014")),
                     // Dedupe by id: duplicated entries would trip the
                     // DropdownButtonFormField value-uniqueness assertion.
                     ...{
-                      for (final p in persons) p.id: p,
+                      for (final m in members) m.id: m,
                     }.values.map(
-                          (p) => DropdownMenuItem(
-                              value: p.id, child: Text(p.name)),
+                          (m) => DropdownMenuItem(
+                              value: m.id, child: Text(m.name)),
                         ),
                   ],
             onChanged: (value) => setState(() => _assigneeId = value),

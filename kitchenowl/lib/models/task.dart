@@ -1,6 +1,6 @@
 import 'package:houseowl/enums/task_recurrence_enum.dart';
+import 'package:houseowl/models/member.dart';
 import 'package:houseowl/models/model.dart';
-import 'package:houseowl/models/person.dart';
 import 'package:houseowl/models/planned_buy.dart';
 import 'package:houseowl/models/tag.dart';
 
@@ -18,7 +18,7 @@ class Task extends Model {
   /// Server-stamped when the task is completed.
   final DateTime? completedAt;
   final int? assigneeId;
-  final Person? assignee;
+  final Member? assignee;
   final int? buyId;
   final PlannedBuy? buy;
   final List<Tag> tags;
@@ -59,7 +59,7 @@ class Task extends Model {
             ),
       assigneeId: map['assignee_id'],
       assignee:
-          map['assignee'] == null ? null : Person.fromJson(map['assignee']),
+          map['assignee'] == null ? null : Member.fromJson(map['assignee']),
       buyId: map['buy_id'],
       buy: map['buy'] == null ? null : PlannedBuy.fromJson(map['buy']),
       tags: map['tags'] != null
@@ -82,7 +82,7 @@ class Task extends Model {
     DateTime? dueDate,
     DateTime? completedAt,
     int? assigneeId,
-    Person? assignee,
+    Member? assignee,
     int? buyId,
     PlannedBuy? buy,
     List<Tag>? tags,

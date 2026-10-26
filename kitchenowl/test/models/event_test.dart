@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter_test/flutter_test.dart';
 import 'package:houseowl/models/event.dart';
-import 'package:houseowl/models/person.dart';
+import 'package:houseowl/models/member.dart';
 
 void main() {
   test("Event should be equal", () {
@@ -30,7 +30,7 @@ void main() {
       start: DateTime.utc(2026, 11, 1, 10),
       end: DateTime.utc(2026, 11, 1, 12),
       allDay: true,
-      attendees: [const Person(id: 3, name: "Mom")],
+      attendees: [const Member(id: 3, name: "Mom", username: "mom")],
     );
     // When
     final map = e.toJsonWithId();
@@ -59,8 +59,8 @@ void main() {
       "end": startMs + 3600000,
       "all_day": false,
       "attendees": [
-        {"id": 3, "name": "Mom"},
-        {"id": 4, "name": "Dad"},
+        {"id": 3, "name": "Mom", "username": "mom"},
+        {"id": 4, "name": "Dad", "username": "dad"},
       ],
     });
     // Then

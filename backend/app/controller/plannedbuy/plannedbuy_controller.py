@@ -6,7 +6,7 @@ from flask_jwt_extended import current_user, jwt_required
 from app import socketio
 from app.errors import NotFoundRequest
 from app.helpers import validate_args, authorize_household
-from app.models import Person, PlannedBuy
+from app.models import HouseholdMember, PlannedBuy
 from .schemas import AddPlannedBuy, UpdatePlannedBuy
 
 plannedBuy = Blueprint("planned_buy", __name__)
@@ -21,10 +21,10 @@ def _set_assignee(buy, household_id, assignee_id):
     if assignee_id is None:
         buy.assignee_id = None
         return
-    person = Person.find_by_id(assignee_id)
-    if not person or person.household_id != household_id:
+    member = HouseholdMember.find_by_ids(household_id, assignee_id)
+    if not member:
         raise NotFoundRequest()
-    buy.assignee_id = person.id
+    buy.assignee_id = assignee_id
 
 
 def _emit_update(buy_or_none, household_id):
@@ -47,13 +47,7 @@ def getPlannedBuys(household_id):
     if status:
         buys = [b for b in buys if b.status == status]
     if request.args.get("assignee") == "me":
-        person = Person.query.filter(
-            Person.household_id == household_id,
-            Person.user_id == current_user.id,
-        ).first()
-        buys = (
-            [b for b in buys if b.assignee_id == person.id] if person else []
-        )
+        buys = [b for b in buys if b.assignee_id == current_user.id]
     return jsonify([b.obj_to_full_dict() for b in buys])
 
 
