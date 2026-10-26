@@ -95,19 +95,8 @@ For more information see [Contributing](CONTRIBUTING.md).
 Translations live in `kitchenowl/lib/l10n/*.arb`. Add or edit strings there and
 run `flutter gen-l10n`.
 
-## 🛎️ Stay Up-to-Date
-
-To stay updated on HouseOwl, consider starring and watching the releases of this repository.
-
-### 💬 Status
-
-- [x] Public Alpha: Still working on stuff (rarely things might break)
-- [ ] Public Beta: Stable and most planned features complete
-- [ ] Public: Production-ready
-
 ## 📚 Related
 
-- [Website](https://github.com/antebudimir/houseowl)
 - [Docs (source)](https://github.com/antebudimir/houseowl/tree/main/docs)
 
 ### 🔨 Built With
