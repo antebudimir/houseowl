@@ -54,6 +54,8 @@ class _HouseholdPageState extends State<HouseholdPage>
   late final TasksCubit tasksCubit;
   late final EventsCubit eventsCubit;
 
+  static const double _swipeVelocityThreshold = 350;
+
   @override
   void initState() {
     super.initState();
@@ -264,6 +266,12 @@ class _HouseholdPageState extends State<HouseholdPage>
             desktop: false,
           );
 
+          // On phones only four views fit alongside the "More" tab;
+          // everything else stays reachable through it. Shared by the
+          // bottom bar and the swipe gesture below.
+          final List<ViewsEnum> visiblePages =
+              pages.where((e) => e != ViewsEnum.more).take(4).toList();
+
           Widget body = Align(
             alignment: Alignment.topCenter,
             child: ConstrainedBox(
@@ -298,6 +306,28 @@ class _HouseholdPageState extends State<HouseholdPage>
             );
           }
 
+          if (useBottomNavigationBar && _selectedIndex < visiblePages.length) {
+            // Swipe left/right to move between the tabs shown in the bottom
+            // bar. Horizontal drags claimed by children (e.g. the shopping
+            // list header's category chips) still win the gesture arena.
+            body = GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onHorizontalDragEnd: (details) {
+                final double velocity = details.primaryVelocity ?? 0;
+                if (velocity.abs() < _swipeVelocityThreshold) return;
+                final int target =
+                    _selectedIndex + (velocity < 0 ? 1 : -1);
+                if (target < 0 || target >= visiblePages.length) return;
+                _onItemTapped(
+                  context,
+                  visiblePages[target],
+                  pages[_selectedIndex],
+                );
+              },
+              child: body,
+            );
+          }
+
           return Scaffold(
             key: scaffoldKey,
             body: body,
@@ -313,12 +343,6 @@ class _HouseholdPageState extends State<HouseholdPage>
             bottomNavigationBar: useBottomNavigationBar
                 ? BlocBuilder<AuthCubit, AuthState>(
                     builder: (context, state) {
-                      // On phones only four views fit alongside the "More"
-                      // tab; everything else stays reachable through it.
-                      final List<ViewsEnum> visiblePages = pages
-                          .where((e) => e != ViewsEnum.more)
-                          .take(4)
-                          .toList();
                       final int selectedIndex =
                           _selectedIndex < visiblePages.length
                               ? _selectedIndex
