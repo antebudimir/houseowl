@@ -1,3 +1,5 @@
+# UNUSED in this fork: deploys to Docker Hub, which we don't use.
+# The production image is ghcr.io/antebudimir/houseowl:latest (deploy_ghcr.yml).
 name: CI deploy web (podman)
 
 # Controls when the workflow will run
