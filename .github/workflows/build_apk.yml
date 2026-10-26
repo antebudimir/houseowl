@@ -13,6 +13,14 @@ on:
       - 'kitchenowl/**'
   workflow_dispatch:
 
+# Artifacts have no immutable tag — a rapid second push would otherwise
+# queue an overlapping build and the older run's APK could be mistaken
+# for the newest. Cancel superseded runs; dispatch manually for a
+# specific commit's APK.
+concurrency:
+  group: build-apk
+  cancel-in-progress: true
+
 jobs:
   apk:
     name: Build release APK
