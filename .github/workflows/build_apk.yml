@@ -1,9 +1,16 @@
 name: Build Android APK
 
-# Manual build of a signed release APK, uploaded as a workflow artifact.
+# Build a signed release APK, uploaded as a workflow artifact.
 # Mirrors the Android job of release.yml without drafting a GitHub release.
+# Runs automatically when app code changes; backend-only pushes skip it
+# since APK builds burn Actions minutes.
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'kitchenowl/**'
   workflow_dispatch:
 
 jobs:
