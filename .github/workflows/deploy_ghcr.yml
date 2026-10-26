@@ -17,6 +17,12 @@ permissions:
   contents: read
   packages: write
 
+# All builds push the same :latest tag; cancel superseded runs so a slower
+# older build can never finish last and overwrite the newest image.
+concurrency:
+  group: deploy-ghcr
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
