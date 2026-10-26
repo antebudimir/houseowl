@@ -458,18 +458,6 @@ class ShoppinglistCubit extends Cubit<ShoppinglistCubitState> {
     final shoppinglist = shoppingLists[selectedShoppinglistId];
 
     Future<List<Category>> categories = fetchCategories();
-    // Suggestions come straight from the backend's statistical analysis
-    // (association rules + item frequency); they are best-effort and empty
-    // when offline or unavailable.
-    Future<List<Item>> suggestedItems = shoppinglist == null
-        ? Future.value(const <Item>[])
-        : ApiService.getInstance().getSuggestedItems(shoppinglist).then(
-              (items) => items
-                  .where(
-                      (s) => shoppinglist.items.every((e) => e.name != s.name))
-                  .toList(),
-              onError: (_) => const <Item>[],
-            );
 
     if (query != null && query.isNotEmpty) {
       // Split query into name and description
@@ -524,7 +512,6 @@ class ShoppinglistCubit extends Cubit<ShoppinglistCubitState> {
         shoppinglists: shoppingLists,
         selectedShoppinglistId: selectedShoppinglistId,
         categories: await categories,
-        suggestedItems: (await suggestedItems).take(6).toList(),
         sorting: state.sorting,
         selectedListItems: state.selectedListItems
             .map((e) =>
@@ -568,7 +555,6 @@ class ShoppinglistCubitState extends Equatable {
   final Map<int, ShoppingList> shoppinglists;
   final int? selectedShoppinglistId;
   final List<Category> categories;
-  final List<Item> suggestedItems;
   final ShoppinglistSorting sorting;
   final List<ShoppinglistItem> selectedListItems;
   final ShoppingList? _selectedShoppinglist;
@@ -576,7 +562,6 @@ class ShoppinglistCubitState extends Equatable {
   const ShoppinglistCubitState._({
     this.shoppinglists = const {},
     this.categories = const [],
-    this.suggestedItems = const [],
     this.sorting = ShoppinglistSorting.alphabetical,
     this.selectedListItems = const [],
     this.selectedShoppinglistId = null,
@@ -586,7 +571,6 @@ class ShoppinglistCubitState extends Equatable {
     this.shoppinglists = const {},
     required this.selectedShoppinglistId,
     this.categories = const [],
-    this.suggestedItems = const [],
     this.sorting = ShoppinglistSorting.alphabetical,
     this.selectedListItems = const [],
   }) : _selectedShoppinglist = shoppinglists[selectedShoppinglistId];
@@ -597,7 +581,6 @@ class ShoppinglistCubitState extends Equatable {
     Map<int, ShoppingList>? shoppinglists,
     int? selectedShoppinglistId,
     List<Category>? categories,
-    List<Item>? suggestedItems,
     ShoppinglistSorting? sorting,
     List<ShoppinglistItem>? selectedListItems,
   }) =>
@@ -606,7 +589,6 @@ class ShoppinglistCubitState extends Equatable {
         selectedShoppinglistId:
             selectedShoppinglistId ?? this.selectedShoppinglistId,
         categories: categories ?? this.categories,
-        suggestedItems: suggestedItems ?? this.suggestedItems,
         sorting: sorting ?? this.sorting,
         selectedListItems: selectedListItems ?? this.selectedListItems,
       );
@@ -616,7 +598,6 @@ class ShoppinglistCubitState extends Equatable {
         shoppinglists,
         selectedShoppinglistId,
         categories,
-        suggestedItems,
         sorting,
         selectedListItems,
       ];
@@ -628,7 +609,6 @@ class LoadingShoppinglistCubitState extends ShoppinglistCubitState {
     super.selectedShoppinglistId,
     super.shoppinglists,
     super.categories,
-    super.suggestedItems,
     super.selectedListItems,
   }) : super._();
 
@@ -639,7 +619,6 @@ class LoadingShoppinglistCubitState extends ShoppinglistCubitState {
     List<ShoppinglistItem>? listItems,
     List<ItemWithDescription>? recentItems,
     List<Category>? categories,
-    List<Item>? suggestedItems,
     ShoppinglistSorting? sorting,
     List<ShoppinglistItem>? selectedListItems,
   }) =>
@@ -649,7 +628,6 @@ class LoadingShoppinglistCubitState extends ShoppinglistCubitState {
         selectedShoppinglistId:
             selectedShoppinglistId ?? this.selectedShoppinglistId,
         categories: categories ?? this.categories,
-        suggestedItems: suggestedItems ?? this.suggestedItems,
         selectedListItems: selectedListItems ?? this.selectedListItems,
       );
 }
@@ -662,7 +640,6 @@ class SearchShoppinglistCubitState extends ShoppinglistCubitState {
     super.shoppinglists = const {},
     required super.selectedShoppinglistId,
     super.categories = const [],
-    super.suggestedItems = const [],
     super.sorting = ShoppinglistSorting.alphabetical,
     this.query = "",
     this.result = const [],
@@ -674,7 +651,6 @@ class SearchShoppinglistCubitState extends ShoppinglistCubitState {
     Map<int, ShoppingList>? shoppinglists,
     int? selectedShoppinglistId,
     List<Category>? categories,
-    List<Item>? suggestedItems,
     ShoppinglistSorting? sorting,
     List<Item>? result,
     List<ShoppinglistItem>? selectedListItems,
@@ -685,7 +661,6 @@ class SearchShoppinglistCubitState extends ShoppinglistCubitState {
             selectedShoppinglistId ?? this.selectedShoppinglistId,
         sorting: sorting ?? this.sorting,
         categories: categories ?? this.categories,
-        suggestedItems: suggestedItems ?? this.suggestedItems,
         query: query,
         result: result ?? this.result,
         selectedListItems: selectedListItems ?? this.selectedListItems,

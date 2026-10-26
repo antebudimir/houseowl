@@ -13,8 +13,6 @@ class SliverShopinglistItemView extends StatelessWidget {
   final void Function()? onRefresh;
   final Nullable<void Function(ShoppinglistItem)>? onPressed;
   final Nullable<void Function(ItemWithDescription)>? onRecentPressed;
-  final List<Item> suggestedItems;
-  final Nullable<void Function(Item)>? onSuggestedPressed;
   final ShoppinglistSorting sorting;
   final bool isLoading;
   final List<ShoppinglistItem> selectedListItems;
@@ -28,8 +26,6 @@ class SliverShopinglistItemView extends StatelessWidget {
     this.onRefresh,
     this.onPressed,
     this.onRecentPressed,
-    this.suggestedItems = const [],
-    this.onSuggestedPressed,
     required this.sorting,
     required this.isLoading,
     required this.selectedListItems,
@@ -92,17 +88,6 @@ class SliverShopinglistItemView extends StatelessWidget {
     return SliverMainAxisGroup(slivers: [
       if (main is List) ...main,
       if (main is! List) main,
-      if (!isLoading && suggestedItems.isNotEmpty)
-        SliverCategoryItemGridList<Item>(
-          name: '${AppLocalizations.of(context)!.itemsSuggested}:',
-          items: suggestedItems,
-          onPressed: onSuggestedPressed,
-          categories: categories,
-          shoppingList: shoppingList,
-          onRefresh: onRefresh,
-          isLoading: isLoading,
-          shoppingListStyle: shoppingListStyle,
-        ),
       if (((shoppingList?.recentItems.isNotEmpty ?? false) &&
               (App.settings.recentItemsCount > 0)) ||
           isLoading)
