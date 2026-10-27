@@ -7,6 +7,7 @@ import 'package:houseowl/kitchenowl.dart';
 import 'package:houseowl/models/document.dart';
 import 'package:houseowl/helpers/share.dart';
 import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/file_cache.dart';
 
 import '../photo_view_page.dart';
 import 'document_add_update_page.dart';
@@ -55,7 +56,13 @@ class _DocumentPageState extends State<DocumentPage> {
     if (filename == null || _downloadingFile) return;
     setState(() => _downloadingFile = true);
     try {
-      final bytes = await ApiService.getInstance().downloadBytes(filename);
+      final householdId =
+          BlocProvider.of<DocumentsCubit>(context).household.id;
+      // Serve from the offline cache when possible; otherwise download and
+      // cache so the file is available offline afterwards.
+      final bytes = await FileCache.getInstance()
+              .readBytes(householdId, filename) ??
+          await ApiService.getInstance().downloadBytes(filename);
       if (!mounted) return;
       if (bytes == null) {
         showSnackbar(
@@ -64,6 +71,8 @@ class _DocumentPageState extends State<DocumentPage> {
         );
         return;
       }
+      await FileCache.getInstance()
+          .writeBytes(householdId, filename, bytes);
       await Share.shareFile(context, bytes, _downloadName());
     } finally {
       if (mounted) setState(() => _downloadingFile = false);

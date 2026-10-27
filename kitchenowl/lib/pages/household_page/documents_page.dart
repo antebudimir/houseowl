@@ -5,6 +5,7 @@ import 'package:houseowl/enums/documents_filter_enum.dart';
 import 'package:houseowl/enums/update_enum.dart';
 import 'package:houseowl/kitchenowl.dart';
 import 'package:houseowl/models/document.dart';
+import 'package:houseowl/services/file_cache.dart';
 
 import 'document_page.dart';
 
@@ -109,6 +110,8 @@ class _DocumentTile extends StatelessWidget {
     final expired = document.isExpired(now);
     final soon =
         !expired && document.expiresWithin(const Duration(days: 30), now);
+    final cubit = context.watch<DocumentsCubit>();
+    final syncing = cubit.isSyncingFile(document.filename);
 
     return ListTile(
       title: Text(
@@ -123,7 +126,10 @@ class _DocumentTile extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             )
           : null,
-      leading: const CircleAvatar(child: Icon(Icons.folder_outlined)),
+      leading: _DocumentLeadingIcon(
+        document: document,
+        syncing: syncing,
+      ),
       trailing: expired || soon ? _ExpiryBadge(expired: expired) : null,
       onTap: () => Navigator.of(context).push<UpdateEnum>(
         MaterialPageRoute(
@@ -133,6 +139,65 @@ class _DocumentTile extends StatelessWidget {
     );
   }
 }
+
+/// Folder avatar with a small badge showing the offline state of the
+/// document's attachment: spinner while downloading, check when cached.
+class _DocumentLeadingIcon extends StatelessWidget {
+  final Document document;
+  final bool syncing;
+
+  const _DocumentLeadingIcon({
+    required this.document,
+    required this.syncing,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final householdId = context.read<DocumentsCubit>().household.id;
+    final filename = document.filename;
+
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        const CircleAvatar(child: Icon(Icons.folder_outlined)),
+        if (filename != null)
+          Positioned(
+            right: -2,
+            bottom: -2,
+            child: syncing
+                ? const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : FutureBuilder<bool>(
+                    // Re-subscribes when a sync completes so the badge
+                    // appears without rebuilding the whole list.
+                    key: ValueKey('offline-$filename'),
+                    future: FileCache.getInstance()
+                        .exists(householdId, filename),
+                    builder: (context, snapshot) => (snapshot.data ?? false)
+                        ? Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.surface,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.offline_pin_rounded,
+                              size: 14,
+                              color: theme.colorScheme.primary,
+                            ),
+                          )
+                        : const SizedBox.shrink(),
+                  ),
+          ),
+      ],
+    );
+  }
+}
+
 
 class _ExpiryBadge extends StatelessWidget {
   final bool expired;

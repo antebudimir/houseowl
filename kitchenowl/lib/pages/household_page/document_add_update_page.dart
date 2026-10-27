@@ -9,6 +9,7 @@ import 'package:houseowl/kitchenowl.dart';
 import 'package:houseowl/models/document.dart';
 import 'package:houseowl/models/household.dart';
 import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/file_cache.dart';
 
 class DocumentAddUpdatePage extends StatefulWidget {
   final Household household;
@@ -113,6 +114,10 @@ class _DocumentAddUpdatePageState extends State<DocumentAddUpdatePage> {
         );
         return;
       }
+      // The bytes are already on the device — keep them for offline access
+      // instead of re-downloading the file we just uploaded.
+      await FileCache.getInstance()
+          .writeBytes(widget.household.id, filename, _file!.bytes);
     }
 
     final document = Document(
