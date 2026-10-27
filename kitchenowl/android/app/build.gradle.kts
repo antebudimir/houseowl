@@ -53,6 +53,20 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
+    // Strip residual Firebase / Google Play Services metadata (.properties)
+    // files pulled in transitively by ML Kit barcode scanning. Their code is
+    // already removed by R8; the files are inert, but they make the APK look
+    // Firebase-based to scanners and audit tools on this privacy-focused
+    // fork.
+    packaging {
+        resources {
+            excludes += setOf(
+                "firebase-*.properties",
+                "play-services-*.properties",
+                "transport-*.properties",
+            )
+        }
+    }
 }
 
 kotlin {
@@ -63,18 +77,4 @@ kotlin {
 
 flutter {
     source = "../.."
-}
-
-// Strip residual Firebase / Google Play Services metadata (.properties) files
-// pulled in transitively by ML Kit barcode scanning. Their code is already
-// removed by R8; the files are inert, but they make the APK look Firebase-
-// based to scanners and audit tools on this privacy-focused fork.
-packagingOptions {
-    resources {
-        excludes += setOf(
-            "firebase-*.properties",
-            "play-services-*.properties",
-            "transport-*.properties",
-        )
-    }
 }
