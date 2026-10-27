@@ -37,9 +37,11 @@ jobs:
       - run: bash scripts/check_theme_imports.sh
         working-directory: kitchenowl
 
-      # Guard: keep the app Firebase-free (privacy fork). Scoped to "firebase"
-      # only — play-services alone can be pulled by non-Firebase plugins.
-      - run: "! grep -Ei 'firebase' pubspec.lock"
+      # Guard: keep the app Firebase-free (privacy fork). Scoped to
+      # "firebase|play-services" — pubspec.lock is the Dart-side dependency
+      # graph only: the ML Kit barcode scanner's Gradle deps (which include
+      # play-services transitively, even bundled) are not visible here.
+      - run: "! grep -Ei 'firebase|play-services' pubspec.lock"
         working-directory: kitchenowl
   test:
     name: Tests
