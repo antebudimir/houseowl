@@ -598,6 +598,15 @@
   "ingredients": "Ingredients",
   "ingredientsOptional": "Optional ingredients",
   "itemAlreadyExists": "An item with this name already exists.",
+  "itemCreate": "Create \"{name}\"",
+  "@itemCreate": {
+    "placeholders": {
+      "name": {
+        "example": "Milk",
+        "type": "String"
+      }
+    }
+  },
   "itemDelete": "Delete item",
   "itemDeleteConfirmation": "Are you sure you want to delete {item}? This will remove the item from any recipe containing it.",
   "itemRemoveInteraction": "Remove item interaction",
@@ -606,6 +615,7 @@
   "itemsAdd": "Add items",
   "itemsMerge": "Merge items",
   "itemsMergeConfirmation": "Are you sure you want to merge {item} and {other}? This cannot be undone.",
+  "itemsOtherCategories": "Other categories",
   "itemsOptional": "Optional items",
   "itemsRecent": "Recent items",
   "language": "Language",

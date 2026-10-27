@@ -47,6 +47,7 @@ class _ShoppinglistPageState extends State<ShoppinglistPage> {
           builder: (context) => ItemSearchPage(
             household: cubit.household,
             title: category.name,
+            category: category,
           ),
         )) ??
         [];

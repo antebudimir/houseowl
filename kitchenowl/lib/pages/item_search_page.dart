@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:houseowl/cubits/item_search_cubit.dart';
+import 'package:houseowl/models/category.dart';
 import 'package:houseowl/models/household.dart';
 import 'package:houseowl/models/item.dart';
 import 'package:houseowl/kitchenowl.dart';
@@ -11,12 +12,17 @@ class ItemSearchPage extends StatefulWidget {
   final List<Item> selectedItems;
   final String? title;
 
+  /// When set, results are pre-filtered to this category with a chip to
+  /// clear the filter; cross-category matches stay visible, labeled.
+  final Category? category;
+
   const ItemSearchPage({
     super.key,
     required this.household,
     this.multiple = true,
     this.title,
     this.selectedItems = const [],
+    this.category,
   });
 
   @override
@@ -30,7 +36,12 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
   @override
   void initState() {
     super.initState();
-    cubit = ItemSearchCubit(widget.household, widget.selectedItems);
+    cubit = ItemSearchCubit(
+      widget.household,
+      widget.selectedItems,
+      categoryFilter: widget.category,
+    );
+    if (widget.category != null) cubit.loadCategoryItems();
   }
 
   @override
@@ -70,13 +81,13 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
                     cubit.search(searchController.text);
                     return;
                   }
-                  if (cubit.state.selectedItems
-                      .contains(cubit.state.searchResults.first)) return;
+                  final item = cubit.primaryResult();
+                  if (item == null) return;
+                  if (cubit.state.selectedItems.contains(item)) return;
                   if (!widget.multiple) {
-                    final item = cubit.state.searchResults.first;
                     Navigator.of(context).pop([item]);
                   } else {
-                    cubit.itemSelected(cubit.state.searchResults.first);
+                    cubit.itemSelected(item);
                   }
                 },
                 hintText: AppLocalizations.of(context)!.searchHint,
@@ -102,6 +113,23 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
           bloc: cubit,
           builder: (context, state) => CustomScrollView(
             slivers: [
+              if (widget.category != null)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                    child: FilterChip(
+                      selected: state.categoryFilter != null,
+                      avatar: const Icon(
+                        Icons.label_outline_rounded,
+                        size: 18,
+                      ),
+                      label: Text(widget.category!.name),
+                      onSelected: (_) => cubit.setCategoryFilter(
+                        state.categoryFilter == null ? widget.category : null,
+                      ),
+                    ),
+                  ),
+                ),
               SliverItemGridList(
                 items: state.searchResults,
                 selected: (item) => state.selectedItems.contains(item),
@@ -114,6 +142,60 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
                   }
                 }),
               ),
+              if (widget.category != null &&
+                  state.otherCategoryResults.isNotEmpty) ...[
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
+                    child: Text(
+                      AppLocalizations.of(context)!.itemsOtherCategories,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      for (final item in state.otherCategoryResults)
+                        ListTile(
+                          leading: const Icon(Icons.label_outline_rounded),
+                          title: Opacity(
+                            opacity: 0.65,
+                            child: Text(item.name),
+                          ),
+                          subtitle: Text(item.category?.name ?? ''),
+                          onTap: () {
+                            if (!widget.multiple) {
+                              Navigator.of(context).pop([item]);
+                            } else {
+                              cubit.itemSelected(item);
+                            }
+                          },
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+              if (state.createItem != null)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                    child: ListTile(
+                      leading: const Icon(Icons.add_circle_outline_rounded),
+                      title: Text(
+                        AppLocalizations.of(context)!
+                            .itemCreate(state.createItem!.name),
+                      ),
+                      onTap: () {
+                        if (!widget.multiple) {
+                          Navigator.of(context).pop([state.createItem!]);
+                        } else {
+                          cubit.itemSelected(state.createItem!);
+                        }
+                      },
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
