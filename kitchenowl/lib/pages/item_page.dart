@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,9 +16,28 @@ import 'package:houseowl/models/item.dart';
 import 'package:houseowl/kitchenowl.dart';
 import 'package:houseowl/models/shoppinglist.dart';
 import 'package:houseowl/models/update_value.dart';
+import 'package:houseowl/services/api/api_service.dart';
 import 'package:houseowl/services/transaction_conflict_exception.dart';
 import 'package:houseowl/widgets/item_popup_menu_button.dart';
 import 'package:houseowl/widgets/item_wrap_menu.dart';
+
+/// An entry in the category autocomplete: an existing category, no category,
+/// or an inline "create" action for a not-yet-existing name.
+class _CategoryOption {
+  final Category? category;
+  final String? createName;
+
+  const _CategoryOption.value(this.category) : createName = null;
+  const _CategoryOption.create(this.createName) : category = null;
+
+  bool get isCreate => category == null && createName != null;
+}
+
+enum _CategorySelectorAction {
+  rename,
+  merge,
+  delete;
+}
 
 class ItemPage<T extends Item> extends StatefulWidget {
   final T item;
@@ -41,12 +62,17 @@ class _ItemPageState<T extends Item> extends State<ItemPage<T>> {
 
   late ItemEditCubit<T> cubit;
 
+  /// Working copy of the household's categories; updated in place when a
+  /// category is created/renamed/merged/deleted from this page.
+  late List<Category> _categories;
+
   @override
   void initState() {
     super.initState();
     if (widget.item is ItemWithDescription) {
       descController.text = (widget.item as ItemWithDescription).description;
     }
+    _categories = List.of(widget.categories);
     cubit = ItemEditCubit<T>(
       household: context.read<HouseholdCubit>().state.household,
       item: widget.item,
@@ -59,6 +85,251 @@ class _ItemPageState<T extends Item> extends State<ItemPage<T>> {
     cubit.close();
     descController.dispose();
     super.dispose();
+  }
+
+  Widget _buildCategorySelector(
+    BuildContext context,
+    ItemEditState state,
+  ) {
+    final loc = AppLocalizations.of(context)!;
+
+    // Offline: read-only dropdown, matching the previous behavior.
+    if (App.isOffline) {
+      return DropdownButton<Category?>(
+        value: state.category,
+        isExpanded: true,
+        items: [
+          DropdownMenuItem(
+            value: null,
+            child: Text(loc.none),
+          ),
+          for (final e in _categories)
+            DropdownMenuItem(
+              value: e,
+              child: Text(e.name),
+            ),
+        ],
+        onChanged: null,
+      );
+    }
+
+    return Row(
+      children: [
+        Expanded(
+          child: Autocomplete<_CategoryOption>(
+            key: ValueKey(
+              "category-selector-${state.category?.id}-${state.category?.name}",
+            ),
+            displayStringForOption: (option) => option.isCreate
+                ? option.createName!
+                : (option.category?.name ?? loc.none),
+            optionsBuilder: (value) => _categoryOptions(value.text),
+            onSelected: _onCategoryOptionSelected,
+            initialValue: TextEditingValue(text: state.category?.name ?? ""),
+            fieldViewBuilder: (
+              context,
+              textController,
+              focusNode,
+              onFieldSubmitted,
+            ) =>
+                TextField(
+              controller: textController,
+              focusNode: focusNode,
+              onEditingComplete: () {
+                focusNode.unfocus();
+                onFieldSubmitted();
+              },
+            ),
+            optionsViewBuilder: (context, onSelected, options) => Align(
+              alignment: Alignment.topLeft,
+              child: Material(
+                elevation: 4,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 280),
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    itemCount: options.length,
+                    itemBuilder: (context, index) {
+                      final option = options.elementAt(index);
+                      return ListTile(
+                        leading: option.isCreate
+                            ? const Icon(Icons.add_circle_outline_rounded)
+                            : const Icon(Icons.label_outline_rounded),
+                        title: Text(
+                          option.isCreate
+                              ? loc.categoryCreate(option.createName!)
+                              : (option.category?.name ?? loc.none),
+                        ),
+                        onTap: () => onSelected(option),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        if (state.category != null)
+          PopupMenuButton<_CategorySelectorAction>(
+            tooltip: loc.categoryEdit,
+            icon: const Icon(Icons.more_vert_rounded),
+            onSelected: (action) => _handleCategoryAction(
+              action,
+              state.category!,
+            ),
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: _CategorySelectorAction.rename,
+                child: ListTile(
+                  leading: const Icon(Icons.edit_rounded),
+                  title: Text(loc.rename),
+                ),
+              ),
+              PopupMenuItem(
+                value: _CategorySelectorAction.merge,
+                child: ListTile(
+                  leading: const Icon(Icons.merge_rounded),
+                  title: Text(loc.merge),
+                ),
+              ),
+              PopupMenuItem(
+                value: _CategorySelectorAction.delete,
+                child: ListTile(
+                  leading: const Icon(Icons.delete_outline_rounded),
+                  title: Text(loc.delete),
+                ),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+
+  Iterable<_CategoryOption> _categoryOptions(String query) {
+    final q = query.trim().toLowerCase();
+    final matches = _categories
+        .where((c) => q.isEmpty || c.name.toLowerCase().contains(q))
+        .map(_CategoryOption.value);
+    final options = <_CategoryOption>[
+      const _CategoryOption.value(null),
+      ...matches,
+    ];
+
+    // Type-to-create: offer creation when nothing matches exactly.
+    if (q.isNotEmpty && !_categories.any((c) => c.name.toLowerCase() == q)) {
+      options.add(_CategoryOption.create(query.trim()));
+    }
+
+    return options;
+  }
+
+  Future<void> _onCategoryOptionSelected(_CategoryOption option) async {
+    if (!option.isCreate) {
+      cubit.setCategory(option.category);
+
+      return;
+    }
+    final household = context.read<HouseholdCubit>().state.household;
+    final created = await ApiService.getInstance()
+        .addCategory(household, Category(name: option.createName!));
+    if (!mounted) return;
+    if (created == null) {
+      showSnackbar(
+        context: context,
+        content: Text(AppLocalizations.of(context)!.error),
+      );
+
+      return;
+    }
+    cubit.setCategory(created);
+    await _refreshCategories();
+  }
+
+  Future<void> _handleCategoryAction(
+    _CategorySelectorAction action,
+    Category category,
+  ) async {
+    final loc = AppLocalizations.of(context)!;
+    switch (action) {
+      case _CategorySelectorAction.rename:
+        final res = await showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => TextDialog(
+            title: loc.categoryEdit,
+            doneText: loc.rename,
+            hintText: loc.name,
+            initialText: category.name,
+            isInputValid: (s) => s.trim().isNotEmpty && s != category.name,
+          ),
+        );
+        if (res == null) return;
+        final updated = category.copyWith(name: res);
+        final ok = await ApiService.getInstance().updateCategory(updated);
+        if (!mounted) return;
+        if (ok) {
+          cubit.setCategory(updated);
+          await _refreshCategories();
+        }
+        break;
+      case _CategorySelectorAction.merge:
+        final other = await showDialog<Category>(
+          context: context,
+          builder: (context) => SelectDialog<Category>(
+            title: loc.categoriesMerge,
+            cancelText: loc.cancel,
+            options: _categories
+                .where((c) => c.id != category.id)
+                .map((e) => SelectDialogOption(e, e.name))
+                .toList(),
+          ),
+        );
+        if (other == null || !mounted) return;
+        final confirmed = await askForConfirmation(
+          context: context,
+          title: Text(loc.categoriesMerge),
+          confirmText: loc.merge,
+          content: Text(
+            loc.itemsMergeConfirmation(category.name, other.name),
+          ),
+        );
+        if (!confirmed || !mounted) return;
+        final ok =
+            await ApiService.getInstance().mergeCategories(category, other);
+        if (ok && mounted) await _refreshCategories();
+        break;
+      case _CategorySelectorAction.delete:
+        final confirmed = await askForConfirmation(
+          context: context,
+          title: Text(loc.categoryDelete),
+          content: Text(
+            loc.categoryDeleteConfirmation(category.name),
+          ),
+        );
+        if (!confirmed || !mounted) return;
+        final ok = await ApiService.getInstance().deleteCategory(category);
+        if (!mounted) return;
+        if (ok) {
+          // Items referencing the deleted category become uncategorized
+          // server-side, so follow suit locally.
+          if (cubit.state.category?.id == category.id) {
+            cubit.setCategory(null);
+          }
+          await _refreshCategories();
+        }
+        break;
+    }
+  }
+
+  Future<void> _refreshCategories() async {
+    final household = context.read<HouseholdCubit>().state.household;
+    final res = await ApiService.getInstance().getCategories(household);
+    if (!mounted) return;
+    setState(() {
+      if (res != null) _categories = res;
+    });
+    // Keep the household-wide category lists (grid headers etc.) in sync.
+    unawaited(context.read<HouseholdCubit>().refresh());
   }
 
   @override
@@ -208,26 +479,7 @@ class _ItemPageState<T extends Item> extends State<ItemPage<T>> {
                                   buildWhen: (prev, curr) =>
                                       prev.category != curr.category,
                                   builder: (context, state) =>
-                                      DropdownButton<Category?>(
-                                    value: state.category,
-                                    isExpanded: true,
-                                    items: [
-                                      DropdownMenuItem(
-                                        value: null,
-                                        child: Text(
-                                          AppLocalizations.of(context)!.none,
-                                        ),
-                                      ),
-                                      for (final e in widget.categories)
-                                        DropdownMenuItem(
-                                          value: e,
-                                          child: Text(e.name),
-                                        ),
-                                    ],
-                                    onChanged: !App.isOffline
-                                        ? cubit.setCategory
-                                        : null,
-                                  ),
+                                      _buildCategorySelector(context, state),
                                 ),
                               ),
                             ],

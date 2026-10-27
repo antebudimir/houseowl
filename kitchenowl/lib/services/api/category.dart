@@ -16,13 +16,16 @@ extension CategoryApi on ApiService {
     ));
   }
 
-  Future<bool> addCategory(Household household, Category category) async {
+  /// Creates a category. Returns the created category (the backend echoes
+  /// it), or null on failure — callers can select it immediately.
+  Future<Category?> addCategory(Household household, Category category) async {
     final res = await post(
       householdPath(household) + baseRoute,
       jsonEncode(category.toJson()),
     );
+    if (res.statusCode != 200) return null;
 
-    return res.statusCode == 200;
+    return Category.fromJson(jsonDecode(res.body));
   }
 
   Future<bool> updateCategory(Category category) async {

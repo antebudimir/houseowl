@@ -514,6 +514,15 @@
   "categories": "Categories",
   "categoriesMerge": "Merge categories",
   "category": "Category",
+  "categoryCreate": "Create \"{name}\"",
+  "@categoryCreate": {
+    "placeholders": {
+      "name": {
+        "example": "Pantry",
+        "type": "String"
+      }
+    }
+  },
   "categoryDelete": "Delete category",
   "categoryDeleteConfirmation": "Are you sure you want to delete {category}? This will remove the category from all items.",
   "categoryEdit": "Edit category",

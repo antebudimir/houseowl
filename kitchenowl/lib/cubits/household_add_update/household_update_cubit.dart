@@ -208,7 +208,7 @@ class HouseholdUpdateCubit
         .addCategory(household, Category(name: name));
     refresh();
 
-    return res;
+    return res != null;
   }
 
   Future<bool> updateCategory(Category category) async {
