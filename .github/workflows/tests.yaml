@@ -36,6 +36,11 @@ jobs:
       # (Theme.of falls back to light otherwise, breaking dark mode)
       - run: bash scripts/check_theme_imports.sh
         working-directory: kitchenowl
+
+      # Guard: keep the app Firebase-free (privacy fork). Scoped to "firebase"
+      # only — play-services alone can be pulled by non-Firebase plugins.
+      - run: "! grep -Ei 'firebase' pubspec.lock"
+        working-directory: kitchenowl
   test:
     name: Tests
     runs-on: ubuntu-latest
