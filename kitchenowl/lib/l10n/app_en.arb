@@ -653,6 +653,15 @@
   "more": "More",
   "name": "Name",
   "next": "Next",
+  "offlineQueueExpired": "{count, plural, =1{An offline change expired and was discarded.} other{{count} offline changes expired and were discarded.}}",
+  "@offlineQueueExpired": {
+    "placeholders": {
+      "count": {
+        "example": "2",
+        "type": "int"
+      }
+    }
+  },
   "noResults": "No results found.",
   "noTags": "No tags",
   "none": "None",

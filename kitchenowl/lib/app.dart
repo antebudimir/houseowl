@@ -41,6 +41,23 @@ class App extends StatefulWidget {
 
   static bool get isDefaultServer => currentServer == Config.defaultServer;
 
+  /// Global messenger so services without a BuildContext (offline queue
+  /// flush, background fetch) can surface snackbars.
+  static final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
+
+  /// Surfaces a message without a BuildContext (used by the offline queue
+  /// flush, which runs from services and background tasks).
+  static void notifyOfflineQueueExpired(int count) {
+    final context = scaffoldMessengerKey.currentContext;
+    if (context == null) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(AppLocalizations.of(context)!.offlineQueueExpired(count)),
+      ),
+    );
+  }
+
   static String get currentServer => ApiService.getInstance().baseUrl.isEmpty
       ? Config.defaultServer
       : ApiService.getInstance()
@@ -193,6 +210,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                 }
 
                 return MaterialApp.router(
+                  scaffoldMessengerKey: App.scaffoldMessengerKey,
                   builder: (context, child) =>
                       AnnotatedRegion<SystemUiOverlayStyle>(
                     value: _getSystemUI(context, state),
