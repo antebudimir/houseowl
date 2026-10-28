@@ -111,3 +111,43 @@ def test_remove_item(user_client_with_household, shoppinglist_id_with_item, item
     assert response.status_code == 200
     data = response.get_json()
     assert len(data) == 0
+
+
+def test_created_item_with_category_is_reused_by_add_item_by_name(
+    user_client_with_household, household_id, shoppinglist_id
+):
+    """The create-from-picker flow (client) does two calls: create the
+    catalog item with its category, then link it to the list by name.
+    The by-name call must reuse the existing categorized item instead of
+    creating an uncategorized duplicate."""
+    category = user_client_with_household.post(
+        f"/api/household/{household_id}/category", json={"name": "Dairy"}
+    ).get_json()
+
+    # First half: catalog item created with its category.
+    response = user_client_with_household.post(
+        f"/api/household/{household_id}/item",
+        json={"name": "Quark", "category": {"id": category["id"]}},
+    )
+    assert response.status_code == 200
+    assert response.get_json()["category"]["id"] == category["id"]
+
+    # Second half: by-name add must link the existing categorized item.
+    response = user_client_with_household.post(
+        f"/api/shoppinglist/{shoppinglist_id}/add-item-by-name",
+        json={"name": "Quark"},
+    )
+    assert response.status_code == 200
+
+    catalog = user_client_with_household.get(
+        f"/api/household/{household_id}/item"
+    ).get_json()
+    quarks = [i for i in catalog if i["name"] == "Quark"]
+    assert len(quarks) == 1, "by-name add must not duplicate the item"
+    assert quarks[0]["category"]["id"] == category["id"]
+
+    items = user_client_with_household.get(
+        f"/api/shoppinglist/{shoppinglist_id}/items"
+    ).get_json()
+    assert len(items) == 1
+    assert items[0]["name"] == "Quark"

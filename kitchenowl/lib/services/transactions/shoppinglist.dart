@@ -7,6 +7,7 @@ import 'package:houseowl/models/shoppinglist.dart';
 import 'package:houseowl/services/storage/mem_storage.dart';
 import 'package:houseowl/services/transaction.dart';
 import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/transaction_conflict_exception.dart';
 
 class TransactionShoppingListGet extends Transaction<List<ShoppingList>> {
   final Household household;
@@ -138,15 +139,39 @@ class TransactionShoppingListAddItem extends Transaction<bool> {
         shoppinglist,
         item,
       );
-    } else {
-      return ApiService.getInstance().addItemByName(
-        shoppinglist,
-        item.name,
-        (item is ItemWithDescription
-            ? (item as ItemWithDescription).description
-            : ""),
-      );
     }
+    // A created item carrying a category must create the catalog item with
+    // that category first — the add-item-by-name route only takes a name
+    // and would file it as uncategorized. The by-name call afterwards links
+    // the now-existing categorized item to the list, so the catalog entry is
+    // reusable in that category next time.
+    if (item.category?.id != null) {
+      return _createCategorizedItemThenLink();
+    }
+    return ApiService.getInstance().addItemByName(
+      shoppinglist,
+      item.name,
+      _itemDescription(),
+    );
+  }
+
+  String _itemDescription() =>
+      item is ItemWithDescription ? (item as ItemWithDescription).description : "";
+
+  Future<bool> _createCategorizedItemThenLink() async {
+    final api = ApiService.getInstance();
+    try {
+      final created = await api.addItem(household, item);
+      if (!created) return false;
+    } on TransactionConflictException {
+      // The item was created concurrently (e.g. by another device); linking
+      // it by name still succeeds — its category is whatever won the race.
+    }
+    return api.addItemByName(
+      shoppinglist,
+      item.name,
+      _itemDescription(),
+    );
   }
 }
 
