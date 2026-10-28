@@ -11,6 +11,7 @@ import 'package:houseowl/pages/item_search_page.dart';
 import 'package:houseowl/kitchenowl.dart';
 import 'package:houseowl/widgets/shopping_list/shoppinglist_header.dart';
 import 'package:houseowl/widgets/shopping_list/sliver_shopinglist_item_view.dart';
+import 'package:houseowl/services/transaction_conflict_exception.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 class ShoppinglistPage extends StatefulWidget {
@@ -52,15 +53,33 @@ class _ShoppinglistPageState extends State<ShoppinglistPage> {
               // Created items are added to the list immediately (tagged
               // with the category); the search page keeps them ticked and
               // excludes them from the bulk selection returned on pop.
-              await cubit.add(item.copyWith(category: Nullable(category)));
+              try {
+                await cubit.add(item.copyWith(category: Nullable(category)));
+              } on TransactionConflictException {
+                if (!context.mounted) return;
+                showSnackbar(
+                  context: context,
+                  content: Text(AppLocalizations.of(context)!.itemAlreadyExists),
+                );
+              }
             },
           ),
         )) ??
         [];
     for (final item in items) {
-      await cubit.add(
-        item.id == null ? item.copyWith(category: Nullable(category)) : item,
-      );
+      try {
+        await cubit.add(
+          item.id == null ? item.copyWith(category: Nullable(category)) : item,
+        );
+      } on TransactionConflictException {
+        // Another device created the same item just now: it exists in the
+        // catalog, so skip it and keep adding the remaining picks.
+        if (!context.mounted) return;
+        showSnackbar(
+          context: context,
+          content: Text(AppLocalizations.of(context)!.itemAlreadyExists),
+        );
+      }
     }
   }
 
