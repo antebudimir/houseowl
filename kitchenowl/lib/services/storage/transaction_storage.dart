@@ -51,12 +51,18 @@ class TransactionStorage {
     }
   }
 
+  /// Writes the queue atomically (temp file + rename): the app being killed
+  /// mid-write must never leave a truncated queue behind, which
+  /// [readTransactions] would silently treat as an empty one.
   Future<void> setTransaction(List<Transaction> transactions) async {
     if (!kIsWeb) {
       final file = await _localFile;
-      await file.writeAsString(
+      final tmp = File('${file.path}.tmp');
+      await tmp.writeAsString(
         json.encode(transactions.map((t) => t.toJson()).toList()),
+        flush: true,
       );
+      await tmp.rename(file.path);
     }
   }
 
@@ -64,10 +70,7 @@ class TransactionStorage {
     if (!kIsWeb) {
       final transactions = (await readTransactions());
       transactions.add(t);
-      final file = await _localFile;
-      await file.writeAsString(
-        json.encode(transactions.map((t) => t.toJson()).toList()),
-      );
+      await setTransaction(transactions);
     }
   }
 }
