@@ -16,6 +16,12 @@ class ItemSearchPage extends StatefulWidget {
   /// clear the filter; cross-category matches stay visible, labeled.
   final Category? category;
 
+  /// When set, tapping the create row hands the created item to this
+  /// callback (which adds it to the shopping list) instead of merely
+  /// selecting it — the row then disappears and the item shows up
+  /// in-category, already added.
+  final Future<void> Function(Item item)? onAdd;
+
   const ItemSearchPage({
     super.key,
     required this.household,
@@ -23,6 +29,7 @@ class ItemSearchPage extends StatefulWidget {
     this.title,
     this.selectedItems = const [],
     this.category,
+    this.onAdd,
   });
 
   @override
@@ -48,6 +55,20 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
   void dispose() {
     cubit.close();
     super.dispose();
+  }
+
+  Future<void> _handleCreate(ItemWithDescription created) async {
+    if (widget.onAdd == null) {
+      if (!widget.multiple) {
+        Navigator.of(context).pop([created]);
+      } else {
+        cubit.itemSelected(created);
+      }
+      return;
+    }
+    await widget.onAdd!(created);
+    if (!mounted) return;
+    cubit.markCreatedAdded(created);
   }
 
   @override
@@ -83,6 +104,10 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
                   }
                   final item = cubit.primaryResult();
                   if (item == null) return;
+                  if (widget.onAdd != null && item == cubit.state.createItem) {
+                    _handleCreate(cubit.state.createItem!);
+                    return;
+                  }
                   if (cubit.state.selectedItems.contains(item)) return;
                   if (!widget.multiple) {
                     Navigator.of(context).pop([item]);
@@ -132,7 +157,9 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
                 ),
               SliverItemGridList(
                 items: state.searchResults,
-                selected: (item) => state.selectedItems.contains(item),
+                selected: (item) =>
+                    state.selectedItems.contains(item) ||
+                    state.addedItems.contains(item),
                 onLongPressed: const Nullable<void Function(Item)>.empty(),
                 onPressed: Nullable((Item item) {
                   if (!widget.multiple) {
@@ -186,13 +213,7 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
                         AppLocalizations.of(context)!
                             .itemCreate(state.createItem!.name),
                       ),
-                      onTap: () {
-                        if (!widget.multiple) {
-                          Navigator.of(context).pop([state.createItem!]);
-                        } else {
-                          cubit.itemSelected(state.createItem!);
-                        }
-                      },
+                      onTap: () => _handleCreate(state.createItem!),
                     ),
                   ),
                 ),

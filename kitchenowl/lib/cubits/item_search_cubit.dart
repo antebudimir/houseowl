@@ -47,6 +47,22 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
       state.otherCategoryResults.firstOrNull ??
       state.createItem;
 
+  /// The create-row was tapped and [item] handed to the caller's add
+  /// callback: it immediately shows up in the in-category results (ticked,
+  /// tracked in [ItemSearchState.addedItems] so it is not returned again on
+  /// pop) and the create row disappears.
+  void markCreatedAdded(Item item) {
+    emit(ItemSearchState(
+      state.selectedItems,
+      state.query,
+      [...state.searchResults, item],
+      otherCategoryResults: state.otherCategoryResults,
+      createItem: null,
+      categoryFilter: state.categoryFilter,
+      addedItems: [...state.addedItems, item],
+    ));
+  }
+
   /// Sets (or clears) the category filter and refreshes the visible results.
   Future<void> setCategoryFilter(Category? category) async {
     emit(ItemSearchState(
@@ -178,6 +194,10 @@ class ItemSearchState extends Equatable {
   final ItemWithDescription? createItem;
   final Category? categoryFilter;
 
+  /// Items already added to the shopping list through the create row —
+  /// shown ticked, but excluded from the selection returned on pop.
+  final List<Item> addedItems;
+
   const ItemSearchState(
     this.selectedItems,
     this.query,
@@ -185,6 +205,7 @@ class ItemSearchState extends Equatable {
     this.otherCategoryResults = const [],
     this.createItem,
     this.categoryFilter,
+    this.addedItems = const [],
   });
 
   @override
@@ -195,5 +216,6 @@ class ItemSearchState extends Equatable {
         otherCategoryResults,
         createItem,
         categoryFilter,
+        addedItems,
       ];
 }

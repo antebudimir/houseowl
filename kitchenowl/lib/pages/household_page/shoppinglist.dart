@@ -48,6 +48,12 @@ class _ShoppinglistPageState extends State<ShoppinglistPage> {
             household: cubit.household,
             title: category.name,
             category: category,
+            onAdd: (item) async {
+              // Created items are added to the list immediately (tagged
+              // with the category); the search page keeps them ticked and
+              // excludes them from the bulk selection returned on pop.
+              await cubit.add(item.copyWith(category: Nullable(category)));
+            },
           ),
         )) ??
         [];
