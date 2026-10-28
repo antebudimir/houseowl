@@ -48,6 +48,13 @@ class TasksCubit extends Cubit<TasksCubitState> {
     return res;
   }
 
+  /// Marks [task] done (or reopens it). The backend stamps completed_at
+  /// and, for recurring tasks, materializes the next occurrence — which
+  /// arrives via the task:update socket and triggers a refresh.
+  Future<void> setDone(Task task, {required bool done}) {
+    return updateTask(task.copyWith(status: done ? 'done' : 'open'));
+  }
+
   Future<bool> deleteTask(Task task) async {
     final res = await _transactionHandler.runTransaction(
       TransactionTaskRemove(task: task),

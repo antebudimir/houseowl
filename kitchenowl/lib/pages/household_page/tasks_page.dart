@@ -46,6 +46,7 @@ class TasksPage extends StatelessWidget {
                       task: task,
                       onEdit: () => _edit(context, cubit, task),
                       onDelete: () => _confirmDelete(context, cubit, task),
+                      onToggle: () => cubit.setDone(task, done: !task.isDone),
                     ),
                 if (done.isNotEmpty)
                   ExpansionTile(
@@ -60,6 +61,8 @@ class TasksPage extends StatelessWidget {
                           task: task,
                           onEdit: () => _edit(context, cubit, task),
                           onDelete: () => _confirmDelete(context, cubit, task),
+                          onToggle: () =>
+                              cubit.setDone(task, done: !task.isDone),
                         ),
                     ],
                   ),
@@ -129,11 +132,13 @@ class _TaskTile extends StatelessWidget {
   final Task task;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final VoidCallback onToggle;
 
   const _TaskTile({
     required this.task,
     required this.onEdit,
     required this.onDelete,
+    required this.onToggle,
   });
 
   @override
@@ -148,12 +153,18 @@ class _TaskTile extends StatelessWidget {
     ];
 
     return ListTile(
-      leading: Icon(
-        task.isDone
-            ? Icons.check_circle_rounded
-            : Icons.radio_button_unchecked_rounded,
-        size: 22,
-        color: task.isDone ? Theme.of(context).disabledColor : null,
+      leading: IconButton(
+        tooltip: task.isDone
+            ? AppLocalizations.of(context)!.taskReopen
+            : AppLocalizations.of(context)!.taskDone,
+        onPressed: onToggle,
+        icon: Icon(
+          task.isDone
+              ? Icons.check_circle_rounded
+              : Icons.radio_button_unchecked_rounded,
+          size: 22,
+          color: task.isDone ? Theme.of(context).disabledColor : null,
+        ),
       ),
       title: Text(
         task.name,

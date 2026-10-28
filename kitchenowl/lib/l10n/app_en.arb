@@ -398,6 +398,8 @@
   "@targetDate": {},
   "taskAdd": "Add task",
   "taskDeleteConfirmation": "Are you sure you want to delete {task}?",
+  "taskDone": "Mark as done",
+  "taskReopen": "Reopen task",
   "@taskDeleteConfirmation": {"placeholders": {"task": {"type": "String"}}},
   "taskEdit": "Edit task",
   "taskRecurrence": "Repeat",
