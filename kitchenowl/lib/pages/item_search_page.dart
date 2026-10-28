@@ -68,7 +68,7 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
     }
     await widget.onAdd!(created);
     if (!mounted) return;
-    cubit.markCreatedAdded(created);
+    await cubit.markCreatedAdded(created);
   }
 
   @override
@@ -157,9 +157,12 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
                 ),
               SliverItemGridList(
                 items: state.searchResults,
+                // Ticked by name: the re-fetched listing holds a fresh
+                // server copy of the item while addedItems keeps the local
+                // object it was created with.
                 selected: (item) =>
                     state.selectedItems.contains(item) ||
-                    state.addedItems.contains(item),
+                    state.addedItems.any((e) => e.name == item.name),
                 onLongPressed: const Nullable<void Function(Item)>.empty(),
                 onPressed: Nullable((Item item) {
                   if (!widget.multiple) {

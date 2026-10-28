@@ -48,17 +48,34 @@ class ItemSearchCubit extends Cubit<ItemSearchState> {
       state.createItem;
 
   /// The create-row was tapped and [item] handed to the caller's add
-  /// callback: it immediately shows up in the in-category results (ticked,
-  /// tracked in [ItemSearchState.addedItems] so it is not returned again on
-  /// pop) and the create row disappears.
-  void markCreatedAdded(Item item) {
+  /// callback: the query is reset, the category listing is re-fetched from
+  /// the server (so it now contains the new item), and the item is shown
+  /// ticked via [ItemSearchState.addedItems] — it is already on the
+  /// shopping list, so it is excluded from the selection returned on pop.
+  Future<void> markCreatedAdded(Item item) async {
+    final filter = state.categoryFilter;
+    // Bust the cached catalog: it predates the item just created.
+    _catalog = null;
+    List<Item> items = const [];
+    if (filter != null) {
+      _catalog =
+          await ApiService.getInstance().getAllItems(household) ?? const [];
+      items = _catalog!
+          .where((e) => e.category?.id == filter.id)
+          .toList();
+    }
+    // Offline (or if the fetch raced) the server listing may not contain
+    // the new item yet — keep it visible by appending the local object.
+    if (items.every((e) => e.name != item.name)) {
+      items = [...items, item];
+    }
+
     emit(ItemSearchState(
       state.selectedItems,
-      state.query,
-      [...state.searchResults, item],
-      otherCategoryResults: state.otherCategoryResults,
+      '',
+      items,
       createItem: null,
-      categoryFilter: state.categoryFilter,
+      categoryFilter: filter,
       addedItems: [...state.addedItems, item],
     ));
   }
