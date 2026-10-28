@@ -6,6 +6,7 @@ import 'package:houseowl/enums/update_enum.dart';
 import 'package:houseowl/kitchenowl.dart';
 import 'package:houseowl/models/document.dart';
 import 'package:houseowl/helpers/share.dart';
+import 'package:houseowl/helpers/file_type.dart';
 import 'package:houseowl/services/api/api_service.dart';
 import 'package:houseowl/services/file_cache.dart';
 
@@ -73,7 +74,16 @@ class _DocumentPageState extends State<DocumentPage> {
       }
       await FileCache.getInstance()
           .writeBytes(householdId, filename, bytes);
-      await Share.shareFile(context, bytes, _downloadName());
+      // Extension-first MIME resolution: the shared name must carry a real
+      // extension and the payload an explicit mime type, otherwise Android
+      // saves/shares the file as `.bin`.
+      final name = FileType.withExtension(_downloadName(), bytes);
+      await Share.shareFile(
+        context,
+        bytes,
+        name,
+        FileType.mimeType(name, bytes),
+      );
     } finally {
       if (mounted) setState(() => _downloadingFile = false);
     }

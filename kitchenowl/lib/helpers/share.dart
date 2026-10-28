@@ -57,10 +57,13 @@ abstract class Share {
   static Future<void> shareFile(
     BuildContext context,
     Uint8List bytes,
-    String filename,
-  ) async {
+    String filename, [
+    String? mimeType,
+  ]) async {
     if (kIsWeb) {
-      final url = html.Url.createObjectUrl(html.Blob([bytes]));
+      final url = html.Url.createObjectUrl(
+        html.Blob([bytes], mimeType),
+      );
       final anchor = html.document.createElement('a') as html.AnchorElement
         ..href = url
         ..style.display = 'none'
@@ -80,9 +83,12 @@ abstract class Share {
       final box = context.findRenderObject() as RenderBox?;
       SharePlus.Share.shareXFiles(
         [
+          // The mime type must be explicit: without it Android falls back
+          // to application/octet-stream and receiving apps save `.bin`.
           SharePlus.XFile.fromData(
             bytes,
             name: filename,
+            mimeType: mimeType,
           ),
         ],
         sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
