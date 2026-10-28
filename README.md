@@ -31,7 +31,7 @@ and documents for everyone in your household.
 
 - Native Mobile/Web/Desktop apps with a great design
 - Add items to your shopping list and sync them in real-time with multiple users
-- Partial offline support, so you don't lose track of what to buy even when there is no signal
+- Offline support: browse your shopping list, tasks and documents without a signal — items added offline are queued on-device and sync automatically when you reconnect
 - Manage tasks, notes, persons (with birthdays and gift ideas), and documents
 - Share your household with friends and family
 

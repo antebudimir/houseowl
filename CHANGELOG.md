@@ -158,7 +158,9 @@ features, that's the same commit.
   clearable expiry date, a person contact from the household directory, and a
   file attachment uploaded via `/api/upload`. Filter chips narrow the list to
   entries expiring within 30 or 90 days, and search is server-backed.
-  Online-only for v1 (no offline cache or queue); real-time updates via the
+  Offline: document metadata and files are cached on-device after each
+  fetch, files uploaded from the phone are kept locally, and the vault
+  falls back to the cached list when unreachable; real-time updates via the
   `document:update` Socket.IO event
 - Backend `Document` model (nullable `expires_at` indexed for expiry queries,
   `file_id → file.filename` attachment deleted alongside the document,
