@@ -32,10 +32,8 @@ and documents for everyone in your household.
 - Native Mobile/Web/Desktop apps with a great design
 - Add items to your shopping list and sync them in real-time with multiple users
 - Offline support: browse your shopping list, tasks and documents without a signal — items added offline are queued on-device and sync automatically when you reconnect
-- Manage tasks, notes, persons (with birthdays and gift ideas), and documents
+- Manage tasks, notes, persons (with birthdays and gift ideas), documents, planned buys, and loyalty cards
 - Share your household with friends and family
-
-Please keep in mind that this project is still in development.
 
 ## 🍴 About this fork
 
@@ -46,8 +44,10 @@ coordination app.
 Changes from upstream:
 
 - Recipes and expenses removed
-- planned buys, loyalty cards, tasks, notes, events, & persons (with birthdays and gift ideas) added, along with document vault for e.g. uploading warranties.
+- Planned buys, loyalty cards, tasks, notes, events, & persons (with birthdays and gift ideas) added, along with document vault(e.g. for warranties)
 - Shopping lists managed inline from the main-view header (add, rename, delete; long-press for actions)
+- Categories managed inline from the item details page (create, rename, delete)
+- Quick-add items straight into a category from the categorized list; a non-existent item is created in that category and added to the list
 - Shopping-list renames sync to all household members in real time
 - Rebranded from KitchenOwl to HouseOwl
 

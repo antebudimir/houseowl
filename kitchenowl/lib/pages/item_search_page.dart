@@ -144,6 +144,8 @@ class _ItemSearchPageState extends State<ItemSearchPage> {
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
                     child: FilterChip(
                       selected: state.categoryFilter != null,
+                      // The picker opens with the filter active; without this the selected-state checkmark is drawn over the avatar icon, overlapping it.
+                      showCheckmark: false,
                       avatar: const Icon(
                         Icons.label_outline_rounded,
                         size: 18,
