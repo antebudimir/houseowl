@@ -46,6 +46,7 @@ Changes from upstream:
 - Recipes and expenses removed
 - Planned buys, loyalty cards, tasks, notes, events, & persons (with birthdays and gift ideas) added, along with document vault(e.g. for warranties)
 - Shopping lists managed inline from the main-view header (add, rename, delete; long-press for actions)
+- Move an item to another list from the item details page
 - Categories managed inline from the item details page (create, rename, delete)
 - Quick-add items straight into a category from the categorized list; a non-existent item is created in that category and added to the list
 - Shopping-list renames sync to all household members in real time
@@ -57,10 +58,11 @@ See [CHANGELOG.md](CHANGELOG.md) for the full history of fork changes.
 
 | | |
 | :---: | :---: |
-| ![](/.github/screenshots/lists.png) | ![](/.github/screenshots/tasks.png) |
-| ![](/.github/screenshots/calendar.png) | ![](/.github/screenshots/documents.png) |
-| ![](/.github/screenshots/loyalty-cards.png) | ![](/.github/screenshots/loyalty-cards-2.png) |
-| ![](/.github/screenshots/more.png) | |
+| ![](/.github/screenshots/lists.png) | ![](/.github/screenshots/add-to-category.png) |
+| ![](/.github/screenshots/move-to-another-shopping-list.png) | ![](/.github/screenshots/add-new-item-in-category.png) |
+| ![](/.github/screenshots/tasks.png) | ![](/.github/screenshots/calendar.png) |
+| ![](/.github/screenshots/documents.png) | ![](/.github/screenshots/loyalty-cards.png) |
+| ![](/.github/screenshots/loyalty-cards-2.png) | ![](/.github/screenshots/more.png) |
 
 ## 🤖 App Install
 
