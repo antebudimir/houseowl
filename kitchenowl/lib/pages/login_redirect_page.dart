@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:houseowl/cubits/auth_cubit.dart';
 import 'package:houseowl/kitchenowl.dart';
 import 'package:houseowl/pages/splash_page.dart';
+import 'package:houseowl/helpers/url_launcher.dart';
 
 class LoginRedirectPage extends StatefulWidget {
   final String? state;
@@ -18,6 +19,7 @@ class _LoginRedirectPageState extends State<LoginRedirectPage> {
   @override
   void initState() {
     super.initState();
+    closeUrl();
     if (widget.state == null || widget.code == null) {
       context.go("/");
       showSnackbar(
