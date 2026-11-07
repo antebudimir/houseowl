@@ -9,6 +9,7 @@ import 'package:houseowl/helpers/named_bytearray.dart';
 import 'package:houseowl/models/token.dart';
 import 'package:houseowl/models/user.dart';
 import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/enums/oidc_provider.dart';
 
 class SettingsUserCubit extends Cubit<SettingsUserState> {
   final int? userId;
@@ -99,6 +100,15 @@ class SettingsUserCubit extends Cubit<SettingsUserState> {
   Future<void> deleteLongLivedToken(Token token) async {
     final success = await ApiService.getInstance().deleteLongLivedToken(token);
     if (success) refresh();
+  }
+
+  /// Returns null on success, otherwise the error message from the server.
+  Future<String?> unlinkOIDC(OIDCProivder provider) async {
+    final error =
+        await ApiService.getInstance().unlinkOIDC(provider.toString());
+    if (error == null) await refresh();
+
+    return error;
   }
 
   Future<bool> deleteUser() async {
