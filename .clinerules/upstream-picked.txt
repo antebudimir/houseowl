@@ -13,8 +13,9 @@
 # 5dc6e0f5 -> fork 9fa44f04 applied cleanly, yet patch-ids cfdacd89 != 4e11c2eb.
 # Filter with this ledger, not with `git cherry`.
 #
-# Append one line per pick, in the same commit as the pick. If a pick is later
-# extended, update its line instead of adding a second one.
+# Regenerate after each sync from the `cherry picked from commit …` trailers
+# (never type from memory): one line per pick, in the same commit as the pick;
+# update a line rather than duplicating it if a pick is later extended.
 #
 # Last sync: 2026-11-11 — upstream tip 3cc27f41 (v0.8.1), 17 commits carried.
 

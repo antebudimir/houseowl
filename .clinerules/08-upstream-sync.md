@@ -24,7 +24,10 @@ git log --no-merges --format='%H %s' HEAD..upstream/main \
 
 - `.clinerules/upstream-picked.txt` is the authoritative list of upstream commits this fork already carries.
 - Apply it before any classification: `git log HEAD..upstream/main` re-lists applied commits forever, and `git cherry` under-reports because fork files are context-diverged.
-- Append `<upstream-sha>  <fork-commit>  <subject>` in the same commit as every new pick; update the line rather than duplicating it if a pick is later extended.
+- Record `<upstream-sha>  <fork-commit>  <subject>` in the same commit as every new pick; update the line rather than duplicating it if a pick is later extended.
+- After cherry-picking, regenerate `.clinerules/upstream-picked.txt` from the new
+  `cherry picked from commit …` trailers (extract mechanically via `git log`, never
+  type from memory) and include it in the same commit.
 
 ## Classify every candidate
 
