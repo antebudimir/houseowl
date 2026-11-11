@@ -11,7 +11,6 @@ For multi-commit features, that's the final commit. For single-commit
 features, that's the same commit.
 
 ## [Unreleased]
-## [Unreleased]
 
 - **Fix people without a birthday silently failing to save.** The Flutter
   client sends explicit `null` for unset fields; the backend person add
