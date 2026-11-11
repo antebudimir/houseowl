@@ -1,3 +1,4 @@
+import calendar
 from datetime import date, timedelta
 
 
@@ -5,6 +6,25 @@ def _create_task(client, household_id, **overrides):
     payload = {"name": "test task"}
     payload.update(overrides)
     return client.post(f"/api/household/{household_id}/task", json=payload)
+
+
+def _monthly_occurrence_after(start: date, after: date) -> date:
+    """Next monthly occurrence anchored on ``start.day``, clamped per month.
+
+    Independent re-implementation of the documented recurrence semantics:
+    advance one month at a time from the original due date until the result is
+    in the future, clamping the day to the length of each month.
+    """
+    year, month = start.year, start.month
+    while True:
+        month += 1
+        if month > 12:
+            month = 1
+            year += 1
+        day = min(start.day, calendar.monthrange(year, month)[1])
+        candidate = date(year, month, day)
+        if candidate > after:
+            return candidate
 
 
 def test_create_task_defaults(user_client_with_household, household_id):
@@ -185,10 +205,14 @@ def test_complete_daily_overdue_catches_up(user_client_with_household, household
 
 def test_complete_monthly_clamps_day(user_client_with_household, household_id):
     # Jan 31 monthly, caught up to the present: day-clamped months in
-    # between prove the calendar-safe arithmetic.
+    # between prove the calendar-safe arithmetic. The expected date depends on
+    # today's date, so derive it instead of hardcoding a month.
+    due = date(2026, 1, 31)
+    expected = _monthly_occurrence_after(due, date.today()).isoformat()
+
     response = _create_task(
         user_client_with_household, household_id,
-        name="rent", recurrence="monthly", due_date="2026-01-31",
+        name="rent", recurrence="monthly", due_date=due.isoformat(),
     )
     task_id = response.get_json()["id"]
 
@@ -199,7 +223,7 @@ def test_complete_monthly_clamps_day(user_client_with_household, household_id):
     )
     data = response.get_json()
     assert len(data) == 1
-    assert data[0]["due_date"] == "2026-10-31"
+    assert data[0]["due_date"] == expected
 
 
 def test_complete_is_idempotent(user_client_with_household, household_id):
