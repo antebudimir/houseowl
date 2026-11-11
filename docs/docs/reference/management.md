@@ -38,7 +38,7 @@ docker exec -it BACKEND_CONTAINER_NAME python manage.py --run-jobs
 | --- | --- |
 | `-h`, `--help` | Show help message and exit |
 | `--run-jobs` | Run all periodic jobs (monthly, daily, half-hourly) |
-| `--send-terms-mail` | Send updated terms mail to all users with a verified email |
+| `--send-terms-mail` | Send updated terms mail to all users with a verified email (unavailable in this fork: requires upstream commit `74374438`) |
 | `--send-verification-mail` | Send verification mail to unverified users |
 | `--delay <seconds>` | Delay between sending mails in seconds (default: `0`) |
 | `--import-files` | Import files from the upload folder |

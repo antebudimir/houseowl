@@ -18,7 +18,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--send-terms-mail",
         action="store_true",
-        help="Send updated terms mail to all users with a verified email",
+        help=(
+            "Send updated terms mail to verified users (unavailable in this fork: "
+            "requires upstream commit 74374438)"
+        ),
     )
     parser.add_argument(
         "--send-verification-mail",
@@ -126,10 +129,19 @@ def sendVerificationMails(delay: float = 0):
                 time.sleep(delay)
 
 
-def sendTermsUpdateMails(delay: float = 0):
+def sendTermsUpdateMails(delay: float = 0) -> bool:
+    # sendTermsUpdateMail() ships with upstream 74374438 (mail templates), which
+    # is not part of this fork yet. Fail with a clear message rather than an
+    # AttributeError when the flag or the interactive menu entry is used.
+    if not hasattr(mail, "sendTermsUpdateMail"):
+        print(
+            "Terms update mails are unavailable: mail.sendTermsUpdateMail() does not "
+            "exist in this fork (requires upstream commit 74374438)."
+        )
+        return False
     if not mail.mailConfigured():
         print("Mail service not configured")
-        return
+        return False
     for user in tqdm(
         User.query.filter(
             User.email != None,
@@ -140,6 +152,7 @@ def sendTermsUpdateMails(delay: float = 0):
         mail.sendTermsUpdateMail(user.id)
         if delay > 0:
             time.sleep(delay)
+    return True
 
 
 def runJobs():
@@ -300,7 +313,8 @@ if __name__ == "__main__":
                 sendVerificationMails(args.delay)
         if args.send_terms_mail:
             with app.app_context():
-                sendTermsUpdateMails(args.delay)
+                if not sendTermsUpdateMails(args.delay):
+                    sys.exit(1)
         if args.run_jobs:
             runJobs()
         sys.exit()
