@@ -16,7 +16,7 @@ void main() {
         supportedLocales:
             const [Locale('en')] + AppLocalizations.supportedLocales,
         home: Scaffold(
-          appBar: AppBar(title: const Text('KitchenOwl')),
+          appBar: AppBar(title: const Text('HouseOwl')),
           body: const TextField(),
         ),
       ),

@@ -1,6 +1,6 @@
 # MCP Server
 
-KitchenOwl includes a [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server. It lets MCP clients and AI assistants (Claude, ChatGPT, Cursor, Open WebUI, …) read from and write to your KitchenOwl instance: shopping lists, items, recipes, tags, the meal plan and expenses.
+HouseOwl includes a [Model Context Protocol](https://modelcontextprotocol.io) (MCP) server. It lets MCP clients and AI assistants (Claude, ChatGPT, Cursor, Open WebUI, …) read from and write to your HouseOwl instance: shopping lists, items, recipes, tags, the meal plan and expenses.
 
 The MCP endpoint lives next to the REST API and uses the same accounts: everything an MCP client does is limited to the households the authenticated user belongs to.
 
@@ -21,7 +21,7 @@ The server is then reachable at `https://<your-kitchenowl-instance>/mcp`. If you
 
 ## Authentication
 
-The MCP server authenticates requests with a regular KitchenOwl JWT access token, exactly like the [REST API](./API.md). Obtain a token by logging in:
+The MCP server authenticates requests with a regular HouseOwl JWT access token, exactly like the [REST API](./API.md). Obtain a token by logging in:
 
 ```bash
 curl -s -X POST https://your-kitchenowl.example.org/api/auth \

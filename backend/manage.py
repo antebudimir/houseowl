@@ -8,7 +8,7 @@ from os.path import isfile, join
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Manage KitchenOwl (starts interactive menu if no task flags are given)",
+        description="Manage HouseOwl (starts interactive menu if no task flags are given)",
     )
     parser.add_argument(
         "--run-jobs",
