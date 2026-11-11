@@ -75,10 +75,10 @@ class ApiService {
     _connectionNotifier.value = Connection.undefined;
     if (!kIsWeb) {
       Config.packageInfo?.then((info) => headers["User-Agent"] =
-          "KitchenOwl-${Platform.operatingSystem}/${Config.packageInfoSync?.version}");
+          "HouseOwl-${Platform.operatingSystem}/${Config.packageInfoSync?.version}");
       _client = IOClient(HttpClient()
         ..userAgent =
-            "KitchenOwl-${Platform.operatingSystem}/${Config.packageInfoSync?.version}");
+            "HouseOwl-${Platform.operatingSystem}/${Config.packageInfoSync?.version}");
     } else {
       _client = http.Client();
     }

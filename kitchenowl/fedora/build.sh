@@ -17,8 +17,8 @@ DESCRIPTION=$(cat pubspec.yaml | shyaml get-value description)
 # Build project and create structure
 flutter build linux --release
 mkdir -p build/fedora/release
-cp -r build/linux/x64/release/bundle/ build/fedora/release/kitchenowl
-cp linux/icon.png build/fedora/release/kitchenowl
+cp -r build/linux/x64/release/bundle/ build/fedora/release/houseowl
+cp linux/icon.png build/fedora/release/houseowl
 
 SPEC_FILE="build/fedora/release/$NAME.spec"
 echo "Version: v$VERSION" > $SPEC_FILE
@@ -37,4 +37,4 @@ cat linux/$NAME.desktop >> $DESKTOP_FILE
 # Build and cleanup
 cd build/fedora/release/
 QA_RPATHS=0x0002 fedpkg --release f35 local
-cp x86_64/KitchenOwl-v$VERSION-1.fc35.x86_64.rpm KitchenOwl.x86_64.rpm
+cp x86_64/houseowl-v$VERSION-1.fc35.x86_64.rpm HouseOwl.x86_64.rpm

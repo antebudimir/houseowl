@@ -627,7 +627,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   context: context,
                   applicationVersion: Config.packageInfoSync?.version,
                   applicationLegalese:
-                      '\u{a9} 2025 KitchenOwl\nKitchenOwl is Free Software: You can use, study share and improve it at your will. Specifically you can redistribute and/or modify it under the terms of the AGPL-3.0 License.',
+                      '\u{a9} 2025 HouseOwl\n'
+                      'HouseOwl is based on KitchenOwl (https://github.com/TomBursch/kitchenowl).\n'
+                      'HouseOwl is Free Software: You can use, study share and improve it at your will. '
+                      'Specifically you can redistribute and/or modify it under the terms of the AGPL-3.0 License.',
                 ),
               ),
               Center(
@@ -659,7 +662,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
               Text(
-                '\u{a9} 2025 KitchenOwl',
+                '\u{a9} 2025 HouseOwl',
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: Theme.of(context)
                           .textTheme
