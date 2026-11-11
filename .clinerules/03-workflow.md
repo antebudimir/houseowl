@@ -19,13 +19,22 @@ bash scripts/check_theme_imports.sh
 - Run the narrowest failing test first (`pytest tests/api/test_api_task.py -k <name>`, `flutter test test/<path>`), then the full suite before push.
 - CI mirrors these gates: `Pytesting` (backend), `Quality` (client + both guards), `CI deploy image (ghcr)` (image rebuild).
 - No local Flutter SDK: do not push `main`; push a branch and let CI run the client gates first.
+- CI does not check the changelog — verify it yourself (`## Changelog`).
 
 ## Commits
 
 - One logical change per commit. A cherry-pick stays one commit; fold its rebrand fixes in (`08-upstream-sync.md`).
 - Prefix fork commits: `feat:`, `fix:`, `fix(area):`, `chore:`, `docs:`, `test:`.
-- Update `CHANGELOG.md` `[Unreleased]` in the commit that completes a feature — the final commit of a multi-commit feature, the same commit for a single-commit feature.
 - Update `docs/` in the same commit when behaviour, CLI flags or env vars change.
+
+## Changelog
+
+- Every user-visible change gets a `CHANGELOG.md` `[Unreleased]` entry: features, fixes, CLI flags, env vars, dependencies, packaging, distribution. Internal refactors and test-only changes do not.
+- Write the entry in the commit that completes the change — the final commit of a multi-commit feature, the same commit for a single-commit one. Never a follow-up "changelog" commit.
+- Cherry-picked upstream commits are not exempt: a pick that changes user-visible behaviour carries its entry in the same commit (`08-upstream-sync.md`).
+- Write for a household admin, not a developer: bold lead-in, then what changed and why it mattered.
+- One entry per change. No duplicated or truncated bullets, and never a second `## [Unreleased]` heading.
+- Before push, `git diff --stat origin/main...` must not touch `kitchenowl/lib/`, `backend/app/`, `Dockerfile` or `.github/workflows/` without also touching `CHANGELOG.md` — or the commit message must say why the change is not user-visible.
 
 ## Never commit
 

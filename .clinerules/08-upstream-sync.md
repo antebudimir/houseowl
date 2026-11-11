@@ -55,8 +55,10 @@ grep -rn "KitchenOwl" kitchenowl/lib/pages kitchenowl/lib/services    # internal
 3. `flutter analyze`.
 4. `flutter test`.
 5. `bash scripts/check_theme_imports.sh` and the `firebase|play-services` lockfile guard.
-6. CI green.
-7. On-device smoke test for UI/background changes (offline queue flush after reconnect).
+6. `CHANGELOG.md` covers every user-visible pick (`03-workflow.md`).
+7. CI green.
+8. On-device smoke test for UI/background changes (offline queue flush after reconnect).
 
+- A pick that changes user-visible behaviour carries its `[Unreleased]` entry in the same commit. "Upstream already shipped it" is not an exemption — users read this fork's changelog, not upstream's.
 - Do not push `main` when the client gates cannot run locally; push a branch and let CI run them before merging.
 - Test hygiene: if a test fails on a hardcoded date or environment assumption, fix the test. "Pre-existing and unrelated" is not a reason to ship a red suite.
