@@ -55,6 +55,38 @@ features, that's the same commit.
   out-of-range selected-index glitch when deep views were opened from the
   drawer.
 
+- **Single sign-on fixes.** OIDC claims are read from the userinfo endpoint
+  when the ID token omits them, so providers that only expose claims there
+  can sign in; Apple ID sign-in accepts the returned username and hashed
+  nonce; and the sign-in sheet no longer stays open behind the browser
+  after a successful login.
+- **Unlink a single sign-on account.** Account settings can disconnect an
+  OIDC provider and fall back to password login.
+- **SMTP without authentication.** Relays that accept unauthenticated mail
+  (local postfix, some hosted relays) work again — the SMTP user and
+  password are optional.
+- **Recover from a database restart.** The connection pool now uses
+  `pool_pre_ping`, so the backend reconnects instead of serving errors
+  until it is restarted by hand.
+- **Deleting an already-removed document no longer fails.**
+- **Notes and documents no longer overlap.** Consecutive markdown blocks in
+  notes, documents and loyalty-card descriptions had collapsed line spacing
+  and rendered on top of each other.
+- **Framework widgets are localized again.** Date and time pickers,
+  tooltips and other Material widgets now receive
+  `GlobalMaterialLocalizations` after the `material_ui` migration instead of
+  rendering untranslated.
+- **Background sync survives Android's headless lifecycle.** The headless
+  fetch task now starts and stops its own work, so periodic sync keeps
+  running after the app is killed.
+- **`manage.py` takes flags instead of an interactive menu** — `--run-jobs`,
+  `--send-verification-mail`, and friends. `--send-terms-mail` refuses with
+  an explicit message until the mail templates land.
+- **Tooltips on the floating action buttons**, so icon-only buttons are
+  identifiable on hover and to screen readers.
+- **PostgreSQL history queries work on SQLAlchemy 2.x** — `distinct_on`
+  replaces the removed `distinct(column)` form.
+- **Translations:** German, Dutch and Slovenian refreshed from upstream.
 - **Per-ABI release APKs, and a public download link.** The APK build now
   produces `arm64-v8a`, `armeabi-v7a` and `x86_64` APKs instead of one 92 MB
   universal build, and a manual run can attach them to a GitHub release —
