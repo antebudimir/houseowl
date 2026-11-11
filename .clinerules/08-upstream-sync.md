@@ -13,9 +13,18 @@ HouseOwl is a hard fork of `TomBursch/kitchenowl`. The trees have diverged too f
 ```bash
 git remote add upstream https://github.com/TomBursch/kitchenowl.git   # once per clone
 git fetch upstream
-git log --oneline --no-merges upstream/main ^HEAD
 git branch backup/pre-upstream-sync-$(date +%F)
+
+# candidates, minus everything this fork already carries (ledger below)
+git log --no-merges --format='%H %s' HEAD..upstream/main \
+  | grep -vFf <(awk '!/^#/ && NF {print $1}' .clinerules/upstream-picked.txt)
 ```
+
+## Filter the ledger first
+
+- `.clinerules/upstream-picked.txt` is the authoritative list of upstream commits this fork already carries.
+- Apply it before any classification: `git log HEAD..upstream/main` re-lists applied commits forever, and `git cherry` under-reports because fork files are context-diverged.
+- Append `<upstream-sha>  <fork-commit>  <subject>` in the same commit as every new pick; update the line rather than duplicating it if a pick is later extended.
 
 ## Classify every candidate
 

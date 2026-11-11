@@ -1,0 +1,37 @@
+# Upstream pick ledger — KitchenOwl (TomBursch/kitchenowl) → HouseOwl
+#
+# Format: <upstream-sha>  <fork-commit>  <subject>
+#
+# APPLIED — DO NOT RE-PICK.
+# Read this file FIRST, before classifying any candidate. Cherry-picks never
+# become ancestors of `main`, so `git log HEAD..upstream/main` keeps listing
+# every commit below as if it were still pending.
+#
+# Patch-id checks (`git cherry`) are unreliable here: fork files are
+# context-diverged by design (rebrand, removed features), so an identical
+# change produces a different patch-id. Proof from this sync: upstream
+# 5dc6e0f5 -> fork 9fa44f04 applied cleanly, yet patch-ids cfdacd89 != 4e11c2eb.
+# Filter with this ledger, not with `git cherry`.
+#
+# Append one line per pick, in the same commit as the pick. If a pick is later
+# extended, update its line instead of adding a second one.
+#
+# Last sync: 2026-11-11 — upstream tip 3cc27f41 (v0.8.1), 17 commits carried.
+
+af7ce0e00684ff56872a9f259f3e98410487d6df  f6f16f6a3050c6594662afe8fababe66910065b7  fix(backend): enable pool_pre_ping to survive database restarts (#1180)
+60a012ea5cae829878f78a46a585a7ee530b069a  78a976354c1a8a52e64296d40ad01e75b8a91b1d  Fix: Support SMTP without authentication (#1190)
+e3b9b7670749f900cfdcb0560987be5bd988e605  c89535c6040b6cecbe28637c31c4b377e478aa0e  fix(OIDC): read claims from userinfo endpoint (#1205)
+d6491dd12d5b511e96b99541822cea334ce7eaa8  b150fc1bc0155e3c726d6abda7ccf1b6671bf34f  Fix: make file removal robust
+e9e1d2d4ee0b9390752fd17bdb3bb707499716dd  2a392703c71ca5f324c59b43b8b0e6ef6cd99ba2  docs: Fix typo (#1177)
+8ec36a96aef171a5174318edd0f1caae347997d0  78ecbbbc2e94f59d8e4116a347d71e7e7f75442a  docs: Add MCP server how-to and implemented functionality reference (#1199)
+d1276fa7edbdcd489e6e3670f8d5a6ef11c14b1a  2d438174368bbf4c1f0d5ef20d41ecf32c593020  fix: Ingredients overlap in recipe descriptions (#1206)
+5dc6e0f5500134e578c267f5da98b3dc1567e072  9fa44f04435837f0e5e15ead3ccdb83809ced8f3  l10n: Update German localization for recipeEmpty message (#1195)
+f5e34aa24021b3ce1dd9f519eaabefb842b4e910  8acbf9ceb69d1ee129fe2003c9f8ce9546c1ec54  Translations update from Hosted Weblate (#1189)
+4ea7af26bbaa93a5cb38e8bbf36af83efd5ebee4  dae2e338f1c709f407ec03fef27956a649a61fbe  Fix Material localizations after material_ui migration (#1161)
+dd00ae8434b6d4aa697b324e172f706feb768d65  0f7d213dd212971f200b8cf448a2ccebff2ed116  Update manage.py
+0d9578093364fa48a17de6f3154f837c4625d010  83d3112614df3d243b60bc737347dc6fe750c451  fix: OIDC auth sheets stayes open (#1204)
+72809ce75bfcc200f6485b56b4a19c5c422834db  f0f5765f491f35edfa2a69d7486ee523a9992686  Add ability to unlink OIDC accounts (#1191)
+27af0d62c8e6b7ac7c0afcd74a0e9ba614cafa54  d34d43da64c2d393e271f5a3aeca28cc676c0dc6  Fix Android headless background fetch lifecycle (#1153)
+22fd6ff0b17952c62cc7e84947956c434b102bd6  79bd6cde4cc2272536a5e2efb04cbf9f38d7566b  fix(OIDC): Apple ID username and nonce
+56643097b0717fad4a25d1274fadbad50e3f26e1  92be93dc4ef7e784ae999e9488d7770d5d2471cb  Add FAB tooltips
+5b49c198c44bd04bfc262f08bf8dc7e3dd033c24  c1c1ead93847255ec912a9fecbb99dcb63c66abb  fix: PostgreSQL deprecations (partial cherry-pick)
