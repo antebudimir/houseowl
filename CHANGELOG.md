@@ -87,6 +87,14 @@ features, that's the same commit.
 - **PostgreSQL history queries work on SQLAlchemy 2.x** — `distinct_on`
   replaces the removed `distinct(column)` form.
 - **Translations:** German, Dutch and Slovenian refreshed from upstream.
+- **Remaining user-visible KitchenOwl strings rebranded.** The settings
+  footer, the licence page's legal notice and the API `User-Agent` header
+  now say HouseOwl; the licence page keeps an attribution line to KitchenOwl.
+- **Fedora RPM packaging builds again.** `fedora/build.sh` appends the spec
+  named after the pubspec package (`houseowl`), but the spec file was still
+  `kitchenowl.spec`, so `cat` failed and the generated spec held nothing but
+  a `Version:` line. The spec is renamed to `houseowl.spec`, and its name,
+  summary, binary and data paths now match the fork.
 - **Per-ABI release APKs, and a public download link.** The APK build now
   produces `arm64-v8a`, `armeabi-v7a` and `x86_64` APKs instead of one 92 MB
   universal build, and a manual run can attach them to a GitHub release —
