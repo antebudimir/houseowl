@@ -55,6 +55,11 @@ features, that's the same commit.
   out-of-range selected-index glitch when deep views were opened from the
   drawer.
 
+- **Per-ABI release APKs, and a public download link.** The APK build now
+  produces `arm64-v8a`, `armeabi-v7a` and `x86_64` APKs instead of one 92 MB
+  universal build, and a manual run can attach them to a GitHub release —
+  workflow artifacts need an authenticated session even on a public
+  repository, release assets do not.
 - **Rebrand: KitchenOwl → HouseOwl.** Dart package renamed
   (`package:kitchenowl` → `package:houseowl`), backend API/branding, app
   identifiers (`com.tombursch.kitchenowl` → `com.antebudimir.houseowl`),
