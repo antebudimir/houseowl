@@ -12,6 +12,10 @@ features, that's the same commit.
 
 ## [Unreleased]
 
+- **APK builds on the current Flutter stable again.** Bumped the Android
+  Gradle Plugin to 9.1.1 and the Gradle wrapper to 9.5.0 (Flutter's new
+  minimums) and enabled core-library desugaring, which the local-notification
+  plugin needs. Release APKs build on the latest stable toolchain.
 - **Bigger, till-friendly loyalty cards.** The card detail view is now a
   full card with the store name and a large barcode that fills the screen
   width, so it scans easily at the checkout. QR/Aztec/Data Matrix codes stay
