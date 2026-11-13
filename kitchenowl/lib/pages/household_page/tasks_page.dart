@@ -5,11 +5,58 @@ import 'package:houseowl/cubits/tasks_cubit.dart';
 import 'package:houseowl/enums/task_recurrence_enum.dart';
 import 'package:houseowl/enums/update_enum.dart';
 import 'package:houseowl/kitchenowl.dart';
+import 'package:houseowl/models/member.dart';
 import 'package:houseowl/models/task.dart';
 import 'package:houseowl/pages/household_page/task_add_update_page.dart';
 
-class TasksPage extends StatelessWidget {
+class TasksPage extends StatefulWidget {
   const TasksPage({super.key});
+
+  @override
+  State<TasksPage> createState() => _TasksPageState();
+}
+
+enum TaskSortMode { dueDate, priority, name }
+
+class _TasksPageState extends State<TasksPage> {
+  TaskSortMode _sort = TaskSortMode.dueDate;
+  int? _assigneeId;
+  String? _tag;
+
+  int _dueCompare(Task a, Task b) {
+    final ad = a.dueDate;
+    final bd = b.dueDate;
+    if (ad == null && bd == null) return (a.id ?? 0).compareTo(b.id ?? 0);
+    if (ad == null) return 1; // undated tasks last
+    if (bd == null) return -1;
+    final byDate = ad.compareTo(bd);
+    return byDate != 0 ? byDate : (a.id ?? 0).compareTo(b.id ?? 0);
+  }
+
+  int _compare(Task a, Task b) {
+    switch (_sort) {
+      case TaskSortMode.priority:
+        final byPriority = b.priority.compareTo(a.priority);
+        return byPriority != 0 ? byPriority : _dueCompare(a, b);
+      case TaskSortMode.name:
+        return a.name.toLowerCase().compareTo(b.name.toLowerCase());
+      case TaskSortMode.dueDate:
+        return _dueCompare(a, b);
+    }
+  }
+
+  List<Task> _applyFilters(List<Task> tasks) {
+    return tasks
+        .where((t) {
+          if (_assigneeId != null && t.assigneeId != _assigneeId) return false;
+          if (_tag != null && !t.tags.any((tag) => tag.name == _tag)) {
+            return false;
+          }
+          return true;
+        })
+        .toList()
+      ..sort(_compare);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +65,10 @@ class TasksPage extends StatelessWidget {
     return SafeArea(
       child: BlocBuilder<TasksCubit, TasksCubitState>(
         builder: (context, state) {
+          final filtered = _applyFilters(state.tasks);
+          final open = filtered.where((t) => !t.isDone).toList();
+          final done = filtered.where((t) => t.isDone).toList();
+
           final Widget body;
           if (state is LoadingTasksCubitState) {
             body = const Center(child: CircularProgressIndicator());
@@ -26,10 +77,12 @@ class TasksPage extends StatelessWidget {
               icon: Icons.checklist_rounded,
               message: AppLocalizations.of(context)!.noTasks,
             );
+          } else if (filtered.isEmpty) {
+            body = EmptyState(
+              icon: Icons.filter_alt_off_rounded,
+              message: AppLocalizations.of(context)!.noResults,
+            );
           } else {
-            final open = state.tasks.where((t) => !t.isDone).toList();
-            final done = state.tasks.where((t) => t.isDone).toList();
-
             body = ListView(
               children: [
                 if (open.isEmpty)
@@ -70,11 +123,121 @@ class TasksPage extends StatelessWidget {
             );
           }
 
-          return RefreshIndicator(
-            onRefresh: cubit.refresh,
-            child: body,
+          return Column(
+            children: [
+              if (state is! LoadingTasksCubitState && state.tasks.isNotEmpty)
+                _filterBar(context, state.tasks),
+              Expanded(
+                child: RefreshIndicator(
+                  onRefresh: cubit.refresh,
+                  child: body,
+                ),
+              ),
+            ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _filterBar(BuildContext context, List<Task> tasks) {
+    final loc = AppLocalizations.of(context)!;
+    final assignees = <int, Member>{};
+    for (final task in tasks) {
+      final assignee = task.assignee;
+      final id = assignee?.id;
+      if (id != null) assignees[id] = assignee!;
+    }
+    final tagNames = <String>{
+      for (final task in tasks)
+        for (final tag in task.tags) tag.name,
+    }.toList()
+      ..sort();
+    final hasFilters =
+        _assigneeId != null || _tag != null || _sort != TaskSortMode.dueDate;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 8, 0),
+      child: Row(
+        children: [
+          Expanded(
+            child: Wrap(
+              spacing: 12,
+              runSpacing: 4,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                DropdownButton<TaskSortMode>(
+                  value: _sort,
+                  isDense: true,
+                  underline: const SizedBox.shrink(),
+                  items: [
+                    DropdownMenuItem(
+                      value: TaskSortMode.dueDate,
+                      child: Text(loc.dueDate),
+                    ),
+                    DropdownMenuItem(
+                      value: TaskSortMode.priority,
+                      child: Text(loc.priority),
+                    ),
+                    DropdownMenuItem(
+                      value: TaskSortMode.name,
+                      child: Text(loc.name),
+                    ),
+                  ],
+                  onChanged: (value) {
+                    if (value != null) setState(() => _sort = value);
+                  },
+                ),
+                if (assignees.isNotEmpty)
+                  DropdownButton<int?>(
+                    value: _assigneeId,
+                    isDense: true,
+                    underline: const SizedBox.shrink(),
+                    items: [
+                      DropdownMenuItem<int?>(
+                        value: null,
+                        child: Text(loc.all),
+                      ),
+                      for (final assignee in assignees.values)
+                        DropdownMenuItem<int?>(
+                          value: assignee.id,
+                          child: Text(assignee.name),
+                        ),
+                    ],
+                    onChanged: (value) => setState(() => _assigneeId = value),
+                  ),
+                if (tagNames.isNotEmpty)
+                  DropdownButton<String?>(
+                    value: _tag,
+                    isDense: true,
+                    underline: const SizedBox.shrink(),
+                    items: [
+                      DropdownMenuItem<String?>(
+                        value: null,
+                        child: Text(loc.all),
+                      ),
+                      for (final name in tagNames)
+                        DropdownMenuItem<String?>(
+                          value: name,
+                          child: Text(name),
+                        ),
+                    ],
+                    onChanged: (value) => setState(() => _tag = value),
+                  ),
+              ],
+            ),
+          ),
+          if (hasFilters)
+            IconButton(
+              tooltip: loc.clearFilters,
+              icon: const Icon(Icons.filter_alt_off_rounded),
+              onPressed: () => setState(() {
+                _sort = TaskSortMode.dueDate;
+                _assigneeId = null;
+                _tag = null;
+              }),
+            ),
+        ],
       ),
     );
   }

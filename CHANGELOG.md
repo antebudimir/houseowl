@@ -12,6 +12,9 @@ features, that's the same commit.
 
 ## [Unreleased]
 
+- **Filter and sort the task list.** Tasks can be sorted by due date,
+  priority or name, and filtered by assignee or tag; a clear button resets
+  the view. Undated tasks sort last.
 - **Birthday reminders and age.** The Birthdays view now schedules an
   on-device reminder at 09:00 on the day of each upcoming birthday, and
   people with a known birth year show how old they turn. Like the event and
