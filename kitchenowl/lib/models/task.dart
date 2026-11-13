@@ -15,6 +15,11 @@ class Task extends Model {
   /// Bare calendar date (server sends "yyyy-MM-dd"); no time component.
   final DateTime? dueDate;
 
+  /// Lead time in minutes before the due date at which to remind, or null
+  /// for no reminder. Delivery is a client-side scheduled local notification;
+  /// the reminder is anchored at local start-of-day of [dueDate].
+  final int? reminderMinutes;
+
   /// Server-stamped when the task is completed.
   final DateTime? completedAt;
   final int? assigneeId;
@@ -31,6 +36,7 @@ class Task extends Model {
     this.priority = 0,
     this.recurrence = TaskRecurrence.none,
     this.dueDate,
+    this.reminderMinutes,
     this.completedAt,
     this.assigneeId,
     this.assignee,
@@ -51,6 +57,7 @@ class Task extends Model {
           : TaskRecurrence.parse(map['recurrence']),
       dueDate:
           map['due_date'] == null ? null : DateTime.tryParse(map['due_date']),
+      reminderMinutes: map['reminder_minutes'],
       completedAt: map['completed_at'] == null
           ? null
           : DateTime.fromMillisecondsSinceEpoch(
@@ -80,6 +87,7 @@ class Task extends Model {
     int? priority,
     TaskRecurrence? recurrence,
     DateTime? dueDate,
+    int? reminderMinutes,
     DateTime? completedAt,
     int? assigneeId,
     Member? assignee,
@@ -95,6 +103,7 @@ class Task extends Model {
         priority: priority ?? this.priority,
         recurrence: recurrence ?? this.recurrence,
         dueDate: dueDate ?? this.dueDate,
+        reminderMinutes: reminderMinutes ?? this.reminderMinutes,
         completedAt: completedAt ?? this.completedAt,
         assigneeId: assigneeId ?? this.assigneeId,
         assignee: assignee ?? this.assignee,
@@ -112,6 +121,7 @@ class Task extends Model {
         priority,
         recurrence,
         dueDate,
+        reminderMinutes,
         completedAt,
         assigneeId,
         assignee,
@@ -130,6 +140,7 @@ class Task extends Model {
         // ISO date string only — never a timestamp with a time zone.
         "due_date":
             dueDate == null ? null : dueDate!.toIso8601String().substring(0, 10),
+        "reminder_minutes": reminderMinutes,
         "assignee_id": assigneeId,
         "buy_id": buyId,
         "tags": tags.map((e) => e.name).toList(),

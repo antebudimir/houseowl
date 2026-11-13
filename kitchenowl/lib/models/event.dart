@@ -17,6 +17,10 @@ class Event extends Model {
   final DateTime start;
   final DateTime end;
   final bool allDay;
+
+  /// Lead time in minutes before [start] at which to remind, or null for no
+  /// reminder. Delivery is a client-side scheduled local notification.
+  final int? reminderMinutes;
   final List<Member> attendees;
 
   const Event({
@@ -27,6 +31,7 @@ class Event extends Model {
     required this.start,
     required this.end,
     this.allDay = false,
+    this.reminderMinutes,
     this.attendees = const [],
   });
 
@@ -45,6 +50,7 @@ class Event extends Model {
         isUtc: true,
       ),
       allDay: map['all_day'] ?? false,
+      reminderMinutes: map['reminder_minutes'],
       attendees: map['attendees'] != null
           ? List.from(map['attendees'])
               .map((e) => Member.fromJson(Map<String, dynamic>.from(e as Map)))
@@ -61,6 +67,7 @@ class Event extends Model {
     DateTime? start,
     DateTime? end,
     bool? allDay,
+    int? reminderMinutes,
     List<Member>? attendees,
   }) =>
       Event(
@@ -71,6 +78,7 @@ class Event extends Model {
         start: start ?? this.start,
         end: end ?? this.end,
         allDay: allDay ?? this.allDay,
+        reminderMinutes: reminderMinutes ?? this.reminderMinutes,
         attendees: attendees ?? this.attendees,
       );
 
@@ -83,6 +91,7 @@ class Event extends Model {
         start,
         end,
         allDay,
+        reminderMinutes,
         attendees,
       ];
 
@@ -94,6 +103,7 @@ class Event extends Model {
         "start": start.millisecondsSinceEpoch,
         "end": end.millisecondsSinceEpoch,
         "all_day": allDay,
+        "reminder_minutes": reminderMinutes,
         "attendees": attendees.map((p) => p.id).toList(),
       };
 
