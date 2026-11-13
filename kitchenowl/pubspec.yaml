@@ -80,6 +80,10 @@ dependencies:
   diacritic: ^0.1.6
   barcode_widget: ^2.0.4
   mobile_scanner: ^7.4.2
+  # Local, OS-scheduled notifications for event/task/birthday reminders.
+  # No Firebase / Play Services: delivery is on-device (Google-free).
+  flutter_local_notifications: ^19.4.2
+  timezone: ^0.10.1
 
 dev_dependencies:
   flutter_test:

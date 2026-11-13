@@ -512,6 +512,23 @@
   "back": "Back",
   "birthday": "Birthday",
   "birthdays": "Birthdays",
+  "reminderEventBody": "Starts at {time}",
+  "@reminderEventBody": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderTaskBody": "Due {date}",
+  "@reminderTaskBody": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderBirthdayBody": "Birthday today",
   "budget": "Budget",
   "budgetSet": "Set budget",
   "buyStatus": "Status",

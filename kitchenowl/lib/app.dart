@@ -21,6 +21,7 @@ import 'package:houseowl/kitchenowl.dart';
 import 'package:houseowl/router.dart';
 import 'package:houseowl/services/api/api_service.dart';
 import 'package:houseowl/services/background_task.dart';
+import 'package:houseowl/services/notification_service.dart';
 import 'package:houseowl/services/storage/storage.dart';
 import 'package:houseowl/services/transaction_handler.dart';
 import 'package:houseowl/styles/colors.dart';
@@ -81,6 +82,10 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+
+    // Set up local notification channels/permissions up front; scheduling
+    // itself happens when the event/task/person cubits refresh.
+    NotificationService.getInstance().init();
 
     final ImagePickerPlatform imagePickerPlatform =
         ImagePickerPlatform.instance;

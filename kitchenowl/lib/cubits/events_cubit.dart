@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:houseowl/models/event.dart';
 import 'package:houseowl/models/household.dart';
 import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/notification_service.dart';
 import 'package:houseowl/services/transaction_handler.dart';
 import 'package:houseowl/services/transactions/event.dart';
 
@@ -72,6 +73,9 @@ class EventsCubit extends Cubit<EventsCubitState> {
     if (_refreshThread != null) {
       emit(ListEventsCubitState(events: events));
       _refreshThread = null;
+      // Best-effort: notification scheduling must never block or fail the
+      // data refresh, so the future is detached.
+      NotificationService.getInstance().syncEvents(events).ignore();
     }
   }
 

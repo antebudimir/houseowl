@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:houseowl/models/household.dart';
 import 'package:houseowl/models/person.dart';
 import 'package:houseowl/services/api/api_service.dart';
+import 'package:houseowl/services/notification_service.dart';
 import 'package:houseowl/services/transaction_handler.dart';
 import 'package:houseowl/services/transactions/person.dart';
 
@@ -112,6 +113,9 @@ class PersonsCubit extends Cubit<PersonsCubitState> {
       personList = await _transactionHandler.runTransaction(
         TransactionPersonsGet(household: household),
       );
+      // Only the full list drives birthday reminders; a search subset would
+      // cancel reminders for everyone else. Best-effort and detached.
+      NotificationService.getInstance().syncBirthdays(personList).ignore();
     }
 
     List<Person> persons = personList;
