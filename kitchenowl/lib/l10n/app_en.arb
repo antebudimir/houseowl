@@ -512,6 +512,14 @@
   "back": "Back",
   "birthday": "Birthday",
   "birthdays": "Birthdays",
+  "turnsAge": "Turns {age}",
+  "@turnsAge": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  },
   "reminderEventBody": "Starts at {time}",
   "@reminderEventBody": {
     "placeholders": {

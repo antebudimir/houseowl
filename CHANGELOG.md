@@ -12,6 +12,11 @@ features, that's the same commit.
 
 ## [Unreleased]
 
+- **Birthday reminders and age.** The Birthdays view now schedules an
+  on-device reminder at 09:00 on the day of each upcoming birthday, and
+  people with a known birth year show how old they turn. Like the event and
+  task reminders this is local and works offline, with no Google/Firebase
+  dependency.
 - **Reminders for events and tasks.** Events and tasks with a date can now
   carry a reminder — 15 minutes, 1 hour, 1 day or 1 week ahead, or at the
   time itself. Reminders are delivered as on-device notifications scheduled

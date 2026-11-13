@@ -126,6 +126,13 @@ class _BirthdayTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(subtitle),
+          if (entry.person.hasBirthdayYear)
+            Text(
+              AppLocalizations.of(context)!.turnsAge(
+                entry.next.year - entry.person.birthday!.year,
+              ),
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
           if ((entry.person.giftIdea ?? "").isNotEmpty)
             Text(
               AppLocalizations.of(context)!.giftIdea(entry.person.giftIdea!),
