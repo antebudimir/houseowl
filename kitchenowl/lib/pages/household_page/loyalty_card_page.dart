@@ -109,50 +109,95 @@ class _LoyaltyCardPageState extends State<LoyaltyCardPage> {
           ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          if (format != null && widget.card.cardNumber.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Center(
-                child: Container(
-                  // A barcode must always be black on white, regardless of
-                  // the app theme, so store scanners get full contrast. The
-                  // white container also provides the quiet-zone margin.
-                  color: Colors.white,
-                  padding: const EdgeInsets.all(8),
-                  child: BarcodeWidget(
-                    barcode: format.toBarcode(),
-                    data: widget.card.cardNumber,
-                    color: Colors.black,
-                    backgroundColor: Colors.white,
-                    width: 300,
-                    height: 120,
-                    // 2D codes would be distorted by the fixed height.
-                    margin: const EdgeInsets.symmetric(vertical: 8),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          // A card-like, till-friendly layout: the barcode fills most of the
+          // width so it stays scannable at arm's length. 2D matrix codes are
+          // kept square; 1D codes stretch to the available width.
+          final cardWidth =
+              (constraints.maxWidth - 32).clamp(0.0, 560.0).toDouble();
+          final barcodeWidth =
+              (cardWidth - 64).clamp(0.0, 520.0).toDouble();
+          final matrixSide = barcodeWidth.clamp(0.0, 360.0).toDouble();
+
+          return ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 560),
+                  child: Card(
+                    clipBehavior: Clip.antiAlias,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Text(
+                            widget.card.storeName,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 20),
+                          if (format != null &&
+                              widget.card.cardNumber.isNotEmpty)
+                            Center(
+                              child: Container(
+                                // A barcode must always be black on white,
+                                // regardless of the app theme, so store
+                                // scanners get full contrast. The white
+                                // container also provides the quiet zone.
+                                color: Colors.white,
+                                padding: const EdgeInsets.all(12),
+                                child: BarcodeWidget(
+                                  barcode: format.toBarcode(),
+                                  data: widget.card.cardNumber,
+                                  color: Colors.black,
+                                  backgroundColor: Colors.white,
+                                  drawText: false,
+                                  width: format.isMatrix
+                                      ? matrixSide
+                                      : barcodeWidth,
+                                  height: format.isMatrix ? matrixSide : 160,
+                                ),
+                              ),
+                            )
+                          else
+                            Icon(
+                              Icons.qr_code_2_rounded,
+                              size: 72,
+                              color: Theme.of(context).colorScheme.outline,
+                            ),
+                          const SizedBox(height: 16),
+                          SelectableText(
+                            widget.card.cardNumber,
+                            style: Theme.of(context).textTheme.titleLarge,
+                            textAlign: TextAlign.center,
+                          ),
+                          if (format != null) ...[
+                            const SizedBox(height: 6),
+                            Text(
+                              format.toLocalizedString(context),
+                              style: Theme.of(context).textTheme.bodySmall,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          SelectableText(
-            widget.card.cardNumber,
-            style: Theme.of(context).textTheme.titleMedium,
-            textAlign: TextAlign.center,
-          ),
-          if (format != null)
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.qr_code_rounded),
-              title: Text(loc.loyaltyCardFormat),
-              subtitle: Text(format.toLocalizedString(context)),
-            ),
-          if (widget.card.notes?.isNotEmpty ?? false)
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: KitchenOwlMarkdownBody(data: widget.card.notes!),
-            ),
-        ],
+              if (widget.card.notes?.isNotEmpty ?? false)
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: KitchenOwlMarkdownBody(data: widget.card.notes!),
+                ),
+            ],
+          );
+        },
       ),
     );
   }

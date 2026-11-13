@@ -12,6 +12,10 @@ features, that's the same commit.
 
 ## [Unreleased]
 
+- **Bigger, till-friendly loyalty cards.** The card detail view is now a
+  full card with the store name and a large barcode that fills the screen
+  width, so it scans easily at the checkout. QR/Aztec/Data Matrix codes stay
+  square; the card number is shown large and selectable below.
 - **Filter and sort the task list.** Tasks can be sorted by due date,
   priority or name, and filtered by assignee or tag; a clear button resets
   the view. Undated tasks sort last.

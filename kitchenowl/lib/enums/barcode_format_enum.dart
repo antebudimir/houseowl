@@ -35,6 +35,13 @@ enum BarcodeFormat {
     }
   }
 
+  /// 2D matrix codes that must be rendered square to stay scannable; 1D
+  /// codes (and the wide stacked PDF417) are stretched to the card width.
+  bool get isMatrix =>
+      this == BarcodeFormat.qr ||
+      this == BarcodeFormat.aztec ||
+      this == BarcodeFormat.dataMatrix;
+
   static BarcodeFormat? fromServerName(String? name) {
     for (final f in BarcodeFormat.values) {
       if (f.serverName == name) {

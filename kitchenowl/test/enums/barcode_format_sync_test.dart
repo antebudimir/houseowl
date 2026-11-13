@@ -47,4 +47,13 @@ void main() {
     expect(scannableServerNames.contains("ean13"), isTrue);
     expect(scannableServerNames.contains("qr"), isTrue);
   });
+
+  test("only square matrix codes are flagged as matrix", () {
+    final matrix = {
+      for (final f in BarcodeFormat.values)
+        if (f.isMatrix) f.serverName,
+    };
+
+    expect(matrix, {"qr", "aztec", "dataMatrix"});
+  });
 }
