@@ -91,6 +91,8 @@ def addTask(args, household_id):
         task.description = args["description"]
     if args.get("due_date") is not None:
         task.due_date = _parse_due_date(args["due_date"])
+    if args.get("reminder_minutes") is not None:
+        task.reminder_minutes = args["reminder_minutes"]
     if args.get("assignee_id") is not None:
         _set_assignee(task, household_id, args["assignee_id"])
     if args.get("buy_id") is not None:
@@ -131,6 +133,8 @@ def updateTask(args, id):
         task.recurrence = args["recurrence"]
     if "due_date" in args:
         task.due_date = _parse_due_date(args["due_date"])
+    if "reminder_minutes" in args:
+        task.reminder_minutes = args["reminder_minutes"]
     if "assignee_id" in args:
         _set_assignee(task, task.household_id, args["assignee_id"])
     if "buy_id" in args:

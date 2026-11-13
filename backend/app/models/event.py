@@ -29,6 +29,11 @@ class Event(Model, DbModelAuthorizeMixin):
     all_day: Mapped[bool] = db.Column(
         db.Boolean, default=False, nullable=False
     )
+    # Optional reminder lead time in minutes before `start`. NULL = no
+    # reminder. Delivery is a client-side scheduled local notification.
+    reminder_minutes: Mapped[Optional[int]] = db.Column(
+        db.Integer, nullable=True
+    )
     household_id: Mapped[int] = db.Column(
         db.Integer, db.ForeignKey("household.id"), nullable=False, index=True
     )

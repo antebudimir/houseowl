@@ -22,6 +22,12 @@ def _valid_date(a):
         raise ValidationError("Not a valid ISO date (YYYY-MM-DD).") from exc
 
 
+def _non_negative(a):
+    # Reminder lead time in minutes; None clears the reminder.
+    if a is not None and a < 0:
+        raise ValidationError("Must be zero or greater.")
+
+
 class AddTask(Schema):
     class Meta:
         unknown = EXCLUDE
@@ -33,6 +39,7 @@ class AddTask(Schema):
         load_default="none", validate=validate.OneOf(RECURRENCE_VALUES)
     )
     due_date = fields.String(allow_none=True, validate=_valid_date)
+    reminder_minutes = fields.Integer(allow_none=True, validate=_non_negative)
     assignee_id = fields.Integer(allow_none=True)
     buy_id = fields.Integer(allow_none=True)
     tags = fields.List(fields.String(), load_default=list)
@@ -48,6 +55,7 @@ class UpdateTask(Schema):
     priority = fields.Integer(validate=validate.Range(min=0, max=3))
     recurrence = fields.String(validate=validate.OneOf(RECURRENCE_VALUES))
     due_date = fields.String(allow_none=True, validate=_valid_date)
+    reminder_minutes = fields.Integer(allow_none=True, validate=_non_negative)
     assignee_id = fields.Integer(allow_none=True)
     buy_id = fields.Integer(allow_none=True)
     tags = fields.List(fields.String())

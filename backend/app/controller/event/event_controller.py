@@ -130,6 +130,8 @@ def addEvent(args, household_id):
         event.description = args["description"]
     if args.get("location") is not None:
         event.location = args["location"]
+    if args.get("reminder_minutes") is not None:
+        event.reminder_minutes = args["reminder_minutes"]
     event.save()
     if args["attendees"]:
         _set_attendees(event, household_id, args["attendees"])
@@ -164,6 +166,8 @@ def updateEvent(args, id):
         event.location = args["location"]
     if "all_day" in args:
         event.all_day = args["all_day"]
+    if "reminder_minutes" in args:
+        event.reminder_minutes = args["reminder_minutes"]
     if "start" in args:
         event.start = _parse_ms(args["start"])
     if "end" in args:

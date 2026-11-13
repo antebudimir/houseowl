@@ -251,6 +251,55 @@ def test_complete_is_idempotent(user_client_with_household, household_id):
     assert len(response.get_json()) == 3
 
 
+def test_reminder_minutes_roundtrip_and_clear(
+    user_client_with_household, household_id
+):
+    response = _create_task(
+        user_client_with_household,
+        household_id,
+        due_date=str(date.today() + timedelta(days=1)),
+        reminder_minutes=120,
+    )
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["reminder_minutes"] == 120
+
+    task_id = data["id"]
+    response = user_client_with_household.post(
+        f"/api/task/{task_id}", json={"reminder_minutes": None}
+    )
+    assert response.get_json()["reminder_minutes"] is None
+
+
+def test_reminder_minutes_rejects_negative(
+    user_client_with_household, household_id
+):
+    response = _create_task(
+        user_client_with_household, household_id, reminder_minutes=-1
+    )
+    assert response.status_code == 400
+
+
+def test_successor_copies_reminder(user_client_with_household, household_id):
+    response = _create_task(
+        user_client_with_household,
+        household_id,
+        name="water plants",
+        recurrence="daily",
+        reminder_minutes=30,
+    )
+    task_id = response.get_json()["id"]
+
+    user_client_with_household.post(f"/api/task/{task_id}", json={"status": "done"})
+
+    response = user_client_with_household.get(
+        f"/api/household/{household_id}/task?status=open"
+    )
+    data = response.get_json()
+    assert len(data) == 1
+    assert data[0]["reminder_minutes"] == 30
+
+
 def test_successor_copies_tags(user_client_with_household, household_id):
     response = _create_task(
         user_client_with_household, household_id,

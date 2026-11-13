@@ -361,6 +361,39 @@ def test_list_sorted_by_start(user_client_with_household, household_id):
     assert [e["name"] for e in response.get_json()] == ["sooner", "later"]
 
 
+def test_reminder_minutes_roundtrip_and_clear(
+    user_client_with_household, household_id
+):
+    response = _create_event(
+        user_client_with_household, household_id, reminder_minutes=60
+    )
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data["reminder_minutes"] == 60
+
+    event_id = data["id"]
+    # Update to a different lead time.
+    response = user_client_with_household.post(
+        f"/api/event/{event_id}", json={"reminder_minutes": 15}
+    )
+    assert response.get_json()["reminder_minutes"] == 15
+
+    # Explicit null clears the reminder.
+    response = user_client_with_household.post(
+        f"/api/event/{event_id}", json={"reminder_minutes": None}
+    )
+    assert response.get_json()["reminder_minutes"] is None
+
+
+def test_reminder_minutes_rejects_negative(
+    user_client_with_household, household_id
+):
+    response = _create_event(
+        user_client_with_household, household_id, reminder_minutes=-5
+    )
+    assert response.status_code == 400
+
+
 def test_cross_household_events_invisible(user_client_with_household, household_id):
     _create_event(user_client_with_household, household_id, name="mine")
 

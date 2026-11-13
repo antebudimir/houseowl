@@ -7,6 +7,12 @@ def _not_blank(a):
         raise ValidationError("Not a valid string.")
 
 
+def _non_negative(a):
+    # Reminder lead time in minutes; None clears the reminder.
+    if a is not None and a < 0:
+        raise ValidationError("Must be zero or greater.")
+
+
 class AddEvent(Schema):
     class Meta:
         unknown = EXCLUDE
@@ -17,6 +23,7 @@ class AddEvent(Schema):
     start = fields.Integer(required=True)
     end = fields.Integer(required=True)
     all_day = fields.Boolean(load_default=False)
+    reminder_minutes = fields.Integer(allow_none=True, validate=_non_negative)
     attendees = fields.List(fields.Integer(), load_default=list)
 
 
@@ -30,6 +37,7 @@ class UpdateEvent(Schema):
     start = fields.Integer()
     end = fields.Integer()
     all_day = fields.Boolean()
+    reminder_minutes = fields.Integer(allow_none=True, validate=_non_negative)
     attendees = fields.List(fields.Integer())
 
 

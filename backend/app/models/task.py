@@ -79,6 +79,13 @@ class Task(Model, DbModelAuthorizeMixin):
     completed_at: Mapped[Optional[datetime]] = db.Column(
         db.DateTime, nullable=True
     )
+    # Optional reminder lead time in minutes before the due date. NULL = no
+    # reminder. Delivery is a client-side scheduled local notification; the
+    # due date has no time component, so the client anchors the reminder at
+    # local start-of-day minus this offset.
+    reminder_minutes: Mapped[Optional[int]] = db.Column(
+        db.Integer, nullable=True
+    )
     # Assignee is a household member (user account), not a directory person.
     assignee_id: Mapped[Optional[int]] = db.Column(
         db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"), nullable=True
@@ -154,6 +161,7 @@ class Task(Model, DbModelAuthorizeMixin):
         successor.description = self.description
         successor.priority = self.priority
         successor.recurrence = self.recurrence
+        successor.reminder_minutes = self.reminder_minutes
         successor.assignee_id = self.assignee_id
         successor.buy_id = self.buy_id
         successor.due_date = next_due(
