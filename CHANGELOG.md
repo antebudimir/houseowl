@@ -12,6 +12,12 @@ features, that's the same commit.
 
 ## [Unreleased]
 
+- **Reminders for events and tasks.** Events and tasks with a date can now
+  carry a reminder — 15 minutes, 1 hour, 1 day or 1 week ahead, or at the
+  time itself. Reminders are delivered as on-device notifications scheduled
+  by the operating system, so they fire even when the app is closed and keep
+  working offline. There is no cloud push and no Google/Firebase dependency.
+  A recurring task carries its reminder to each next occurrence.
 - **Fix people without a birthday silently failing to save.** The Flutter
   client sends explicit `null` for unset fields; the backend person add
   endpoint still ran `args["birthday"] / 1000` for a present-but-null key

@@ -205,6 +205,8 @@ class _CalendarAgendaState extends State<_CalendarAgenda> {
           TimeOfDay.fromDateTime(event.start.toLocal()),
         ),
       if (event.location != null && event.location!.isNotEmpty) event.location!,
+      if (event.reminderMinutes != null)
+        ReminderPicker.labelFor(context, event.reminderMinutes),
       if (event.attendees.isNotEmpty)
         event.attendees.map((p) => p.name).join(", "),
       if (event.description != null && event.description!.isNotEmpty)

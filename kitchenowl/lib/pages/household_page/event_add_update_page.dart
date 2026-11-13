@@ -30,6 +30,7 @@ class _EventAddUpdatePageState extends State<EventAddUpdatePage> {
   late DateTime _start;
   late DateTime _end;
   late bool _allDay;
+  int? _reminderMinutes;
   late final EventAddUpdateCubit _cubit;
   bool _isLoading = false;
 
@@ -49,6 +50,7 @@ class _EventAddUpdatePageState extends State<EventAddUpdatePage> {
         DateTime(now.year, now.month, now.day, now.hour + 1);
     _end = widget.event?.end.toLocal() ?? _start.add(const Duration(hours: 1));
     _allDay = widget.event?.allDay ?? false;
+    _reminderMinutes = widget.event?.reminderMinutes;
     _cubit = EventAddUpdateCubit(
       widget.household,
       selectedPersons:
@@ -141,6 +143,7 @@ class _EventAddUpdatePageState extends State<EventAddUpdatePage> {
       start: _start.toUtc(),
       end: _end.toUtc(),
       allDay: _allDay,
+      reminderMinutes: _reminderMinutes,
       attendees: _cubit.state.selectedPersons.toList(),
     );
 
@@ -246,6 +249,12 @@ class _EventAddUpdatePageState extends State<EventAddUpdatePage> {
                   onLongPress: () => _pickTime(isStart: false),
                 ),
               const SizedBox(height: 8),
+              ReminderPicker(
+                value: _reminderMinutes,
+                onChanged: (value) =>
+                    setState(() => _reminderMinutes = value),
+              ),
+              const SizedBox(height: 16),
               Text(loc.attendees),
               const SizedBox(height: 8),
               BlocBuilder<EventAddUpdateCubit, EventAddUpdateState>(

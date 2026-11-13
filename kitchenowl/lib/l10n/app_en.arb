@@ -529,6 +529,13 @@
     }
   },
   "reminderBirthdayBody": "Birthday today",
+  "reminder": "Reminder",
+  "reminderNone": "No reminder",
+  "reminderAtTime": "At time",
+  "reminder15Min": "15 minutes before",
+  "reminder1Hour": "1 hour before",
+  "reminder1Day": "1 day before",
+  "reminder1Week": "1 week before",
   "budget": "Budget",
   "budgetSet": "Set budget",
   "buyStatus": "Status",

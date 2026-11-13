@@ -33,6 +33,7 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
   late TaskRecurrence _recurrence;
   late int _priority;
   DateTime? _dueDate;
+  int? _reminderMinutes;
   int? _assigneeId;
   int? _buyId;
   late final Future<List<Member>> _members;
@@ -55,6 +56,7 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
     _recurrence = widget.task?.recurrence ?? TaskRecurrence.none;
     _priority = widget.task?.priority ?? 0;
     _dueDate = widget.task?.dueDate;
+    _reminderMinutes = widget.task?.reminderMinutes;
     _assigneeId = widget.task?.assigneeId;
     _buyId = widget.task?.buyId;
     _members = ApiService.getInstance()
@@ -102,6 +104,7 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
       priority: _priority,
       recurrence: _recurrence,
       dueDate: _dueDate,
+      reminderMinutes: _reminderMinutes,
       assigneeId: _assigneeId,
       buyId: _buyId,
       tags: _cubit.state.selectedTags.toList(),
@@ -216,12 +219,22 @@ class _TaskAddUpdatePageState extends State<TaskAddUpdatePage> {
                 type: MaterialType.transparency,
                 child: IconButton(
                   icon: const Icon(Icons.clear_rounded),
-                  onPressed: () => setState(() => _dueDate = null),
+                  onPressed: () => setState(() {
+                    _dueDate = null;
+                    _reminderMinutes = null;
+                  }),
                 ),
               )
             : null,
         onTap: _selectDueDate,
       ),
+      if (_dueDate != null) ...[
+        const SizedBox(height: 16),
+        ReminderPicker(
+          value: _reminderMinutes,
+          onChanged: (value) => setState(() => _reminderMinutes = value),
+        ),
+      ],
       FutureBuilder<List<Member>>(
         future: _members,
         builder: (context, snapshot) {

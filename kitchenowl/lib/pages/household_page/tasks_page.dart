@@ -146,6 +146,8 @@ class _TaskTile extends StatelessWidget {
     final subtitles = <String>[
       if (task.dueDate != null)
         MaterialLocalizations.of(context).formatMediumDate(task.dueDate!),
+      if (task.reminderMinutes != null && task.dueDate != null)
+        ReminderPicker.labelFor(context, task.reminderMinutes),
       if (task.recurrence != TaskRecurrence.none)
         task.recurrence.toLocalizedString(context),
       if (task.assignee != null) task.assignee!.name,
