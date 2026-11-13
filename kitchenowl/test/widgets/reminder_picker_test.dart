@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart' hide MaterialApp, Scaffold;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:houseowl/kitchenowl.dart';
-import 'package:houseowl/widgets/reminder_picker.dart';
 import 'package:material_ui/material_ui.dart' as mui;
 
 Future<void> _pumpPicker(
